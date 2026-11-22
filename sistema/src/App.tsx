@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Activity,
   Bot,
-  Box,
   Compass,
   FileSpreadsheet,
   GitBranch,
   Kanban,
   LayoutDashboard,
   ShieldAlert,
+  Smartphone,
   Users,
 } from "lucide-react";
 import seedJson from "./data/seedData.json";
@@ -163,7 +163,7 @@ export function App() {
     { id: "governance", label: "Riscos & Contratos", icon: ShieldAlert },
     { id: "people", label: "Pessoas & Produtiv.", icon: Users },
     { id: "scenarios", label: "Cenários (C1–C6)", icon: Compass },
-    { id: "mockups", label: "Mockups & 3D", icon: Box },
+    { id: "mockups", label: "Mockups do Produto (D17)", icon: Smartphone },
     { id: "ai", label: "Assistente IA", icon: Bot },
   ];
 
