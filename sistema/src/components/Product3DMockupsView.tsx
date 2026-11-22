@@ -406,14 +406,16 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
     const container = mountRef.current;
     container.innerHTML = "";
 
+    const width = container.clientWidth || 640;
+    const height = container.clientHeight || 420;
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("#020617");
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.set(85, 65, 95);
     camera.lookAt(45, 5, 35);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.7);
@@ -488,6 +490,9 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
 
     return () => {
       cancelAnimationFrame(animId);
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement);
+      }
       renderer.dispose();
     };
   }, [viewMode, controlDate, db, network]);
@@ -581,7 +586,7 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
       </div>
 
       {viewMode === "MOCKUPS" ? (
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div key="view-mockups" className="grid grid-cols-1 gap-5 lg:grid-cols-3">
           {/* Galeria de 14 telas */}
           <div className="space-y-3 lg:col-span-2">
             <div className="flex flex-wrap gap-2 text-[11px]">
@@ -661,7 +666,7 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div key="view-3d" className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 lg:col-span-2">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <span className="text-xs font-semibold text-white">
