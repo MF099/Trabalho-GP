@@ -194,33 +194,30 @@ export function App() {
           mobileNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Brand com Logo Maré Seguros */}
-        <div className="flex items-center justify-between border-b border-[#1e2b3a] px-4 py-3.5">
-          <div className="flex items-center gap-3">
-            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-white p-1 shadow-sm">
+        {/* Brand com Logo Maré Seguros em destaque */}
+        <div className="border-b border-[#1e2b3a] p-3.5">
+          <div className="flex items-start justify-between gap-2">
+            <div className="h-24 w-full overflow-hidden rounded-xl bg-white shadow-sm">
               <img
                 src="/mare_seguros.jpeg"
                 alt="Maré Seguros"
-                className="h-full w-full object-contain"
+                className="h-full w-full scale-[1.45] object-contain"
               />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-bold tracking-tight text-white">Maré Seguros</span>
-                <span className="rounded bg-[#12323a] px-1.5 py-0.5 font-mono text-[10px] font-bold text-[#2dd4bf]">
-                  G3
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400">Sala de Guerra · ENGN62</p>
-            </div>
+            <button
+              onClick={() => setMobileNavOpen(false)}
+              className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 lg:hidden"
+              aria-label="Fechar menu"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
-          <button
-            onClick={() => setMobileNavOpen(false)}
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 lg:hidden"
-            aria-label="Fechar menu"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <div className="mt-2.5 flex items-center justify-between px-1">
+            <span className="text-[11px] font-medium text-slate-400">Sala de Guerra · ENGN62</span>
+            <span className="rounded bg-[#12323a] px-1.5 py-0.5 font-mono text-[10px] font-bold text-[#5eead4]">
+              G3
+            </span>
+          </div>
         </div>
 
         {/* Navigation List */}
