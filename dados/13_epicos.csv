@@ -1,0 +1,9 @@
+id_epico,nome_epico,persona,beneficio_esperado,id_release_planejada,valor_de_negocio
+EP01,Aviso de sinistro,segurado,avisar o sinistro sem ligar para a central,R1,74
+EP02,Vistoria por foto,segurado,fazer a vistoria sem esperar o perito,R1,60
+EP03,Análise automática de danos,analista de sinistros,decidir os casos simples em minutos,R2,18
+EP04,Orçamento e oficinas,oficina credenciada,receber o serviço já aprovado,R1,65
+EP05,Acompanhamento do sinistro,segurado,saber em que etapa está o conserto,R2,68
+EP06,Pagamento de indenização,segurado,receber rápido e sem papel,R2,75
+EP07,Portal do corretor,corretor,acompanhar os sinistros da carteira,R3,52
+EP08,Prevenção a fraude,analista de fraude,identificar o sinistro suspeito antes de pagar,R3,56

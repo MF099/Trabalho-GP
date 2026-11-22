@@ -1,0 +1,27 @@
+id_elemento,nome_elemento,tipo_elemento,x,y,z,largura,comprimento,altura,vinculo_tipo,vinculo_ids,ordem_de_implantacao
+EL01,Plataforma (base da cena),AREA,0,0,-1,100,70,1.0,NENHUM,,
+EL02,Módulo: Aviso de sinistro,MODULO_DIGITAL,8,8,0,11,11,19.6,EPICO,EP01,
+EL03,Módulo: Vistoria por foto,MODULO_DIGITAL,24,8,0,11,11,16.4,EPICO,EP02,
+EL04,Módulo: Análise automática de danos,MODULO_DIGITAL,40,8,0,11,11,21.2,EPICO,EP03,
+EL05,Módulo: Orçamento e oficinas,MODULO_DIGITAL,56,8,0,11,11,14.8,EPICO,EP04,
+EL06,Módulo: Acompanhamento do sinistro,MODULO_DIGITAL,8,24,0,11,11,10.8,EPICO,EP05,
+EL07,Módulo: Pagamento de indenização,MODULO_DIGITAL,24,24,0,11,11,8.4,EPICO,EP06,
+EL08,Módulo: Portal do corretor,MODULO_DIGITAL,40,24,0,11,11,12.8,EPICO,EP07,
+EL09,Módulo: Prevenção a fraude,MODULO_DIGITAL,56,24,0,11,11,13.6,EPICO,EP08,
+EL10,Núcleo de nuvem e ambientes,UTILIDADE,74,8,0,10,10,8.0,ATIVIDADE,A04;A05,
+EL11,Portal regulatório e jurídico,EDIFICACAO,74,24,0,10,10,6.0,ATIVIDADE,A06;A07;A08,
+EL12,Integração com o provedor de IA de imagens,UTILIDADE,88,8,0,8,10,7.0,ATIVIDADE,A09;A10;A11;A12,
+EL13,Depósito: kits de vistoria para 40 oficinas,HARDWARE,88,24,0,8,10,5.0,ATIVIDADE,A13;A14;A15;A16,
+EL14,Estúdio de conteúdo e marca,EDIFICACAO,8,44,0,12,9,5.0,ATIVIDADE,A20;A21;A22;A23;A24;A25,
+EL15,Central de atendimento,EDIFICACAO,24,44,0,12,9,4.0,ATIVIDADE,A29;A30;A31,
+EL16,Sala de lançamento,EDIFICACAO,40,44,0,12,9,6.0,ATIVIDADE,A32;A33;A34;A35;A36;A37,
+EL17,Ponto de implantação: Salvador,UNIDADE_DE_IMPLANTACAO,6,58,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,1
+EL18,Ponto de implantação: Feira de Santana,UNIDADE_DE_IMPLANTACAO,21,58,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,2
+EL19,Ponto de implantação: Vitória da Conquista,UNIDADE_DE_IMPLANTACAO,36,58,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,3
+EL20,Ponto de implantação: Itabuna,UNIDADE_DE_IMPLANTACAO,51,58,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,4
+EL21,Ponto de implantação: Juazeiro,UNIDADE_DE_IMPLANTACAO,66,58,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,5
+EL22,Ponto de implantação: Barreiras,UNIDADE_DE_IMPLANTACAO,81,58,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,6
+EL23,Ponto de implantação: Camaçari,UNIDADE_DE_IMPLANTACAO,6,64,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,7
+EL24,Ponto de implantação: Lauro de Freitas,UNIDADE_DE_IMPLANTACAO,21,64,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,8
+EL25,Ponto de implantação: Ilhéus,UNIDADE_DE_IMPLANTACAO,36,64,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,9
+EL26,Ponto de implantação: Jequié,UNIDADE_DE_IMPLANTACAO,51,64,0,9,4,3.0,ATIVIDADE,A17;A18;A19;A27,10

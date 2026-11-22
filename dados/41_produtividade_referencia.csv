@@ -1,0 +1,8 @@
+id_atividade,servico,unidade,quantidade_total,produtividade_planejada,equipe_planejada_pessoas,id_contrato
+A02,Telas prototipadas,tela,28.2,0.156,2,CT01
+A11,Serviços de integração homologados,servico,20.3,0.037,3,CT04
+A17,Locais preparados,local,192.0,0.53,4,CT06
+A18,Unidades instaladas,un,576.0,0.32,7,CT06
+A20,Peças de conteúdo produzidas,peca,126.0,0.129,4,CT07
+A24,Peças de campanha produzidas,peca,29.0,0.101,3,CT08
+A32,Cenários de teste executados,cenario,79.0,0.4,3,CT10

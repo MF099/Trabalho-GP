@@ -1,0 +1,10 @@
+id_cenario,acao,id_atividade,nome_atividade,disciplina,duracao_du,predecessoras,sucessoras,custo_adicional_rs
+C2,ALTERAR_DURACAO,A35,Entrar em operação e veicular a campanha de lançamento,OPS,8,,,32700.0
+C2,ALTERAR_DURACAO,A36,Acompanhar a operação assistida pós-lançamento,OPS,22,,,30100.0
+C2,ALTERAR_DURACAO,A31,Treinar os parceiros e segurados,OPS,14,,,35000.0
+C3,EXCLUIR,A37,Medir os resultados do lançamento e ajustar o funil,PRD,0,,,-7100.0
+C4,INCLUIR,N01,Preparar a operação da segunda praça,OPS,20,,,40600.0
+C4,INCLUIR,N02,Distribuir e instalar na segunda praça,HW,15,N01:TI:0;A16:TI:0,A35:TI:0,12600.0
+C4,INCLUIR,N03,Treinar os parceiros da segunda praça,OPS,10,N01:TI:0,A35:TI:0,13900.0
+C5,INCLUIR,N04,Contratar e configurar a solução de mercado de Análise automática de danos,INT,20,,A32:TI:0,16900.0
+C6,INCLUIR,N05,Preparar a entrada em operação da primeira onda na praça do piloto,OPS,8,A41:TI:0;A28:TI:0,,34800.0

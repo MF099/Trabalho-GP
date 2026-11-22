@@ -1,0 +1,14 @@
+id_fornecedor,nome,localidade,categoria
+F01,Lab Jangada Pesquisa e Design,Salvador/BA,Pesquisa e design
+F02,NuvemSul Serviços de Computação,São Paulo/SP,Nuvem
+F03,Moura Dantas Advogados,Salvador/BA,Jurídico
+F04,VisionAI Tecnologia,Florianópolis/SC,Inteligência artificial
+F05,TabMais Distribuidora de Informática,Salvador/BA,Equipamentos eletrônicos
+F06,TransAtlântica Logística,Salvador/BA,Logística
+F07,Recôncavo Conteúdo Digital,Cachoeira/BA,Conteúdo
+F08,Farol Comunicação,Salvador/BA,Marketing
+F09,Central Voz Contact Center,Feira de Santana/BA,Atendimento
+F10,Baluarte Segurança da Informação,Recife/PE,Segurança da informação
+F11,Vértice Serviços Técnicos,Salvador/BA,Serviços técnicos
+F12,Atlas Engenharia e Sistemas,Recife/PE,Serviços técnicos
+F13,Polo Soluções Integradas,Camaçari/BA,Serviços técnicos

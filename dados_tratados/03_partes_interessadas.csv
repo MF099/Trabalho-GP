@@ -1,0 +1,14 @@
+id_parte,parte_interessada,contato,papel_no_projeto,tipo,poder,interesse,engajamento_inicial,engajamento_desejado,principal_expectativa
+PI01,Diretora de operações,Samara Guimarães,Patrocinador,INTERNO,5,5,LIDERA,LIDERA,Lançamento no prazo e metas de negócio
+PI02,Diretor comercial,Sílvia Vilas Boas,Dono das metas comerciais,INTERNO,4,5,NEUTRO,APOIA,Funcionalidades que ajudem a vender no curto prazo
+PI03,Diretor financeiro,Xavier Falcão,Aprovador dos desembolsos,INTERNO,5,3,NEUTRO,APOIA,Custo dentro do aprovado e retorno do investimento
+PI04,Diretor de tecnologia,Bruno Barreto,Dono da arquitetura,INTERNO,4,4,APOIA,LIDERA,Qualidade técnica e segurança
+PI05,Encarregado de dados e jurídico,Heitor Guimarães,Conformidade,INTERNO,4,2,NEUTRO,APOIA,Tratamento de dados dentro da lei
+PI06,Órgão regulador,Márcio Guimarães,Regulador,EXTERNO,5,1,DESCONHECE,NEUTRO,Cumprimento das normas do setor
+PI07,Parceiro: provedor de IA de imagens,Yara Lacerda,Parceiro de negócio,EXTERNO,4,3,NEUTRO,APOIA,"Volume, integração estável e contrato claro"
+PI08,Fornecedor de equipamentos,Caio Falcão,Fornecedor,EXTERNO,2,4,APOIA,APOIA,Pagamento por marcos e aceite sem pendências
+PI09,Piloto: 40 oficinas credenciadas e 25 corretores,Quitéria Neves,Usuários do piloto,EXTERNO,2,5,DESCONHECE,APOIA,"Produto simples, que funcione no dia a dia"
+PI10,Equipe de atendimento,Murilo Uzeda,Suporte ao usuário,INTERNO,2,4,DESCONHECE,APOIA,Treinamento e ferramentas antes do lançamento
+PI11,Conselho de sócios,Nelson Almeida,Investidores,EXTERNO,5,2,NEUTRO,NEUTRO,Crescimento e uso disciplinado do capital
+PI12,Usuários finais (segurados),Quitéria Calmon,Usuários,EXTERNO,1,5,DESCONHECE,APOIA,Resolver o problema sem complicação
+PI13,Equipe de marketing,Natália Rebouças,Comunicação e aquisição,INTERNO,2,3,NEUTRO,APOIA,Datas confiáveis para planejar a campanha

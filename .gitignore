@@ -1,0 +1,17 @@
+# Dependências e builds
+node_modules/
+sistema/node_modules/
+sistema/dist/
+dist/
+
+# Segredos e variáveis de ambiente (NUNCA subir para o repositório)
+.env
+.env.local
+.env.*.local
+sistema/.env
+sistema/.env.local
+sistema/.env.*.local
+
+# Sistema operacional e editores
+.DS_Store
+*.log

@@ -1,0 +1,15 @@
+id_mudanca,data_abertura,id_solicitante,descricao,tipo_mudanca,frente,id_atividade,impacto_custo_rs,impacto_prazo_du,impacto_pontos,status,data_decisao,nivel_decisor,implementada
+SM-001,2026-03-10,PI02,Refazer a identidade visual após a pesquisa com usuários,TECNICA,PREDITIVA,A22,7900.0,10,0,REJEITADA,2026-03-18,GERENTE,
+SM-002,2026-03-10,PI04,Produzir conteúdo adicional para o lançamento,ESCOPO,PREDITIVA,A20,13000.0,8,0,APROVADA,2026-03-17,GERENTE,SIM
+SM-003,2026-04-28,PI04,Antecipar a campanha de pré-lançamento,PRAZO,PREDITIVA,A23,14100.0,0,0,APROVADA,2026-05-06,GERENTE,SIM
+SM-004,2026-05-04,PI01,Aumentar o lote inicial de equipamentos,ESCOPO,PREDITIVA,A15,33000.0,5,0,APROVADA,2026-05-05,GERENTE,SIM
+SM-005,2026-05-08,PI02,Trocar o provedor de mensagens (SMS e notificações),TECNICA,PREDITIVA,A12,6700.0,8,0,APROVADA,2026-05-18,GERENTE,SIM
+SM-006,2026-05-14,PI02,Contratar ambiente de testes dedicado com o parceiro,TECNICA,PREDITIVA,A12,9700.0,4,0,APROVADA,2026-05-26,GERENTE,SIM
+SM-007,2026-06-15,PI02,Incluir consultoria regulatória adicional,ESCOPO,PREDITIVA,A08,12300.0,6,0,REJEITADA,2026-06-26,GERENTE,
+SM-008,2026-06-16,PI05,Incluir modo escuro e ajustes de acessibilidade,ESCOPO,AGIL,,19700.0,0,5,APROVADA,2026-06-19,PATROCINADOR,SIM
+SM-009,2026-06-19,PI02,Incluir notificações por WhatsApp,ESCOPO,AGIL,,31600.0,0,8,REJEITADA,2026-06-29,PATROCINADOR,
+SM-010,2026-07-29,PI02,Ampliar o piloto para mais uma cidade,ESCOPO,PREDITIVA,A27,9600.0,8,0,REJEITADA,2026-08-21,GERENTE,
+SM-011,2026-08-04,PI13,Incluir atendimento por WhatsApp na central,ESCOPO,PREDITIVA,A29,10900.0,6,0,APROVADA,2026-08-19,GERENTE,SIM
+SM-012,2026-09-14,PI10,Criar versão do painel para tablet,ESCOPO,AGIL,,31600.0,0,8,APROVADA,2026-10-13,PATROCINADOR,SIM
+SM-013,2026-09-25,PI02,Incluir programa de indicação com recompensa,ESCOPO,AGIL,,51300.0,0,13,REJEITADA,2026-10-21,PATROCINADOR,
+SM-014,2026-09-28,PI01,Adicionar exportação para o sistema contábil,ESCOPO,AGIL,,31600.0,0,8,REJEITADA,2026-10-21,PATROCINADOR,

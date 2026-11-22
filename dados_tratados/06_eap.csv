@@ -1,0 +1,27 @@
+codigo_eap,nome,nivel,codigo_pai,tipo_elemento,disciplina,id_responsavel,criterio_de_aceite
+1,Aplicativo de aviso de sinistro com vistoria por foto,1,,PROJETO,,P01,
+1.1,Descoberta e fundação,2,1,ENTREGA,,P01,
+1.1.1,Descoberta,3,1.1,PACOTE_DE_TRABALHO,PRD,P03,Relatório aprovado pelo patrocinador e pelo Product Owner.
+1.1.2,Infraestrutura,3,1.1,PACOTE_DE_TRABALHO,INF,P04,"Ambientes no ar, com monitoramento e cópia de segurança testada."
+1.2,Conformidade e parcerias,2,1,ENTREGA,,P01,
+1.2.1,Jurídico e dados,3,1.2,PACOTE_DE_TRABALHO,REG,P05,Licença ou aprovação emitida pelo órgão competente.
+1.2.2,Regulatório,3,1.2,PACOTE_DE_TRABALHO,REG,P05,Licença ou aprovação emitida pelo órgão competente.
+1.2.3,Parcerias,3,1.2,PACOTE_DE_TRABALHO,INT,P06,Contrato assinado e integração aprovada no ambiente do parceiro.
+1.3,Hardware e estrutura física,2,1,ENTREGA,,P01,
+1.3.1,Hardware,3,1.3,PACOTE_DE_TRABALHO,HW,P07,"Equipamento homologado e entregue no ponto, com termo de recebimento."
+1.3.2,Distribuição,3,1.3,PACOTE_DE_TRABALHO,HW,P07,"Equipamento homologado e entregue no ponto, com termo de recebimento."
+1.4,Conteúdo e lançamento,2,1,ENTREGA,,P01,
+1.4.1,Conteúdo,3,1.4,PACOTE_DE_TRABALHO,CON,P08,Material revisado e aprovado pelo dono da área.
+1.4.2,Marca e campanha,3,1.4,PACOTE_DE_TRABALHO,CON,P08,Material revisado e aprovado pelo dono da área.
+1.5,Piloto e operação,2,1,ENTREGA,,P01,
+1.5.1,Piloto,3,1.5,PACOTE_DE_TRABALHO,OPS,P09,Operação funcionando com os indicadores do piloto dentro do combinado.
+1.5.2,Atendimento,3,1.5,PACOTE_DE_TRABALHO,OPS,P09,Operação funcionando com os indicadores do piloto dentro do combinado.
+1.5.3,Treinamento,3,1.5,PACOTE_DE_TRABALHO,OPS,P09,Operação funcionando com os indicadores do piloto dentro do combinado.
+1.6,Qualidade e entrada em operação,2,1,ENTREGA,,P01,
+1.6.1,Testes finais,3,1.6,PACOTE_DE_TRABALHO,QA,P10,Relatório sem falha crítica ou alta em aberto.
+1.6.2,Lançamento,3,1.6,PACOTE_DE_TRABALHO,OPS,P09,Operação funcionando com os indicadores do piloto dentro do combinado.
+1.6.3,Estabilização,3,1.6,PACOTE_DE_TRABALHO,OPS,P09,Operação funcionando com os indicadores do piloto dentro do combinado.
+1.7,Produto digital (frente ágil),2,1,ENTREGA,,P01,
+1.7.1,Release 1 (MVP),3,1.7,PACOTE_DE_TRABALHO,AGI,P11,Todos os itens Must e Should da release concluídos e implantados em produção.
+1.7.2,Release 2,3,1.7,PACOTE_DE_TRABALHO,AGI,P11,Todos os itens Must e Should da release concluídos e implantados em produção.
+1.7.3,Release 3,3,1.7,PACOTE_DE_TRABALHO,AGI,P11,Todos os itens Must e Should da release concluídos e implantados em produção.

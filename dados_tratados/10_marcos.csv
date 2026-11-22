@@ -1,0 +1,7 @@
+id_marco,nome_marco,id_atividade,regra,criterio_de_aceite,data_real
+M1,MVP definido,A01,Término da atividade vinculada,Escopo do MVP aprovado pelo patrocinador,2026-03-19
+M2,Release 1 (MVP) em produção,A40,Término da atividade vinculada,Release implantada e usada no piloto,2026-07-24
+M3,Aprovação regulatória concluída,A08,Término da atividade vinculada,Aprovação formal recebida,2026-09-08
+M4,Release 2 em produção,A41,Término da atividade vinculada,Release implantada em produção,
+M5,Entrada em operação,A35,Término da atividade vinculada,Produto aberto ao público,
+M6,Encerramento do projeto,A39,Término da atividade vinculada,Termo de encerramento assinado,

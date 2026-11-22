@@ -1,0 +1,118 @@
+id_lancamento,data,frente,categoria_custo,id_atividade,codigo_eap,id_contrato,id_fornecedor,documento,descricao,valor_rs
+L00001,2026-03-06,PREDITIVA,SERVICO_CONTRATADO,A01,1.1.1,CT01,F01,MED-CT01-01,Primeira medição — Pesquisar os usuários e definir o MVP,15900.0
+L00002,2026-03-07,GESTAO,INDIRETO,,,,,NF-GES-2603-45,"Escritório do projeto, veículos e comunicação",9744.32
+L00003,2026-03-11,PREDITIVA,SERVICO_CONTRATADO,A02,1.1.1,CT01,F01,MED-CT01-04,Primeira medição — Mapear a jornada e prototipar as telas-chave,4230.0
+L00004,2026-03-13,PREDITIVA,SERVICO_CONTRATADO,A01,1.1.1,CT01,F01,MED-CT01-02,Segunda medição — Pesquisar os usuários e definir o MVP,15900.0
+L00005,2026-03-13,GESTAO,INDIRETO,,,,,NF-GES-2603-30,"Seguros, taxas e auditorias",5276.33
+L00006,2026-03-16,PREDITIVA,SERVICO_CONTRATADO,A02,1.1.1,CT01,F01,MED-CT01-05,Segunda medição — Mapear a jornada e prototipar as telas-chave,4230.0
+L00007,2026-03-18,PREDITIVA,SERVICO_CONTRATADO,A02,1.1.1,CT01,F01,MED-CT01-06,Medição final e aceite — Mapear a jornada e prototipar as telas-chave,5640.0
+L00008,2026-03-19,PREDITIVA,SERVICO_CONTRATADO,A01,1.1.1,CT01,F01,MED-CT01-03,Medição final e aceite — Pesquisar os usuários e definir o MVP,21200.0
+L00009,2026-03-20,PREDITIVA,OUTROS,A13,1.3.1,,,NF-A13-002,"Taxas, viagens e despesas — Especificar: kits de vistoria para 40 oficinas",876.84
+L00010,2026-03-21,GESTAO,INDIRETO,,,,,NF-GES-2603-25,Viagens e despesas da equipe de gestão,5035.35
+L00011,2026-03-25,PREDITIVA,OUTROS,A03,1.1.1,,,NF-A03-001,"Taxas, viagens e despesas — Definir os indicadores e os OKRs do produto",513.93
+L00012,2026-03-25,PREDITIVA,OUTROS,A03,1.1.1,,,NF-A03-002,"Taxas, viagens e despesas — Definir os indicadores e os OKRs do produto",3170.16
+L00013,2026-03-25,PREDITIVA,OUTROS,A09,1.2.3,,,NF-A09-001,"Taxas, viagens e despesas — Selecionar o provedor de IA de imagens e os fornecedores-chave",2048.57
+L00014,2026-03-25,PREDITIVA,OUTROS,A13,1.3.1,,,NF-A13-001,"Taxas, viagens e despesas — Especificar: kits de vistoria para 40 oficinas",18.4
+L00015,2026-03-30,PREDITIVA,LICENCAS_E_NUVEM,A04,1.1.2,CT02,F02,MED-CT02-01,Medição de 03/2026 — Definir a arquitetura e montar os ambientes de nuvem,41593.35
+L00016,2026-03-31,PREDITIVA,SERVICO_CONTRATADO,A06,1.2.1,CT03,F03,MED-CT03-01,Medição de 03/2026 — Adequar o produto à LGPD e redigir os termos de uso,1731.62
+L00017,2026-03-31,PREDITIVA,SERVICO_CONTRATADO,A22,1.4.2,CT08,F08,MED-CT08-01,Primeira medição — Criar a identidade de marca e os materiais,15900.0
+L00018,2026-04-01,PREDITIVA,OUTROS,A09,1.2.3,,,NF-A09-002,"Taxas, viagens e despesas — Selecionar o provedor de IA de imagens e os fornecedores-chave",3162.33
+L00019,2026-04-06,PREDITIVA,OUTROS,A14,1.3.1,,,NF-A14-001,"Taxas, viagens e despesas — Cotar e comprar: kits de vistoria para 40 oficinas",894.01
+L00020,2026-04-07,GESTAO,INDIRETO,,,,,NF-GES-2604-45,"Escritório do projeto, veículos e comunicação",7837.86
+L00021,2026-04-07,PREDITIVA,SERVICO_CONTRATADO,A20,1.4.1,CT07,F07,SM-002,Mudança aprovada: Produzir conteúdo adicional para o lançamento,13932.4
+L00022,2026-04-10,PREDITIVA,SERVICO_CONTRATADO,A22,1.4.2,CT08,F08,MED-CT08-02,Segunda medição — Criar a identidade de marca e os materiais,15900.0
+L00023,2026-04-12,GESTAO,INDIRETO,,,,,NF-GES-2604-30,"Seguros, taxas e auditorias",5236.47
+L00024,2026-04-14,PREDITIVA,LICENCAS_E_NUVEM,A05,1.1.2,CT02,F02,MED-CT02-02,Medição de 04/2026 — Configurar a esteira de integração e entrega contínuas,6443.68
+L00025,2026-04-15,PREDITIVA,EQUIPAMENTO,A15,1.3.1,CT05,F05,MED-CT05-01,Sinal na assinatura do pedido — Fabricar e entregar: kits de vistoria para 40 oficinas,126000.0
+L00026,2026-04-16,PREDITIVA,SERVICO_CONTRATADO,A20,1.4.1,,,OC-001,Ocorrência: Queda do provedor de mensagens no piloto,3500.0
+L00027,2026-04-20,PREDITIVA,SERVICO_CONTRATADO,A20,1.4.1,CT07,F07,MED-CT07-01,Primeira medição — Montar a base de fotos de treino e as regras de regulação,37140.0
+L00028,2026-04-20,GESTAO,INDIRETO,,,,,NF-GES-2604-25,Viagens e despesas da equipe de gestão,5089.96
+L00029,2026-04-23,PREDITIVA,SERVICO_CONTRATADO,A22,1.4.2,CT08,F08,MED-CT08-03,Medição final e aceite — Criar a identidade de marca e os materiais,21200.0
+L00030,2026-04-28,PREDITIVA,OUTROS,A10,1.2.3,,,NF-A10-002,"Taxas, viagens e despesas — Negociar e assinar os contratos de parceria",4359.94
+L00031,2026-04-28,PREDITIVA,OUTROS,A25,1.4.2,,,NF-A25-001,"Taxas, viagens e despesas — Montar a lista de espera e a comunidade de primeiros usuários",7824.02
+L00032,2026-04-30,PREDITIVA,SERVICO_CONTRATADO,A06,1.2.1,CT03,F03,MED-CT03-02,Medição de 04/2026 — Adequar o produto à LGPD e redigir os termos de uso,34582.41
+L00033,2026-04-30,PREDITIVA,SERVICO_CONTRATADO,A07,1.2.1,CT03,F03,MED-CT03-04,Medição de 04/2026 — Elaborar o relatório de impacto à proteção de dados,6165.6
+L00034,2026-04-30,PREDITIVA,SERVICO_CONTRATADO,A17,1.3.2,CT06,F06,MED-CT06-01,Medição de 04/2026 — Preparar os pontos de instalação,2404.43
+L00035,2026-05-05,GESTAO,INDIRETO,,,,,NF-GES-2605-45,"Escritório do projeto, veículos e comunicação",7819.49
+L00036,2026-05-07,PREDITIVA,SERVICO_CONTRATADO,A07,1.2.1,CT03,F03,MED-CT03-05,Medição de 05/2026 — Elaborar o relatório de impacto à proteção de dados,4834.73
+L00037,2026-05-07,PREDITIVA,OUTROS,A25,1.4.2,,,NF-A25-002,"Taxas, viagens e despesas — Montar a lista de espera e a comunidade de primeiros usuários",3288.0
+L00038,2026-05-08,PREDITIVA,SERVICO_CONTRATADO,A23,1.4.2,CT08,F08,MED-CT08-04,Primeira medição — Planejar o pré-lançamento e a campanha,23880.0
+L00039,2026-05-11,AGIL,LICENCAS_E_NUVEM,,,CT02,F02,NF-NUV-2605,"Nuvem, licenças e ferramentas do time",35521.3
+L00040,2026-05-12,PREDITIVA,OUTROS,A10,1.2.3,,,NF-A10-001,"Taxas, viagens e despesas — Negociar e assinar os contratos de parceria",1323.75
+L00041,2026-05-13,GESTAO,INDIRETO,,,,,NF-GES-2605-30,"Seguros, taxas e auditorias",5262.83
+L00042,2026-05-14,PREDITIVA,SERVICO_CONTRATADO,A06,1.2.1,CT03,F03,MED-CT03-03,Medição de 05/2026 — Adequar o produto à LGPD e redigir os termos de uso,15011.84
+L00043,2026-05-14,PREDITIVA,SERVICO_CONTRATADO,A17,1.3.2,CT06,F06,MED-CT06-02,Medição de 05/2026 — Preparar os pontos de instalação,4447.04
+L00044,2026-05-15,PREDITIVA,SERVICO_CONTRATADO,A20,1.4.1,CT07,F07,MED-CT07-02,Segunda medição — Montar a base de fotos de treino e as regras de regulação,37140.0
+L00045,2026-05-15,PREDITIVA,OUTROS,A26,1.5.1,,,NF-A26-003,"Taxas, viagens e despesas — Recrutar e preparar os participantes do piloto",1636.15
+L00046,2026-05-16,PREDITIVA,SERVICO_CONTRATADO,A15,1.3.1,,,OC-003,Ocorrência: Provedor de IA reajustar o preço por imagem analisada,38500.0
+L00047,2026-05-18,PREDITIVA,EQUIPAMENTO,A15,1.3.1,CT05,F05,MED-CT05-02,Inspeção intermediária de fabricação — Fabricar e entregar: kits de vistoria para 40 oficinas,126000.0
+L00048,2026-05-19,PREDITIVA,SERVICO_CONTRATADO,A23,1.4.2,CT08,F08,MED-CT08-05,Segunda medição — Planejar o pré-lançamento e a campanha,23880.0
+L00049,2026-05-19,PREDITIVA,SERVICO_CONTRATADO,A17,1.3.2,,,OC-002,Ocorrência: Bloqueio da conta de anúncios na véspera de uma ação,3900.0
+L00050,2026-05-20,PREDITIVA,SERVICO_CONTRATADO,A15,1.3.1,CT05,F05,SM-004,Mudança aprovada: Aumentar o lote inicial de equipamentos,34676.1
+L00051,2026-05-21,PREDITIVA,OUTROS,A26,1.5.1,,,NF-A26-001,"Taxas, viagens e despesas — Recrutar e preparar os participantes do piloto",572.78
+L00052,2026-05-21,GESTAO,INDIRETO,,,,,NF-GES-2605-25,Viagens e despesas da equipe de gestão,4331.8
+L00053,2026-05-21,PREDITIVA,SERVICO_CONTRATADO,A23,1.4.2,CT08,F08,SM-003,Mudança aprovada: Antecipar a campanha de pré-lançamento,14044.81
+L00054,2026-05-22,PREDITIVA,OUTROS,A26,1.5.1,,,NF-A26-002,"Taxas, viagens e despesas — Recrutar e preparar os participantes do piloto",6961.44
+L00055,2026-05-27,PREDITIVA,SERVICO_CONTRATADO,A23,1.4.2,CT08,F08,MED-CT08-06,Medição final e aceite — Planejar o pré-lançamento e a campanha,31840.0
+L00056,2026-05-29,PREDITIVA,SERVICO_CONTRATADO,A11,1.2.3,CT04,F04,MED-CT04-01,Medição de 05/2026 — Integrar os sistemas com o provedor de IA de imagens,17572.14
+L00057,2026-05-30,PREDITIVA,SERVICO_CONTRATADO,A20,1.4.1,,,OC-004,Ocorrência: Resistência dos peritos próprios ao novo processo,11700.0
+L00058,2026-06-05,PREDITIVA,SERVICO_CONTRATADO,A20,1.4.1,CT07,F07,MED-CT07-03,Medição final e aceite — Montar a base de fotos de treino e as regras de regulação,49520.0
+L00059,2026-06-05,PREDITIVA,SERVICO_CONTRATADO,A24,1.4.2,CT08,F08,MED-CT08-07,Primeira medição — Produzir as peças da campanha,15900.0
+L00060,2026-06-06,GESTAO,INDIRETO,,,,,NF-GES-2606-45,"Escritório do projeto, veículos e comunicação",7563.66
+L00061,2026-06-09,AGIL,LICENCAS_E_NUVEM,,,CT02,F02,NF-NUV-2606,"Nuvem, licenças e ferramentas do time",40215.76
+L00062,2026-06-11,GESTAO,INDIRETO,,,,,NF-GES-2606-30,"Seguros, taxas e auditorias",5442.66
+L00063,2026-06-15,PREDITIVA,SERVICO_CONTRATADO,A24,1.4.2,CT08,F08,MED-CT08-08,Segunda medição — Produzir as peças da campanha,15900.0
+L00064,2026-06-16,PREDITIVA,EQUIPAMENTO,A15,1.3.1,CT05,F05,MED-CT05-03,Aceite em fábrica e embarque — Fabricar e entregar: kits de vistoria para 40 oficinas,126000.0
+L00065,2026-06-16,PREDITIVA,SERVICO_CONTRATADO,A21,1.4.1,CT07,F07,MED-CT07-04,Primeira medição — Revisar e publicar o conteúdo,7950.0
+L00066,2026-06-17,PREDITIVA,SERVICO_CONTRATADO,A21,1.4.1,CT07,F07,MED-CT07-05,Segunda medição — Revisar e publicar o conteúdo,7950.0
+L00067,2026-06-18,PREDITIVA,SERVICO_CONTRATADO,A24,1.4.2,CT08,F08,MED-CT08-09,Medição final e aceite — Produzir as peças da campanha,21200.0
+L00068,2026-06-21,GESTAO,INDIRETO,,,,,NF-GES-2606-25,Viagens e despesas da equipe de gestão,4219.99
+L00069,2026-06-23,PREDITIVA,SERVICO_CONTRATADO,A21,1.4.1,CT07,F07,MED-CT07-06,Medição final e aceite — Revisar e publicar o conteúdo,10600.0
+L00070,2026-06-30,PREDITIVA,SERVICO_CONTRATADO,A08,1.2.2,CT03,F03,MED-CT03-06,Medição de 06/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,19812.94
+L00071,2026-06-30,PREDITIVA,SERVICO_CONTRATADO,A11,1.2.3,CT04,F04,MED-CT04-02,Medição de 06/2026 — Integrar os sistemas com o provedor de IA de imagens,68749.3
+L00072,2026-07-06,GESTAO,INDIRETO,,,,,NF-GES-2607-45,"Escritório do projeto, veículos e comunicação",7668.57
+L00073,2026-07-11,GESTAO,INDIRETO,,,,,NF-GES-2607-30,"Seguros, taxas e auditorias",5169.37
+L00074,2026-07-11,AGIL,LICENCAS_E_NUVEM,,,CT02,F02,NF-NUV-2607,"Nuvem, licenças e ferramentas do time",37185.32
+L00075,2026-07-19,GESTAO,INDIRETO,,,,,NF-GES-2607-25,Viagens e despesas da equipe de gestão,4594.25
+L00076,2026-07-20,PREDITIVA,SERVICO_CONTRATADO,A11,1.2.3,CT04,F04,MED-CT04-03,Medição de 07/2026 — Integrar os sistemas com o provedor de IA de imagens,46241.09
+L00077,2026-07-31,PREDITIVA,SERVICO_CONTRATADO,A08,1.2.2,CT03,F03,MED-CT03-07,Medição de 07/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,28473.23
+L00078,2026-08-03,PREDITIVA,OUTROS,A08,1.2.2,,,NF-A08-001,"Taxas, viagens e despesas — Adequar às normas da Susep e registrar o novo processo de regulação",7253.32
+L00079,2026-08-04,PREDITIVA,OUTROS,A16,1.3.1,,,NF-A16-003,"Taxas, viagens e despesas — Homologar tecnicamente: kits de vistoria para 40 oficinas",1908.84
+L00080,2026-08-05,GESTAO,INDIRETO,,,,,NF-GES-2608-45,"Escritório do projeto, veículos e comunicação",9689.57
+L00081,2026-08-09,AGIL,LICENCAS_E_NUVEM,,,CT02,F02,NF-NUV-2608,"Nuvem, licenças e ferramentas do time",42646.1
+L00082,2026-08-10,PREDITIVA,OUTROS,A16,1.3.1,,,NF-A16-002,"Taxas, viagens e despesas — Homologar tecnicamente: kits de vistoria para 40 oficinas",1362.6
+L00083,2026-08-12,PREDITIVA,SERVICO_CONTRATADO,A12,1.2.3,CT04,F04,SM-006,Mudança aprovada: Contratar ambiente de testes dedicado com o parceiro,10226.9
+L00084,2026-08-13,GESTAO,INDIRETO,,,,,NF-GES-2608-30,"Seguros, taxas e auditorias",4849.55
+L00085,2026-08-13,PREDITIVA,SERVICO_CONTRATADO,A12,1.2.3,CT04,F04,SM-005,Mudança aprovada: Trocar o provedor de mensagens (SMS e notificações),7320.52
+L00086,2026-08-17,PREDITIVA,OUTROS,A16,1.3.1,,,NF-A16-001,"Taxas, viagens e despesas — Homologar tecnicamente: kits de vistoria para 40 oficinas",920.85
+L00087,2026-08-20,PREDITIVA,EQUIPAMENTO,A16,1.3.1,CT05,F05,MED-CT05-04,Parcela final após o aceite — Homologar tecnicamente: kits de vistoria para 40 oficinas,42000.0
+L00088,2026-08-21,GESTAO,INDIRETO,,,,,NF-GES-2608-25,Viagens e despesas da equipe de gestão,4550.14
+L00089,2026-08-26,PREDITIVA,OUTROS,A08,1.2.2,,,NF-A08-002,"Taxas, viagens e despesas — Adequar às normas da Susep e registrar o novo processo de regulação",13140.21
+L00090,2026-08-31,PREDITIVA,SERVICO_CONTRATADO,A08,1.2.2,CT03,F03,MED-CT03-08,Medição de 08/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,26602.05
+L00091,2026-08-31,PREDITIVA,SERVICO_CONTRATADO,A12,1.2.3,CT04,F04,MED-CT04-04,Medição de 08/2026 — Homologar a integração com o provedor de IA de imagens,79810.56
+L00092,2026-08-31,PREDITIVA,SERVICO_CONTRATADO,A18,1.3.2,CT06,F06,MED-CT06-03,Medição de 08/2026 — Distribuir e instalar nos pontos,16842.6
+L00093,2026-09-04,PREDITIVA,SERVICO_CONTRATADO,A12,1.2.3,,,OC-005,Ocorrência: Modelo de IA com acerto abaixo de 85% na classificação de danos,66800.0
+L00094,2026-09-05,GESTAO,INDIRETO,,,,,NF-GES-2609-45,"Escritório do projeto, veículos e comunicação",9089.92
+L00095,2026-09-08,PREDITIVA,SERVICO_CONTRATADO,A08,1.2.2,CT03,F03,MED-CT03-09,Medição de 09/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,6522.05
+L00096,2026-09-11,AGIL,LICENCAS_E_NUVEM,,,CT02,F02,NF-NUV-2609,"Nuvem, licenças e ferramentas do time",43033.2
+L00097,2026-09-13,GESTAO,INDIRETO,,,,,NF-GES-2609-30,"Seguros, taxas e auditorias",6391.2
+L00098,2026-09-19,AGIL,OUTROS,,,,,OC-006,Ocorrência: Pedidos diretos de funcionalidade fora do processo de mudança,11000.0
+L00099,2026-09-21,GESTAO,INDIRETO,,,,,NF-GES-2609-25,Viagens e despesas da equipe de gestão,4301.21
+L00100,2026-09-29,AGIL,OUTROS,,,,,OC-007,Ocorrência: Saída de desenvolvedor sênior,19400.0
+L00101,2026-09-30,PREDITIVA,SERVICO_CONTRATADO,A12,1.2.3,CT04,F04,MED-CT04-05,Medição de 09/2026 — Homologar a integração com o provedor de IA de imagens,82523.34
+L00102,2026-09-30,PREDITIVA,SERVICO_CONTRATADO,A18,1.3.2,CT06,F06,MED-CT06-04,Medição de 09/2026 — Distribuir e instalar nos pontos,15066.95
+L00103,2026-10-01,PREDITIVA,SERVICO_CONTRATADO,A12,1.2.3,CT04,F04,MED-CT04-06,Medição de 10/2026 — Homologar a integração com o provedor de IA de imagens,4000.34
+L00104,2026-10-05,GESTAO,INDIRETO,,,,,NF-GES-2610-45,"Escritório do projeto, veículos e comunicação",8962.66
+L00105,2026-10-06,PREDITIVA,SERVICO_CONTRATADO,A18,1.3.2,CT06,F06,MED-CT06-05,Medição de 10/2026 — Distribuir e instalar nos pontos,2112.75
+L00106,2026-10-09,PREDITIVA,OUTROS,A19,1.3.2,,,NF-A19-002,"Taxas, viagens e despesas — Testar os pontos instalados por amostragem",1046.82
+L00107,2026-10-09,PREDITIVA,OUTROS,A19,1.3.2,,,NF-A19-003,"Taxas, viagens e despesas — Testar os pontos instalados por amostragem",774.29
+L00108,2026-10-09,AGIL,LICENCAS_E_NUVEM,,,CT02,F02,NF-NUV-2610,"Nuvem, licenças e ferramentas do time",43955.11
+L00109,2026-10-12,GESTAO,INDIRETO,,,,,NF-GES-2610-30,"Seguros, taxas e auditorias",5930.44
+L00110,2026-10-15,PREDITIVA,OUTROS,A19,1.3.2,,,NF-A19-001,"Taxas, viagens e despesas — Testar os pontos instalados por amostragem",30.98
+L00111,2026-10-19,PREDITIVA,OUTROS,A30,1.5.2,,,NF-A30-001,"Taxas, viagens e despesas — Elaborar a base de conhecimento e os roteiros de atendimento",11439.22
+L00112,2026-10-21,GESTAO,INDIRETO,,,,,NF-GES-2610-25,Viagens e despesas da equipe de gestão,4769.26
+L00113,2026-10-27,PREDITIVA,OUTROS,A27,1.5.1,,,NF-A27-002,"Taxas, viagens e despesas — Conduzir o piloto com 40 oficinas credenciadas e 25 corretores",24105.75
+L00114,2026-10-29,PREDITIVA,OUTROS,A34,1.6.2,,,NF-A34-001,"Taxas, viagens e despesas — Elaborar o plano de entrada em operação e de retorno",1421.19
+L00115,2026-10-29,PREDITIVA,OUTROS,A34,1.6.2,,,NF-A34-002,"Taxas, viagens e despesas — Elaborar o plano de entrada em operação e de retorno",4065.65
+L00116,2026-10-29,PREDITIVA,SERVICO_CONTRATADO,A29,1.5.2,CT09,F09,SM-011,Mudança aprovada: Incluir atendimento por WhatsApp na central,11787.09
+L00117,2026-10-30,PREDITIVA,SERVICO_CONTRATADO,A29,1.5.2,CT09,F09,MED-CT09-01,Medição de 10/2026 — Montar a central de atendimento e o suporte,19895.89

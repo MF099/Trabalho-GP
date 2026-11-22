@@ -1,0 +1,29 @@
+id_objetivo,objetivo,id_resultado_chave,resultado_chave,unidade,valor_base,meta,sentido,data_medicao,valor
+O1,Validar o produto com usuários reais,KR1,Usuários ativos na última semana do mês (piloto),usuários,0.0,1050.0,MAIOR_MELHOR,2026-07-31,70.0
+O1,Validar o produto com usuários reais,KR1,Usuários ativos na última semana do mês (piloto),usuários,0.0,1050.0,MAIOR_MELHOR,2026-08-31,456.0
+O1,Validar o produto com usuários reais,KR1,Usuários ativos na última semana do mês (piloto),usuários,0.0,1050.0,MAIOR_MELHOR,2026-09-30,908.0
+O1,Validar o produto com usuários reais,KR2,NPS do piloto na última semana do mês,pontos,0.0,50.0,MAIOR_MELHOR,2026-07-31,36.0
+O1,Validar o produto com usuários reais,KR2,NPS do piloto na última semana do mês,pontos,0.0,50.0,MAIOR_MELHOR,2026-08-31,31.0
+O1,Validar o produto com usuários reais,KR2,NPS do piloto na última semana do mês,pontos,0.0,50.0,MAIOR_MELHOR,2026-09-30,41.0
+O1,Validar o produto com usuários reais,KR3,Taxa de ativação dos cadastrados no mês,%,0.0,60.0,MAIOR_MELHOR,2026-07-31,41.4
+O1,Validar o produto com usuários reais,KR3,Taxa de ativação dos cadastrados no mês,%,0.0,60.0,MAIOR_MELHOR,2026-08-31,43.0
+O1,Validar o produto com usuários reais,KR3,Taxa de ativação dos cadastrados no mês,%,0.0,60.0,MAIOR_MELHOR,2026-09-30,52.0
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-02-28,99.5
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-03-31,99.5
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-04-30,99.0
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-05-31,99.5
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-06-30,99.0
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-07-31,99.0
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-08-31,98.5
+O2,Entregar com qualidade e previsibilidade,KR4,Disponibilidade da plataforma,%,98.0,99.5,MAIOR_MELHOR,2026-09-30,96.8
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-02-28,37.5
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-03-31,41.5
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-04-30,46.5
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-05-31,52.2
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-06-30,58.5
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-07-31,57.3
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-08-31,64.6
+O2,Entregar com qualidade e previsibilidade,KR5,Itens do padrão de segurança atendidos,%,35.0,100.0,MAIOR_MELHOR,2026-09-30,72.4
+O2,Entregar com qualidade e previsibilidade,KR6,Chamados de suporte por 100 usuários ativos no mês,chamados,30.0,8.0,MENOR_MELHOR,2026-07-31,8.6
+O2,Entregar com qualidade e previsibilidade,KR6,Chamados de suporte por 100 usuários ativos no mês,chamados,30.0,8.0,MENOR_MELHOR,2026-08-31,5.4
+O2,Entregar com qualidade e previsibilidade,KR6,Chamados de suporte por 100 usuários ativos no mês,chamados,30.0,8.0,MENOR_MELHOR,2026-09-30,4.1

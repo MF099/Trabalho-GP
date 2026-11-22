@@ -1,0 +1,58 @@
+id_medicao,id_contrato,id_atividade,descricao_marco,data_prevista,valor_previsto_rs,data_real,valor_pago_rs,aceite,nao_conformidades
+MED-CT01-01,CT01,A01,Primeira medição — Pesquisar os usuários e definir o MVP,2026-03-02,15900.0,2026-03-06,15900.0,APROVADO,0
+MED-CT01-02,CT01,A01,Segunda medição — Pesquisar os usuários e definir o MVP,2026-03-09,15900.0,2026-03-13,15900.0,APROVADO,0
+MED-CT01-03,CT01,A01,Medição final e aceite — Pesquisar os usuários e definir o MVP,2026-03-16,21200.0,2026-03-19,21200.0,APROVADO,0
+MED-CT01-04,CT01,A02,Primeira medição — Mapear a jornada e prototipar as telas-chave,2026-03-06,4230.0,2026-03-11,4230.0,APROVADO,1
+MED-CT01-05,CT01,A02,Segunda medição — Mapear a jornada e prototipar as telas-chave,2026-03-11,4230.0,2026-03-16,4230.0,APROVADO,0
+MED-CT01-06,CT01,A02,Medição final e aceite — Mapear a jornada e prototipar as telas-chave,2026-03-16,5640.0,2026-03-18,5640.0,APROVADO,0
+MED-CT02-01,CT02,A04,Medição de 03/2026 — Definir a arquitetura e montar os ambientes de nuvem,2026-03-30,41331.25,2026-03-30,41593.35,APROVADO,1
+MED-CT02-02,CT02,A05,Medição de 04/2026 — Configurar a esteira de integração e entrega contínuas,2026-04-14,6311.11,2026-04-14,6443.68,APROVADO,0
+MED-CT03-01,CT03,A06,Medição de 03/2026 — Adequar o produto à LGPD e redigir os termos de uso,2026-03-31,1650.0,2026-03-31,1731.62,APROVADO,0
+MED-CT03-02,CT03,A06,Medição de 04/2026 — Adequar o produto à LGPD e redigir os termos de uso,2026-04-30,33000.0,2026-04-30,34582.41,APROVADO,0
+MED-CT03-03,CT03,A06,Medição de 05/2026 — Adequar o produto à LGPD e redigir os termos de uso,2026-05-14,14850.0,2026-05-14,15011.84,APROVADO,0
+MED-CT03-04,CT03,A07,Medição de 04/2026 — Elaborar o relatório de impacto à proteção de dados,2026-04-30,5888.89,2026-04-30,6165.6,APROVADO,0
+MED-CT03-05,CT03,A07,Medição de 05/2026 — Elaborar o relatório de impacto à proteção de dados,2026-05-07,4711.11,2026-05-07,4834.73,APROVADO,0
+MED-CT03-06,CT03,A08,Medição de 06/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,2026-06-30,20215.87,2026-06-30,19812.94,APROVADO,0
+MED-CT03-07,CT03,A08,Medição de 07/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,2026-07-31,27796.83,2026-07-31,28473.23,APROVADO,0
+MED-CT03-08,CT03,A08,Medição de 08/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,2026-08-31,26533.33,2026-08-31,26602.05,APROVADO,1
+MED-CT03-09,CT03,A08,Medição de 09/2026 — Adequar às normas da Susep e registrar o novo processo de regulação,2026-09-08,6317.46,2026-09-08,6522.05,APROVADO,0
+MED-CT04-01,CT04,A11,Medição de 05/2026 — Integrar os sistemas com o provedor de IA de imagens,2026-05-29,17304.35,2026-05-29,17572.14,APROVADO,0
+MED-CT04-02,CT04,A11,Medição de 06/2026 — Integrar os sistemas com o provedor de IA de imagens,2026-06-30,69217.39,2026-06-30,68749.3,APROVADO,1
+MED-CT04-03,CT04,A11,Medição de 07/2026 — Integrar os sistemas com o provedor de IA de imagens,2026-07-20,44991.3,2026-07-20,46241.09,APROVADO,1
+MED-CT04-04,CT04,A12,Medição de 08/2026 — Homologar a integração com o provedor de IA de imagens,2026-08-31,78666.67,2026-08-31,79810.56,APROVADO,0
+MED-CT04-05,CT04,A12,Medição de 09/2026 — Homologar a integração com o provedor de IA de imagens,2026-09-30,82600.0,2026-09-30,82523.34,APROVADO_COM_RESSALVA,2
+MED-CT04-06,CT04,A12,Medição de 10/2026 — Homologar a integração com o provedor de IA de imagens,2026-10-01,3933.33,2026-10-01,4000.34,APROVADO_COM_RESSALVA,4
+MED-CT05-01,CT05,A15,Sinal na assinatura do pedido — Fabricar e entregar: kits de vistoria para 40 oficinas,2026-04-10,126000.0,2026-04-15,126000.0,APROVADO,0
+MED-CT05-02,CT05,A15,Inspeção intermediária de fabricação — Fabricar e entregar: kits de vistoria para 40 oficinas,2026-05-08,126000.0,2026-05-18,126000.0,APROVADO,0
+MED-CT05-03,CT05,A15,Aceite em fábrica e embarque — Fabricar e entregar: kits de vistoria para 40 oficinas,2026-06-05,126000.0,2026-06-16,126000.0,APROVADO,0
+MED-CT05-04,CT05,A16,Parcela final após o aceite — Homologar tecnicamente: kits de vistoria para 40 oficinas,2026-08-03,42000.0,2026-08-20,42000.0,APROVADO,0
+MED-CT06-01,CT06,A17,Medição de 04/2026 — Preparar os pontos de instalação,2026-04-30,2210.9,2026-04-30,2404.43,APROVADO,0
+MED-CT06-02,CT06,A17,Medição de 05/2026 — Preparar os pontos de instalação,2026-05-14,4089.1,2026-05-14,4447.04,APROVADO,0
+MED-CT06-03,CT06,A18,Medição de 08/2026 — Distribuir e instalar nos pontos,2026-08-31,15593.95,2026-08-31,16842.6,APROVADO,0
+MED-CT06-04,CT06,A18,Medição de 09/2026 — Distribuir e instalar nos pontos,2026-09-30,13949.94,2026-09-30,15066.95,APROVADO,1
+MED-CT06-05,CT06,A18,Medição de 10/2026 — Distribuir e instalar nos pontos,2026-10-06,1956.12,2026-10-06,2112.75,APROVADO,0
+MED-CT07-01,CT07,A20,Primeira medição — Montar a base de fotos de treino e as regras de regulação,2026-03-31,37140.0,2026-04-20,37140.0,APROVADO,0
+MED-CT07-02,CT07,A20,Segunda medição — Montar a base de fotos de treino e as regras de regulação,2026-04-16,37140.0,2026-05-15,37140.0,APROVADO,0
+MED-CT07-03,CT07,A20,Medição final e aceite — Montar a base de fotos de treino e as regras de regulação,2026-04-30,49520.0,2026-06-05,49520.0,APROVADO,0
+MED-CT07-04,CT07,A21,Primeira medição — Revisar e publicar o conteúdo,2026-05-07,7950.0,2026-06-16,7950.0,APROVADO,0
+MED-CT07-05,CT07,A21,Segunda medição — Revisar e publicar o conteúdo,2026-05-12,7950.0,2026-06-17,7950.0,APROVADO,0
+MED-CT07-06,CT07,A21,Medição final e aceite — Revisar e publicar o conteúdo,2026-05-14,10600.0,2026-06-23,10600.0,APROVADO,0
+MED-CT08-01,CT08,A22,Primeira medição — Criar a identidade de marca e os materiais,2026-03-26,15900.0,2026-03-31,15900.0,APROVADO,0
+MED-CT08-02,CT08,A22,Segunda medição — Criar a identidade de marca e os materiais,2026-04-07,15900.0,2026-04-10,15900.0,APROVADO,0
+MED-CT08-03,CT08,A22,Medição final e aceite — Criar a identidade de marca e os materiais,2026-04-15,21200.0,2026-04-23,21200.0,APROVADO,0
+MED-CT08-04,CT08,A23,Primeira medição — Planejar o pré-lançamento e a campanha,2026-04-28,23880.0,2026-05-08,23880.0,APROVADO,0
+MED-CT08-05,CT08,A23,Segunda medição — Planejar o pré-lançamento e a campanha,2026-05-08,23880.0,2026-05-19,23880.0,APROVADO,1
+MED-CT08-06,CT08,A23,Medição final e aceite — Planejar o pré-lançamento e a campanha,2026-05-18,31840.0,2026-05-27,31840.0,APROVADO,0
+MED-CT08-07,CT08,A24,Primeira medição — Produzir as peças da campanha,2026-05-25,15900.0,2026-06-05,15900.0,APROVADO,0
+MED-CT08-08,CT08,A24,Segunda medição — Produzir as peças da campanha,2026-05-29,15900.0,2026-06-15,15900.0,APROVADO,1
+MED-CT08-09,CT08,A24,Medição final e aceite — Produzir as peças da campanha,2026-06-03,21200.0,2026-06-18,21200.0,APROVADO,0
+MED-CT09-01,CT09,A29,Medição de 10/2026 — Montar a central de atendimento e o suporte,2026-10-30,19961.29,2026-10-30,19895.89,APROVADO,0
+MED-CT10-01,CT10,A32,Primeira medição — Executar os testes de carga e de segurança,2026-10-07,10620.0,,,PENDENTE,
+MED-CT10-02,CT10,A32,Segunda medição — Executar os testes de carga e de segurança,2026-10-13,10620.0,,,PENDENTE,
+MED-CT10-03,CT10,A32,Medição final e aceite — Executar os testes de carga e de segurança,2026-10-15,14160.0,,,PENDENTE,
+MED-CT10-04,CT10,A33,Primeira medição — Realizar a auditoria e corrigir os apontamentos,2026-10-20,6360.0,,,PENDENTE,
+MED-CT10-05,CT10,A33,Segunda medição — Realizar a auditoria e corrigir os apontamentos,2026-10-22,6360.0,,,PENDENTE,
+MED-CT10-06,CT10,A33,Medição final e aceite — Realizar a auditoria e corrigir os apontamentos,2026-10-23,8480.0,,,PENDENTE,
+MED-CT08-10,CT08,A35,Primeira medição — Entrar em operação e veicular a campanha de lançamento,2026-10-30,31830.0,,,PENDENTE,
+MED-CT08-11,CT08,A35,Segunda medição — Entrar em operação e veicular a campanha de lançamento,2026-11-05,31830.0,,,PENDENTE,
+MED-CT08-12,CT08,A35,Medição final e aceite — Entrar em operação e veicular a campanha de lançamento,2026-11-10,42440.0,,,PENDENTE,

@@ -1,0 +1,16 @@
+id_cenario,acao,id_item,titulo,id_epico,id_release,pontos
+C3,EXCLUIR,MS-179,Enviar os documentos de perda total,EP06,R3,2
+C3,EXCLUIR,MS-180,Detectar edição nas imagens enviadas,EP08,R3,3
+C3,EXCLUIR,MS-181,Acompanhar a previsão de entrega da oficina,EP05,R3,2
+C3,EXCLUIR,MS-182,Medir a taxa de acerto do modelo por tipo de dano,EP03,R3,8
+C3,EXCLUIR,MS-183,Escalar um caso para a seguradora,EP07,R3,8
+C3,EXCLUIR,MS-184,Revisar manualmente uma análise contestada,EP03,R3,5
+C4,INCLUIR,MS-N1,Escolher a praça de atendimento no cadastro,EP01,R2,5
+C4,INCLUIR,MS-N2,Configurar regras e preços por praça,EP01,R2,8
+C4,INCLUIR,MS-N3,Ver os indicadores separados por praça,EP01,R2,5
+C4,INCLUIR,MS-N4,Enviar comunicações segmentadas por praça,EP01,R3,3
+C4,INCLUIR,MS-N5,Atender os usuários da nova praça pelo suporte,EP01,R3,5
+C5,EXCLUIR,MS-182,Medir a taxa de acerto do modelo por tipo de dano,EP03,R3,8
+C5,EXCLUIR,MS-184,Revisar manualmente uma análise contestada,EP03,R3,5
+C5,INCLUIR,MS-N8,Integrar a solução de mercado de Análise automática de danos,EP03,R3,8
+C5,INCLUIR,MS-N9,Migrar os dados para a solução de mercado de Análise automática de danos,EP03,R3,5

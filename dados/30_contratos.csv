@@ -1,0 +1,11 @@
+id_contrato,id_fornecedor,objeto,tipo_contrato,moeda,valor_contratado_rs,multa_atraso_pct_dia,teto_multa_pct
+CT01,F01,Pesquisa com usuários e desenho de serviço,PRECO_FIXO,BRL,67100.0,0.1,10.0
+CT02,F02,"Nuvem, ambientes e ferramentas",ASSINATURA,BRL,46000.0,0.0,0.0
+CT03,F03,Assessoria jurídica e regulatória,TEMPO_E_MATERIAL,BRL,139700.0,0.0,0.0
+CT04,F04,Serviços do provedor de IA de imagens,TEMPO_E_MATERIAL,BRL,115000.0,0.0,0.0
+CT05,F05,Fornecimento: kits de vistoria para 40 oficinas,PRECO_FIXO,BRL,420000.0,0.15,10.0
+CT06,F06,"Logística, distribuição e instalação",PRECO_UNITARIO,BRL,37800.0,0.0,0.0
+CT07,F07,Produção de conteúdo,PRECO_FIXO,BRL,150300.0,0.1,10.0
+CT08,F08,Agência de marca e campanha de lançamento,PRECO_FIXO,BRL,291700.0,0.1,10.0
+CT09,F09,Central de atendimento terceirizada,ASSINATURA,BRL,88400.0,0.0,0.0
+CT10,F10,"Teste de invasão, teste de carga e auditoria",PRECO_FIXO,BRL,56600.0,0.1,10.0
