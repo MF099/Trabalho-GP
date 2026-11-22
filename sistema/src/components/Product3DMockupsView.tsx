@@ -641,7 +641,10 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
           <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
             <div className="mx-auto max-w-[295px] rounded-[2rem] border-4 border-slate-700 bg-slate-950 p-4 shadow-2xl">
               <div className="mb-3 flex items-center justify-between border-b border-slate-800 pb-2 text-[10px] text-slate-400">
-                <span className="font-bold text-sky-400">Maré Seguros App</span>
+                <span className="inline-flex items-center gap-1.5 font-bold text-sky-400">
+                  <img src="/mare_seguros.jpeg" alt="Maré Seguros" className="h-4 w-4 rounded bg-white object-contain p-0.5" />
+                  Maré Seguros App
+                </span>
                 <span>{activeScreen.release} · {fmtDateBR(controlDate)}</span>
               </div>
               <div className="mb-1 text-[11px] font-semibold text-indigo-300">

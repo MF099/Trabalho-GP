@@ -179,7 +179,7 @@ export function App() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0d0e10] text-zinc-100">
+    <div className="flex min-h-screen bg-[#0a1017] text-slate-100">
       {/* Overlay mobile */}
       {mobileNavOpen && (
         <div
@@ -188,28 +188,35 @@ export function App() {
         />
       )}
 
-      {/* Sidebar Vertical (estilo executivo) */}
+      {/* Sidebar Vertical (identidade visual Maré Seguros) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-zinc-800/90 bg-[#121417] transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-[#1e2b3a] bg-[#0e1620] transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
           mobileNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Brand */}
-        <div className="flex items-center justify-between border-b border-zinc-800/80 px-5 py-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="rounded bg-[#29301b] px-2 py-0.5 font-mono text-[11px] font-bold text-[#c7e95e]">
-                G3
-              </span>
-              <span className="text-sm font-semibold tracking-tight text-zinc-100">
-                Maré Seguros
-              </span>
+        {/* Brand com Logo Maré Seguros */}
+        <div className="flex items-center justify-between border-b border-[#1e2b3a] px-4 py-3.5">
+          <div className="flex items-center gap-3">
+            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-white p-1 shadow-sm">
+              <img
+                src="/mare_seguros.jpeg"
+                alt="Maré Seguros"
+                className="h-full w-full object-contain"
+              />
             </div>
-            <p className="mt-0.5 text-[11px] text-zinc-500">Sala de Guerra · ENGN62</p>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-bold tracking-tight text-white">Maré Seguros</span>
+                <span className="rounded bg-[#12323a] px-1.5 py-0.5 font-mono text-[10px] font-bold text-[#2dd4bf]">
+                  G3
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400">Sala de Guerra · ENGN62</p>
+            </div>
           </div>
           <button
             onClick={() => setMobileNavOpen(false)}
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 lg:hidden"
+            className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 lg:hidden"
             aria-label="Fechar menu"
           >
             <X className="h-4 w-4" />
@@ -227,11 +234,11 @@ export function App() {
                 onClick={() => handleSelectTab(item.id)}
                 className={`flex w-full items-center gap-3.5 rounded-xl px-3.5 py-2.5 text-left text-[13px] font-medium transition ${
                   active
-                    ? "bg-[#2b321c] text-[#cde86b]"
-                    : "text-zinc-400 hover:bg-zinc-900/80 hover:text-zinc-100"
+                    ? "bg-[#12323a] text-[#5eead4]"
+                    : "text-slate-400 hover:bg-[#14202e] hover:text-slate-100"
                 }`}
               >
-                <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-[#cde86b]" : "text-zinc-500"}`} />
+                <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-[#2dd4bf]" : "text-slate-500"}`} />
                 <span className="truncate">{item.label}</span>
               </button>
             );
@@ -239,21 +246,21 @@ export function App() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="space-y-2.5 border-t border-zinc-800/80 p-4 text-xs">
+        <div className="space-y-2.5 border-t border-[#1e2b3a] p-4 text-xs">
           {!isQuinzenaLoaded && (
             <button
               onClick={handleApplyQuinzena}
-              className="w-full rounded-lg bg-[#c7e95e] px-3 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-[#d5f279]"
+              className="w-full rounded-lg bg-[#139297] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#17a8ae]"
             >
               Carregar Boletins 03–13/11
             </button>
           )}
-          <div className="flex items-center justify-between rounded-lg border border-zinc-800 bg-[#0d0e10] px-3 py-2">
-            <span className="text-zinc-400">Status</span>
+          <div className="flex items-center justify-between rounded-lg border border-[#1e2b3a] bg-[#0a1017] px-3 py-2">
+            <span className="text-slate-400">Status</span>
             <select
               value={statusDate}
               onChange={(e) => setStatusDate(e.target.value)}
-              className="bg-transparent font-mono font-semibold text-[#cde86b] focus:outline-none"
+              className="bg-transparent font-mono font-semibold text-[#2dd4bf] focus:outline-none"
             >
               <option value="2026-10-30">30/10/2026</option>
               <option value="2026-11-13">13/11/2026</option>
@@ -265,30 +272,30 @@ export function App() {
       {/* Main Column */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Topbar minimalista */}
-        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-zinc-800/80 bg-[#0d0e10]/90 px-4 py-3 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-[#1e2b3a] bg-[#0a1017]/90 px-4 py-3 backdrop-blur lg:px-8">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileNavOpen(true)}
-              className="rounded-lg border border-zinc-800 bg-zinc-900 p-1.5 text-zinc-300 lg:hidden"
+              className="rounded-lg border border-[#1e2b3a] bg-[#101822] p-1.5 text-slate-300 lg:hidden"
               aria-label="Abrir menu"
             >
               <Menu className="h-4 w-4" />
             </button>
             <div>
-              <h1 className="text-sm font-semibold text-zinc-100 sm:text-base">{activeLabel}</h1>
-              <p className="hidden text-[11px] text-zinc-500 sm:block">
+              <h1 className="text-sm font-semibold text-white sm:text-base">{activeLabel}</h1>
+              <p className="hidden text-[11px] text-slate-400 sm:block">
                 Aplicativo de aviso de sinistro com vistoria por foto · Duas Trilhas (ProjectLibre + Jira)
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 text-xs">
-            <div className="hidden rounded-lg border border-zinc-800 bg-[#141619] px-3 py-1.5 text-zinc-400 md:block">
+            <div className="hidden rounded-lg border border-[#1e2b3a] bg-[#101822] px-3 py-1.5 text-slate-400 md:block">
               Término:{" "}
               <strong className="font-mono text-amber-300">{fmtDateBR(network.forecastEndDate)}</strong>
-              <span className="mx-2 text-zinc-700">|</span>
-              ENT: <strong className="font-mono text-zinc-100">{fmtBRL0(evm.entTotal)}</strong>
-              <span className="mx-2 text-zinc-700">|</span>
+              <span className="mx-2 text-slate-700">|</span>
+              ENT: <strong className="font-mono text-slate-100">{fmtBRL0(evm.entTotal)}</strong>
+              <span className="mx-2 text-slate-700">|</span>
               IDC: <strong className="font-mono text-rose-300">{fmtNum(evm.idcTotal, 2)}</strong>
             </div>
           </div>

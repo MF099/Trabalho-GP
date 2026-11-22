@@ -116,38 +116,38 @@ export const DashboardExecutive: React.FC<Props> = ({
     <div className="space-y-6">
       {/* As 3 respostas do Comitê Diretor */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-zinc-800 border-t-2 border-t-amber-400/80 bg-[#141619] p-5">
+        <div className="rounded-2xl border border-[#1e2b3a] border-t-2 border-t-amber-400/80 bg-[#101822] p-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               1. Quando termina?
             </span>
             <CalendarClock className="h-5 w-5 text-amber-400" />
           </div>
-          <div className="mt-2 text-3xl font-bold text-zinc-100">
+          <div className="mt-2 text-3xl font-bold text-white">
             {fmtDateBR(network.forecastEndDate)}
           </div>
-          <p className="mt-1 text-sm text-zinc-300">
+          <p className="mt-1 text-sm text-slate-300">
             <strong className="text-amber-300">+{network.atrasoContratualDu} dias úteis</strong> além do término contratual (22/01/2027).
           </p>
-          <div className="mt-3 rounded-lg border border-zinc-800/80 bg-[#0d0e10] px-3 py-2 text-xs text-zinc-400">
+          <div className="mt-3 rounded-lg border border-[#1e2b3a] bg-[#0a1017] px-3 py-2 text-xs text-slate-400">
             Caminho crítico atual:{" "}
-            <span className="font-mono text-zinc-200">
+            <span className="font-mono text-slate-200">
               {network.criticalPathForecast.join(" → ")}
             </span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 border-t-2 border-t-rose-400/80 bg-[#141619] p-5">
+        <div className="rounded-2xl border border-[#1e2b3a] border-t-2 border-t-rose-400/80 bg-[#101822] p-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               2. Quanto vai custar?
             </span>
             <CircleDollarSign className="h-5 w-5 text-rose-400" />
           </div>
-          <div className="mt-2 text-3xl font-bold text-zinc-100">
+          <div className="mt-2 text-3xl font-bold text-white">
             {fmtBRL0(evm.entTotal)}
           </div>
-          <p className="mt-1 text-sm text-zinc-300">
+          <p className="mt-1 text-sm text-slate-300">
             Desvio de{" "}
             <strong className="text-rose-300">
               +{fmtBRL0(evm.entTotal - evm.ontTotal)}
@@ -156,41 +156,41 @@ export const DashboardExecutive: React.FC<Props> = ({
             <strong className="text-rose-300">{fmtNum(evm.idcTotal, 2)}</strong>.
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-xs">
-            <span className="rounded border border-zinc-800 bg-[#0d0e10] px-2 py-1 text-zinc-300">
+            <span className="rounded border border-[#1e2b3a] bg-[#0a1017] px-2 py-1 text-slate-300">
               IDP: <strong className="text-amber-300">{fmtNum(evm.idpTotal, 2)}</strong>
             </span>
-            <span className="rounded border border-zinc-800 bg-[#0d0e10] px-2 py-1 text-zinc-300">
+            <span className="rounded border border-[#1e2b3a] bg-[#0a1017] px-2 py-1 text-slate-300">
               Custo atraso C1: <strong className="text-rose-300">{fmtBRL0(c1?.custoAtraso ?? 0)}</strong>
             </span>
-            <span className="rounded border border-zinc-800 bg-[#0d0e10] px-2 py-1 text-zinc-300">
+            <span className="rounded border border-[#1e2b3a] bg-[#0a1017] px-2 py-1 text-slate-300">
               Gestão à parte: <strong>{fmtBRL0(evm.crGestao)}</strong>
             </span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 border-t-2 border-t-[#c7e95e] bg-[#141619] p-5">
+        <div className="rounded-2xl border border-[#1e2b3a] border-t-2 border-t-[#18a3a8] bg-[#101822] p-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               3. O que decidir agora?
             </span>
-            <Compass className="h-5 w-5 text-[#c7e95e]" />
+            <Compass className="h-5 w-5 text-[#2dd4bf]" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-zinc-100">
+          <div className="mt-2 text-2xl font-bold text-white">
             {bestCombined ? `Cenário ${bestCombined.idKey}` : "Simular cenários"}
           </div>
-          <p className="mt-1 text-sm text-zinc-300">
+          <p className="mt-1 text-sm text-slate-300">
             Maior resultado líquido (VPL − atraso):{" "}
-            <strong className="text-[#c7e95e]">
+            <strong className="text-[#5eead4]">
               {bestCombined ? fmtBRL0(bestCombined.resultadoLiquido) : "—"}
             </strong>
             , com término em{" "}
-            <strong className="text-[#c7e95e]">
+            <strong className="text-[#5eead4]">
               {bestCombined ? fmtDateBR(bestCombined.terminoPrevistoDate) : "—"}
             </strong>.
           </p>
           <button
             onClick={() => onNavigate("scenarios")}
-            className="mt-3 w-full rounded-lg bg-[#2b321c] px-3 py-2 text-xs font-semibold text-[#cde86b] transition hover:bg-[#353d22]"
+            className="mt-3 w-full rounded-lg bg-[#12323a] px-3 py-2 text-xs font-semibold text-[#5eead4] transition hover:bg-[#17414b]"
           >
             Abrir Simulador Completo de Cenários →
           </button>
