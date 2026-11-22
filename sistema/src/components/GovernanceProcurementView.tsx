@@ -115,27 +115,27 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
               <h3 className="mb-3 text-sm font-semibold text-white">Registro de Riscos & VME</h3>
-              <div className="max-h-72 overflow-y-auto">
+              <div className="max-h-72 overflow-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-slate-900 text-slate-400">
                     <tr className="border-b border-slate-800">
-                      <th className="py-1.5">ID</th>
-                      <th className="py-1.5">Descrição</th>
-                      <th className="py-1.5 text-right">Prob</th>
-                      <th className="py-1.5 text-right">Impacto</th>
-                      <th className="py-1.5 text-right">VME</th>
-                      <th className="py-1.5 text-center">Status</th>
+                      <th className="whitespace-nowrap px-2 py-2">ID</th>
+                      <th className="px-2 py-2">Descrição</th>
+                      <th className="whitespace-nowrap px-2 py-2 text-right">Prob</th>
+                      <th className="whitespace-nowrap px-2 py-2 text-right">Impacto</th>
+                      <th className="whitespace-nowrap px-2 py-2 text-right">VME</th>
+                      <th className="whitespace-nowrap px-2 py-2 text-center">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {gov.riscos.map((r) => (
-                      <tr key={r.id_risco}>
-                        <td className="py-1.5 font-mono text-sky-300">{r.id_risco}</td>
-                        <td className="max-w-[200px] truncate py-1.5 text-slate-200">{r.descricao}</td>
-                        <td className="py-1.5 text-right font-mono">{r.prob}%</td>
-                        <td className="py-1.5 text-right font-mono">{fmtBRL0(r.impCusto)}</td>
-                        <td className="py-1.5 text-right font-mono font-semibold text-amber-300">{fmtBRL0(r.vme)}</td>
-                        <td className="py-1.5 text-center">
+                      <tr key={r.id_risco} className="hover:bg-slate-800/30">
+                        <td className="whitespace-nowrap px-2 py-2 font-mono text-sky-300">{r.id_risco}</td>
+                        <td className="max-w-[200px] truncate px-2 py-2 text-slate-200">{r.descricao}</td>
+                        <td className="whitespace-nowrap px-2 py-2 text-right font-mono">{r.prob}%</td>
+                        <td className="whitespace-nowrap px-2 py-2 text-right font-mono">{fmtBRL0(r.impCusto)}</td>
+                        <td className="whitespace-nowrap px-2 py-2 text-right font-mono font-semibold text-amber-300">{fmtBRL0(r.vme)}</td>
+                        <td className="whitespace-nowrap px-2 py-2 text-center">
                           <span className={`rounded px-1.5 py-0.5 text-[10px] ${
                             r.status === "ABERTO" ? "bg-amber-500/20 text-amber-300" : r.status === "OCORRIDO" ? "bg-rose-500/20 text-rose-300" : "bg-slate-800 text-slate-400"
                           }`}>
@@ -151,34 +151,54 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
           </div>
 
           {/* Auditoria de Mudanças e Scope Creep */}
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="space-y-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-              <h3 className="mb-2 text-sm font-semibold text-white">Auditoria de Solicitações de Mudança × Matriz de Alçadas</h3>
-              <div className="max-h-64 overflow-y-auto">
+              <h3 className="mb-3 text-sm font-semibold text-white">Auditoria de Solicitações de Mudança × Matriz de Alçadas</h3>
+              <div className="max-h-80 overflow-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-slate-900 text-slate-400">
                     <tr className="border-b border-slate-800">
-                      <th className="py-1.5">SM</th>
-                      <th className="py-1.5">Tipo</th>
-                      <th className="py-1.5">Decisor</th>
-                      <th className="py-1.5 text-right">Custo</th>
-                      <th className="py-1.5 text-right">Prazo</th>
-                      <th className="py-1.5">Alçada</th>
+                      <th className="whitespace-nowrap px-3 py-2">SM</th>
+                      <th className="whitespace-nowrap px-3 py-2">Tipo</th>
+                      <th className="whitespace-nowrap px-3 py-2">Decisor</th>
+                      <th className="whitespace-nowrap px-3 py-2">Status</th>
+                      <th className="whitespace-nowrap px-3 py-2 text-right">Custo</th>
+                      <th className="whitespace-nowrap px-3 py-2 text-right">Prazo</th>
+                      <th className="px-3 py-2">Descrição</th>
+                      <th className="px-3 py-2">Auditoria de Alçada</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {gov.mudancasAuditadas.map((m) => (
-                      <tr key={m.id_mudanca} className={!m.conformeAlcada ? "bg-rose-950/20" : ""}>
-                        <td className="py-1.5 font-mono text-sky-300">{m.id_mudanca}</td>
-                        <td className="py-1.5">{m.tipo_mudanca}</td>
-                        <td className="py-1.5">{m.nivel_decisor} ({m.status})</td>
-                        <td className="py-1.5 text-right font-mono">{fmtBRL0(Number(m.impacto_custo_rs))}</td>
-                        <td className="py-1.5 text-right font-mono">{m.impacto_prazo_du} du</td>
-                        <td className="py-1.5">
+                      <tr key={m.id_mudanca} className={!m.conformeAlcada ? "bg-rose-950/25" : "hover:bg-slate-800/30"}>
+                        <td className="whitespace-nowrap px-3 py-2 font-mono font-semibold text-sky-300">{m.id_mudanca}</td>
+                        <td className="whitespace-nowrap px-3 py-2">{m.tipo_mudanca}</td>
+                        <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-200">{m.nivel_decisor}</td>
+                        <td className="whitespace-nowrap px-3 py-2">
+                          <span className={`rounded px-2 py-0.5 text-[10px] font-semibold ${
+                            m.status === "APROVADA" ? "bg-sky-500/20 text-sky-300" : "bg-slate-800 text-slate-400"
+                          }`}>
+                            {m.status}
+                          </span>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-2 text-right font-mono text-slate-200">
+                          {fmtBRL0(Number(m.impacto_custo_rs))}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-2 text-right font-mono text-slate-200">
+                          {m.impacto_prazo_du} du
+                        </td>
+                        <td className="max-w-[260px] truncate px-3 py-2 text-slate-300" title={m.descricao}>
+                          {m.descricao}
+                        </td>
+                        <td className="px-3 py-2">
                           {m.conformeAlcada ? (
-                            <span className="text-emerald-400">OK</span>
+                            <span className="inline-flex rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-400">
+                              OK
+                            </span>
                           ) : (
-                            <span className="font-semibold text-rose-300">{m.violacoes.join("; ")}</span>
+                            <span className="inline-block font-semibold text-rose-300">
+                              ⚠ {m.violacoes.join("; ")}
+                            </span>
                           )}
                         </td>
                       </tr>
@@ -189,28 +209,28 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-              <h3 className="mb-2 text-sm font-semibold text-white">
+              <h3 className="mb-3 text-sm font-semibold text-white">
                 Escopo Sem Controle de Mudanças (PEDIDO_DIRETO = {gov.pedidosDiretos.length} itens)
               </h3>
-              <div className="max-h-64 overflow-y-auto">
+              <div className="max-h-64 overflow-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-slate-900 text-slate-400">
                     <tr className="border-b border-slate-800">
-                      <th className="py-1.5">Item</th>
-                      <th className="py-1.5">Solicitante</th>
-                      <th className="py-1.5">Rel.</th>
-                      <th className="py-1.5 text-right">Pts</th>
-                      <th className="py-1.5">Título</th>
+                      <th className="whitespace-nowrap px-3 py-2">Item</th>
+                      <th className="whitespace-nowrap px-3 py-2">Solicitante</th>
+                      <th className="whitespace-nowrap px-3 py-2">Release</th>
+                      <th className="whitespace-nowrap px-3 py-2 text-right">Pts</th>
+                      <th className="px-3 py-2">Título</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {gov.pedidosDiretos.map((p) => (
-                      <tr key={p.id_item}>
-                        <td className="py-1.5 font-mono text-amber-300">{p.id_item}</td>
-                        <td className="py-1.5 font-mono">{p.id_solicitante}</td>
-                        <td className="py-1.5">{p.id_release}</td>
-                        <td className="py-1.5 text-right font-mono">{p.pontos}</td>
-                        <td className="py-1.5 text-slate-200">{p.titulo}</td>
+                      <tr key={p.id_item} className="hover:bg-slate-800/30">
+                        <td className="whitespace-nowrap px-3 py-2 font-mono font-semibold text-amber-300">{p.id_item}</td>
+                        <td className="whitespace-nowrap px-3 py-2 font-mono">{p.id_solicitante}</td>
+                        <td className="whitespace-nowrap px-3 py-2">{p.id_release}</td>
+                        <td className="whitespace-nowrap px-3 py-2 text-right font-mono">{p.pontos}</td>
+                        <td className="px-3 py-2 text-slate-200">{p.titulo}</td>
                       </tr>
                     ))}
                   </tbody>

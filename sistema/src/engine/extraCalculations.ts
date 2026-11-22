@@ -283,7 +283,7 @@ export function computeGovernanceAndProcurement(db: ProjectDatabase, statusDate:
         violacoes.push("Nível sem permissão para alterar escopo");
       }
       if (alc.limite_custo_rs && num(m.impacto_custo_rs) > num(alc.limite_custo_rs)) {
-        violacoes.push(`Custo acima do limite (${alc.limite_custo_rs})`);
+        violacoes.push(`Custo acima do limite (R$ ${num(alc.limite_custo_rs).toLocaleString("pt-BR")})`);
       }
       if (alc.limite_prazo_du && num(m.impacto_prazo_du) > num(alc.limite_prazo_du)) {
         violacoes.push(`Prazo acima do limite (${alc.limite_prazo_du} du)`);
