@@ -7,9 +7,11 @@ import {
   GitBranch,
   Kanban,
   LayoutDashboard,
+  Menu,
   ShieldAlert,
   Smartphone,
   Users,
+  X,
 } from "lucide-react";
 import seedJson from "./data/seedData.json";
 import {
@@ -55,6 +57,7 @@ export function App() {
   const [statusDate, setStatusDate] = useState<string>("2026-11-13");
   const [operador, setOperador] = useState<string>("Matheus");
   const [activeTab, setActiveTab] = useState<string>("dashboard");
+  const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
   const [auditLogs, setAuditLogs] = useState<AuditEntry[]>(() => {
     try {
       const saved = localStorage.getItem(LOG_KEY);
@@ -155,93 +158,144 @@ export function App() {
   };
 
   const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "entry", label: "Lançar Dados (R3)", icon: FileSpreadsheet },
-    { id: "network", label: "Rede & CPM", icon: GitBranch },
-    { id: "evm", label: "Valor Agregado", icon: Activity },
+    { id: "dashboard", label: "Início", icon: LayoutDashboard },
+    { id: "entry", label: "Lançamentos (R3)", icon: FileSpreadsheet },
+    { id: "network", label: "Prazo & Rede CPM", icon: GitBranch },
+    { id: "evm", label: "Custo & Valor Agregado", icon: Activity },
     { id: "agile", label: "Painel Ágil", icon: Kanban },
-    { id: "governance", label: "Riscos & Contratos", icon: ShieldAlert },
     { id: "people", label: "Pessoas & Produtiv.", icon: Users },
+    { id: "governance", label: "Riscos & Contratos", icon: ShieldAlert },
     { id: "scenarios", label: "Cenários (C1–C6)", icon: Compass },
-    { id: "mockups", label: "Mockups do Produto (D17)", icon: Smartphone },
+    { id: "mockups", label: "Mockups do Produto", icon: Smartphone },
     { id: "ai", label: "Assistente IA", icon: Bot },
   ];
 
   const isQuinzenaLoaded = db["14_backlog_itens"].length >= 134;
+  const activeLabel = navItems.find((n) => n.id === activeTab)?.label ?? "Início";
+
+  const handleSelectTab = (id: string) => {
+    setActiveTab(id);
+    setMobileNavOpen(false);
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Topbar */}
-      <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+    <div className="flex min-h-screen bg-[#0d0e10] text-zinc-100">
+      {/* Overlay mobile */}
+      {mobileNavOpen && (
+        <div
+          onClick={() => setMobileNavOpen(false)}
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs lg:hidden"
+        />
+      )}
+
+      {/* Sidebar Vertical (estilo executivo) */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-zinc-800/90 bg-[#121417] transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
+          mobileNavOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Brand */}
+        <div className="flex items-center justify-between border-b border-zinc-800/80 px-5 py-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="rounded-md bg-sky-500/20 px-2 py-0.5 font-mono text-xs font-bold text-sky-300">
-                ENGN62 · G3
+              <span className="rounded bg-[#29301b] px-2 py-0.5 font-mono text-[11px] font-bold text-[#c7e95e]">
+                G3
               </span>
-              <h1 className="text-base font-bold text-white sm:text-lg">
-                Sala de Guerra · Maré Seguros
-              </h1>
+              <span className="text-sm font-semibold tracking-tight text-zinc-100">
+                Maré Seguros
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Aplicativo de aviso de sinistro com vistoria por foto · Duas Trilhas (ProjectLibre + Jira)
-            </p>
+            <p className="mt-0.5 text-[11px] text-zinc-500">Sala de Guerra · ENGN62</p>
           </div>
-
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            {!isQuinzenaLoaded && (
-              <button
-                onClick={handleApplyQuinzena}
-                className="rounded-lg bg-amber-500 px-3 py-1.5 font-semibold text-slate-950 hover:bg-amber-400"
-              >
-                Carregar Boletins 03–13/11 (Quinzena)
-              </button>
-            )}
-            <div className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5">
-              Status:{" "}
-              <select
-                value={statusDate}
-                onChange={(e) => setStatusDate(e.target.value)}
-                className="bg-transparent font-mono font-semibold text-sky-300 focus:outline-none"
-              >
-                <option value="2026-10-30">30/10/2026</option>
-                <option value="2026-11-13">13/11/2026</option>
-              </select>
-            </div>
-            <div className="hidden rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 sm:block">
-              Término Prev.:{" "}
-              <strong className="text-amber-300">{fmtDateBR(network.forecastEndDate)}</strong> · ENT:{" "}
-              <strong className="text-rose-300">{fmtBRL0(evm.entTotal)}</strong> · IDC:{" "}
-              <strong className="text-white">{fmtNum(evm.idcTotal, 2)}</strong>
-            </div>
-          </div>
+          <button
+            onClick={() => setMobileNavOpen(false)}
+            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 lg:hidden"
+            aria-label="Fechar menu"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
 
-        {/* Navigation Pills */}
-        <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 pb-2.5">
+        {/* Navigation List */}
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = activeTab === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                onClick={() => handleSelectTab(item.id)}
+                className={`flex w-full items-center gap-3.5 rounded-xl px-3.5 py-2.5 text-left text-[13px] font-medium transition ${
                   active
-                    ? "bg-sky-500 text-white shadow-sm"
-                    : "text-slate-400 hover:bg-slate-900 hover:text-slate-100"
+                    ? "bg-[#2b321c] text-[#cde86b]"
+                    : "text-zinc-400 hover:bg-zinc-900/80 hover:text-zinc-100"
                 }`}
               >
-                <Icon className="h-3.5 w-3.5" />
-                {item.label}
+                <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-[#cde86b]" : "text-zinc-500"}`} />
+                <span className="truncate">{item.label}</span>
               </button>
             );
           })}
-        </div>
-      </header>
+        </nav>
 
-      {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-4 py-6">
+        {/* Sidebar Footer */}
+        <div className="space-y-2.5 border-t border-zinc-800/80 p-4 text-xs">
+          {!isQuinzenaLoaded && (
+            <button
+              onClick={handleApplyQuinzena}
+              className="w-full rounded-lg bg-[#c7e95e] px-3 py-2 text-xs font-semibold text-zinc-950 transition hover:bg-[#d5f279]"
+            >
+              Carregar Boletins 03–13/11
+            </button>
+          )}
+          <div className="flex items-center justify-between rounded-lg border border-zinc-800 bg-[#0d0e10] px-3 py-2">
+            <span className="text-zinc-400">Status</span>
+            <select
+              value={statusDate}
+              onChange={(e) => setStatusDate(e.target.value)}
+              className="bg-transparent font-mono font-semibold text-[#cde86b] focus:outline-none"
+            >
+              <option value="2026-10-30">30/10/2026</option>
+              <option value="2026-11-13">13/11/2026</option>
+            </select>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Column */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Topbar minimalista */}
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-zinc-800/80 bg-[#0d0e10]/90 px-4 py-3 backdrop-blur lg:px-8">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileNavOpen(true)}
+              className="rounded-lg border border-zinc-800 bg-zinc-900 p-1.5 text-zinc-300 lg:hidden"
+              aria-label="Abrir menu"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+            <div>
+              <h1 className="text-sm font-semibold text-zinc-100 sm:text-base">{activeLabel}</h1>
+              <p className="hidden text-[11px] text-zinc-500 sm:block">
+                Aplicativo de aviso de sinistro com vistoria por foto · Duas Trilhas (ProjectLibre + Jira)
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs">
+            <div className="hidden rounded-lg border border-zinc-800 bg-[#141619] px-3 py-1.5 text-zinc-400 md:block">
+              Término:{" "}
+              <strong className="font-mono text-amber-300">{fmtDateBR(network.forecastEndDate)}</strong>
+              <span className="mx-2 text-zinc-700">|</span>
+              ENT: <strong className="font-mono text-zinc-100">{fmtBRL0(evm.entTotal)}</strong>
+              <span className="mx-2 text-zinc-700">|</span>
+              IDC: <strong className="font-mono text-rose-300">{fmtNum(evm.idcTotal, 2)}</strong>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 lg:px-8">
         {activeTab === "dashboard" && (
           <DashboardExecutive
             db={db}
@@ -303,7 +357,8 @@ export function App() {
             scenarios={scenarios}
           />
         )}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
