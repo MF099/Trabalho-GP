@@ -4,6 +4,7 @@ import { fmtBRL, fmtBRL0, fmtNum } from "../engine/calculations";
 import { computePeopleAndProductivity } from "../engine/extraCalculations";
 import type { ProjectDatabase } from "../types/project";
 import type { CalendarHelpers } from "../engine/calculations";
+import { Detalhes } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -22,21 +23,19 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
       {/* KPIs Pessoas */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Folha Mensal da Equipe (18 pessoas)</div>
-          <div className="mt-1 text-2xl font-bold text-white">{fmtBRL(res.folhaMensalTotal)}</div>
-          <div className="mt-1 text-xs text-emerald-400">Confere com controle do dossiê (R$ 288.603,60)</div>
+          <div className="text-xs text-slate-400">Folha mensal da equipe</div>
+          <div className="mt-1 text-2xl font-bold text-white">{fmtBRL0(res.folhaMensalTotal)}</div>
+          <div className="mt-1 text-xs text-slate-400">Salários, encargos e benefícios de {res.people.length} pessoas</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Impacto Previsto de Reajuste Salarial</div>
+          <div className="text-xs text-slate-400">Custo extra do reajuste salarial</div>
           <div className="mt-1 text-2xl font-bold text-amber-300">{fmtBRL0(res.impactoReajusteTotal)}</div>
-          <div className="mt-1 text-xs text-slate-400">Média últimos 3 meses fechados × meses até término (Conv. 19)</div>
+          <div className="mt-1 text-xs text-slate-400">Até o término previsto</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Produtividade Fornecedores (A11 / A20)</div>
-          <div className="mt-1 text-sm font-bold text-rose-300">
-            Problema: Baixo rendimento (IP &lt; 0,70), não falta de gente!
-          </div>
-          <div className="mt-1 text-xs text-slate-400">Índice de efetivo (IE) ~0,88–0,93</div>
+          <div className="text-xs text-slate-400">Diagnóstico dos fornecedores</div>
+          <div className="mt-1 text-base font-bold text-rose-300">Falta rendimento, não gente</div>
+          <div className="mt-1 text-xs text-slate-400">Equipes completas, mas produzindo abaixo do previsto</div>
         </div>
       </div>
 
@@ -44,9 +43,7 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 className="text-sm font-semibold text-white">
-              Histograma de Alocação: Planejado × Apontado (Folha M8)
-            </h3>
+            <h3 className="text-sm font-semibold text-white">Horas planejadas × horas trabalhadas</h3>
             <p className="text-xs text-slate-400">
               {personObj?.id} {personObj?.nome} ({personObj?.papel} · {personObj?.frente})
             </p>
@@ -80,10 +77,9 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
 
       {/* Produtividade Fornecedores (41 & 42) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 className="mb-3 text-sm font-semibold text-white">
-          Produtividade de Fornecedores (Tabelas 41 e 42 · Convenção 20)
-        </h3>
-        <div className="overflow-x-auto">
+        <h3 className="text-sm font-semibold text-white">Produtividade dos fornecedores</h3>
+        <p className="text-xs text-slate-400">IP abaixo de 0,85 significa que a equipe rende menos que o previsto.</p>
+        <div className="mt-3 overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-slate-800 text-slate-400">
@@ -121,7 +117,9 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
 
       {/* Tabela completa da Equipe (R14 + R15 Ágil) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 className="mb-3 text-sm font-semibold text-white">Folha, Custo Hora, Horas Apontadas e Produtividade Ágil</h3>
+        <h3 className="text-sm font-semibold text-white">Custo por pessoa</h3>
+        <p className="text-xs text-slate-400">Custo/hora, horas no projeto, reajuste e produtividade ágil (folha M8).</p>
+        <Detalhes titulo="Abrir tabela da equipe" className="mt-3">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
@@ -161,6 +159,7 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
             </tbody>
           </table>
         </div>
+        </Detalhes>
       </div>
     </div>
   );

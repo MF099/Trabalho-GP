@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { addDaysIso, fmtDateBR, fmtNum, num, type AgileMetrics } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
+import { Detalhes } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -81,46 +82,53 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
       {/* KPIs Ágeis + DORA */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Velocidade Média (5 últimas)</div>
+          <div className="text-xs text-slate-400">Ritmo da equipe</div>
           <div className="mt-1 text-xl font-bold text-white">{fmtNum(agile.velocidadeMedia, 1)} pts/sprint</div>
-          <div className="mt-1 text-xs text-slate-400">Planejada LB: 17,3 pts/sprint</div>
+          <div className="mt-1 text-xs text-slate-400">Meta: 17,3 pts/sprint</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Previsão Releases</div>
-          <div className="mt-1 text-sm font-bold text-sky-300">
-            R2: {fmtDateBR(agile.dataPrevistaR2)} ({agile.sprintsRestantesR2} sp)
-          </div>
-          <div className="mt-1 text-xs text-slate-300">
-            R3: {fmtDateBR(agile.dataPrevistaR3)} ({agile.sprintsRestantesR3} sp · {agile.pontosRestantesR3} pts)
-          </div>
+          <div className="text-xs text-slate-400">Release 2 prevista</div>
+          <div className="mt-1 text-xl font-bold text-sky-300">{fmtDateBR(agile.dataPrevistaR2)}</div>
+          <div className="mt-1 text-xs text-slate-400">Libera a entrada em operação</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Fluxo (Little & Tempos)</div>
-          <div className="mt-1 text-sm font-bold text-white">
-            Ciclo: {fmtNum(agile.tempoCicloMedioDu, 1)} du · Lead: {fmtNum(agile.leadTimeMedioDu, 1)} du
-          </div>
-          <div className="mt-1 text-xs text-slate-400">
-            WIP médio (Little): {fmtNum(agile.wipMedioLittle, 1)} itens · Imped. abertos: {openImps.length}
-          </div>
+          <div className="text-xs text-slate-400">Release 3 prevista</div>
+          <div className="mt-1 text-xl font-bold text-white">{fmtDateBR(agile.dataPrevistaR3)}</div>
+          <div className="mt-1 text-xs text-slate-400">Fim do escopo ágil</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Métricas DORA (Implantações)</div>
-          <div className="mt-1 text-sm font-bold text-emerald-300">
-            {fmtNum(agile.dora.freqPorSemana, 2)} prod/sem · Falha {fmtNum(agile.dora.taxaFalhaPct, 1)}%
-          </div>
-          <div className="mt-1 text-xs text-slate-400">
-            Lead Mediana: {fmtNum(agile.dora.leadTimeMedianaH, 1)}h · MTTR: {fmtNum(agile.dora.mttrMediaH, 1)}h
-          </div>
+          <div className="text-xs text-slate-400">Impedimentos abertos</div>
+          <div className="mt-1 text-xl font-bold text-white">{openImps.length}</div>
+          <div className="mt-1 text-xs text-slate-400">Bloqueios que travam a equipe</div>
         </div>
       </div>
+
+      <Detalhes titulo="Métricas de fluxo e DORA (folha M5)">
+        <div className="grid grid-cols-1 gap-2 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-300 md:grid-cols-2">
+          <p>
+            Tempo de ciclo: <strong className="text-white">{fmtNum(agile.tempoCicloMedioDu, 1)} du</strong> · Lead
+            time: <strong className="text-white">{fmtNum(agile.leadTimeMedioDu, 1)} du</strong> · WIP médio (Little):{" "}
+            <strong className="text-white">{fmtNum(agile.wipMedioLittle, 1)} itens</strong>
+          </p>
+          <p>
+            Implantações: <strong className="text-white">{fmtNum(agile.dora.freqPorSemana, 2)}/semana</strong> ·
+            Falha: <strong className="text-white">{fmtNum(agile.dora.taxaFalhaPct, 1)}%</strong> · Lead mediana:{" "}
+            {fmtNum(agile.dora.leadTimeMedianaH, 1)} h · MTTR: {fmtNum(agile.dora.mttrMediaH, 1)} h
+          </p>
+          <p>
+            R2: {agile.sprintsRestantesR2} sprints restantes · R3: {agile.sprintsRestantesR3} sprints ·{" "}
+            {agile.pontosRestantesR3} pts
+          </p>
+        </div>
+      </Detalhes>
 
       {/* Gráficos: Burndown & Velocidade */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
           <div className="mb-3 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-white">Burndown da Sprint (M5)</h3>
-              <p className="text-xs text-slate-400">Total na sprint {selectedSprint}: {totalSprintPts} pontos</p>
+              <h3 className="text-sm font-semibold text-white">Burndown da sprint</h3>
+              <p className="text-xs text-slate-400">Pontos que faltam a cada dia ({totalSprintPts} no total)</p>
             </div>
             <select
               value={selectedSprint}
@@ -150,7 +158,8 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-          <h3 className="mb-3 text-sm font-semibold text-white">Velocidade por Sprint (Planejado × Concluído)</h3>
+          <h3 className="text-sm font-semibold text-white">Velocidade por sprint</h3>
+          <p className="mb-3 text-xs text-slate-400">Pontos colocados na sprint × pontos concluídos</p>
           <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={agile.velocidadesSprints}>
@@ -172,11 +181,9 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-semibold text-white">
-              Quadro Kanban Interativo ({releaseFilter === "ALL" ? `Sprint ${selectedSprint}` : `Release ${releaseFilter}`})
+              Quadro da {releaseFilter === "ALL" ? `sprint ${selectedSprint}` : `release ${releaseFilter}`}
             </h3>
-            <p className="text-xs text-slate-400">
-              Use o seletor no cartão para mover o status (registra transição em tempo real na tabela 21).
-            </p>
+            <p className="text-xs text-slate-400">Mude o status no cartão para mover o item.</p>
           </div>
           <div className="flex gap-2">
             {["ALL", "R1", "R2", "R3"].map((r) => (

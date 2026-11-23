@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { buildCalendarHelpers, computeEVM, fmtBRL, fmtBRL0, fmtDateBR, fmtNum, type AgileMetrics, type NetworkResult } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
+import { Detalhes } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -111,9 +112,9 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
         <div>
-          <h2 className="text-lg font-bold text-white">Valor Agregado (EVM) & Curva S (R5)</h2>
+          <h2 className="text-lg font-bold text-white">Custo e valor agregado</h2>
           <p className="text-xs text-slate-400">
-            Alterne a data de corte para conferir a folha M3 (25/09/2026), o histórico (30/10) ou o status atual ({fmtDateBR(statusDate)}).
+            Compara o que foi planejado, o que foi entregue e o que foi gasto até a data escolhida.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -140,10 +141,10 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
       {/* Resumo Frentes */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
-          { title: "ONT Projeto (2 Frentes)", val: fmtBRL0(evm.ontTotal), sub: `Pred ${fmtBRL0(evm.ontPred)} · Ágil ${fmtBRL0(evm.ontAgil)}` },
-          { title: "VP / VA / CR Projeto", val: `${fmtBRL0(evm.vaTotal)} VA`, sub: `VP ${fmtBRL0(evm.vpTotal)} · CR ${fmtBRL0(evm.crTotal)}` },
-          { title: "Índices (IDP / IDC)", val: `IDP ${fmtNum(evm.idpTotal, 3)} · IDC ${fmtNum(evm.idcTotal, 3)}`, sub: `IDPT: ${fmtNum(evm.idptTotal, 3)}` },
-          { title: "Estimativa no Término (ENT)", val: fmtBRL0(evm.entTotal), sub: `Gestão à parte: ${fmtBRL0(evm.crGestao)}` },
+          { title: "Orçamento aprovado", val: fmtBRL0(evm.ontTotal), sub: "Soma das frentes preditiva e ágil" },
+          { title: "Custo previsto no fim", val: fmtBRL0(evm.entTotal), sub: `${fmtBRL0(evm.entTotal - evm.ontTotal)} acima do orçamento` },
+          { title: "Eficiência de custo (IDC)", val: fmtNum(evm.idcTotal, 2), sub: `Cada R$ 1 gasto entrega R$ ${fmtNum(evm.idcTotal, 2)}` },
+          { title: "Eficiência de prazo (IDP)", val: fmtNum(evm.idpTotal, 2), sub: `Entregou ${fmtNum(evm.idpTotal * 100, 0)}% do planejado` },
         ].map((c) => (
           <div key={c.title} className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
             <div className="text-xs text-slate-400">{c.title}</div>
@@ -155,7 +156,10 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
 
       {/* Curva S */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 className="mb-3 text-sm font-semibold text-white">Curva S Acumulada — Projeto (R$ mil)</h3>
+        <h3 className="text-sm font-semibold text-white">Curva S do projeto (R$ mil)</h3>
+        <p className="mb-3 text-xs text-slate-400">
+          Custo real acima do valor entregue indica gasto maior que o previsto.
+        </p>
         <div className="h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={evm.curvaS}>
@@ -177,9 +181,12 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
 
       {/* Tabela por Entrega EAP + Frente Ágil (M3) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 className="mb-3 text-sm font-semibold text-white">
-          Detalhamento por Entrega da EAP e Frente Ágil em {fmtDateBR(cutDate)}
-        </h3>
+        <h3 className="text-sm font-semibold text-white">Detalhamento por entrega</h3>
+        <p className="text-xs text-slate-400">
+          Valores por pacote da EAP e frente ágil em {fmtDateBR(cutDate)} (conferência com a folha M3). Gestão
+          acompanhada à parte: {fmtBRL0(evm.crGestao)}.
+        </p>
+        <Detalhes titulo="Abrir tabela por entrega" className="mt-3">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
@@ -250,6 +257,7 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
             </tbody>
           </table>
         </div>
+        </Detalhes>
       </div>
     </div>
   );

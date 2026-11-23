@@ -3,6 +3,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { fmtBRL0, fmtDateBR, fmtNum, type NetworkResult } from "../engine/calculations";
 import { computeM4Compression } from "../engine/extraCalculations";
 import type { ProjectDatabase } from "../types/project";
+import { Detalhes } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -29,41 +30,29 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
 
   return (
     <div className="space-y-6">
-      {/* Resumo PERT / CPM */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      {/* Resumo do prazo */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Linha de Base (42 atividades)</div>
-          <div className="mt-1 text-xl font-bold text-white">{network.duracaoLbDu} du</div>
-          <div className="mt-1 text-xs text-sky-300">Término LB: {fmtDateBR(network.terminoLbDate)}</div>
+          <div className="text-xs text-slate-400">Término planejado</div>
+          <div className="mt-1 text-xl font-bold text-white">{fmtDateBR(network.terminoLbDate)}</div>
+          <div className="mt-1 text-xs text-slate-400">Data da linha de base aprovada</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Previsão Atual (Rede + Ágil)</div>
-          <div className="mt-1 text-xl font-bold text-amber-300">{network.forecastEndDu} du</div>
-          <div className="mt-1 text-xs text-rose-300">
-            Término: {fmtDateBR(network.forecastEndDate)} (+{network.atrasoContratualDu} du contrato)
-          </div>
+          <div className="text-xs text-slate-400">Término previsto hoje</div>
+          <div className="mt-1 text-xl font-bold text-amber-300">{fmtDateBR(network.forecastEndDate)}</div>
+          <div className="mt-1 text-xs text-rose-300">{network.atrasoContratualDu} dias úteis após o contrato</div>
         </div>
         <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Caminho Crítico Previsto</div>
-          <div className="mt-1 font-mono text-sm font-bold text-amber-300">
-            {network.criticalPathForecast.join(" → ")}
-          </div>
-          <div className="mt-1 text-xs text-slate-400">LB era: {network.criticalPathLb.join(" → ")}</div>
-        </div>
-        <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-          <div className="text-xs text-slate-400">Incerteza Sub-rede M1 (M2)</div>
-          <div className="mt-1 text-xl font-bold text-white">σ = {fmtNum(m1Sigma, 2)} du</div>
-          <div className="mt-1 text-xs text-slate-400">
-            Média M1 = 106 du · P(≤111 du) ≈ 85,7%
-          </div>
+          <div className="text-xs text-slate-400">Atividades que definem o prazo</div>
+          <div className="mt-1 text-xl font-bold text-white">{network.criticalPathForecast.length}</div>
+          <div className="mt-1 text-xs text-slate-400">Qualquer atraso nelas atrasa o projeto</div>
         </div>
       </div>
 
-      {/* Diagrama de Rede Esquemático do Caminho Crítico + M1 */}
+      {/* Caminho crítico */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 className="mb-2 text-sm font-semibold text-white">
-          Cadeia Crítica Prevista (ProjectLibre × Sistema × Papel)
-        </h3>
+        <h3 className="text-sm font-semibold text-white">Caminho crítico previsto</h3>
+        <p className="mb-2 text-xs text-slate-400">A sequência de atividades sem folga até o término.</p>
         <div className="flex flex-wrap items-center gap-2 py-2">
           {network.criticalPathForecast.map((id, idx) => {
             const act = network.activities.find((a) => a.id === id);
@@ -80,7 +69,7 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
                     {act?.nome}
                   </div>
                   <div className="mt-1 font-mono text-[10px] text-slate-400">
-                    du {act?.forecastEs}..{act?.forecastEf} ({fmtDateBR(act?.forecastEndDate ?? "")})
+                    até {fmtDateBR(act?.forecastEndDate ?? "")}
                   </div>
                 </div>
                 {idx < network.criticalPathForecast.length - 1 && (
@@ -92,10 +81,22 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
         </div>
       </div>
 
-      {/* Tabela completa da Rede */}
+      {/* Detalhes técnicos: tabela CPM, PERT e compressão (conferência com caderno M1, M2 e M4) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <h3 className="text-sm font-semibold text-white">Detalhes técnicos</h3>
+        <p className="text-xs text-slate-400">
+          Rede completa, incerteza do prazo e compressão, para conferir com o ProjectLibre e o caderno.
+        </p>
+        <Detalhes titulo="Abrir tabela da rede, PERT e compressão" className="mt-3">
+      <div className="space-y-6">
+      <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-300">
+        <strong className="text-white">Incerteza da sub-rede M1 (folha M2):</strong> σ = {fmtNum(m1Sigma, 2)} du ·
+        Média M1 = 106 du · P(≤111 du) ≈ 85,7%. Linha de base: {network.duracaoLbDu} du (caminho{" "}
+        {network.criticalPathLb.join(" → ")}). Previsão: {network.forecastEndDu} du.
+      </div>
+      <div>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-sm font-semibold text-white">Tabela CPM Completa (Linha de Base × Previsão)</h3>
+          <h3 className="text-sm font-semibold text-white">Tabela CPM completa (linha de base × previsão)</h3>
           <div className="flex gap-2">
             {(["ALL", "CRITICAL", "M1"] as const).map((m) => (
               <button
@@ -215,6 +216,9 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
+      </div>
+        </Detalhes>
       </div>
     </div>
   );

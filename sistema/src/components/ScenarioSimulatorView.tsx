@@ -24,6 +24,7 @@ import {
   type ScenarioSimulation,
 } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
+import { Detalhes } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -98,9 +99,9 @@ export const ScenarioSimulatorView: React.FC<Props> = ({
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="text-lg font-bold text-white">Simulador de Cenários de Decisão (R16 · C1–C6 + Combinações)</h2>
+            <h2 className="text-lg font-bold text-white">Simulador de cenários</h2>
             <p className="text-xs text-slate-400">
-              Selecione um cenário ou combine opções compatíveis (tabela 43) para ver impacto no término, ENT, VPL, payback e resultado líquido.
+              Escolha um cenário, ou combine os compatíveis, para ver o novo prazo, o custo e o retorno.
             </p>
           </div>
           <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300">
@@ -126,53 +127,49 @@ export const ScenarioSimulatorView: React.FC<Props> = ({
                   {active && <CheckCircle2 className="h-4 w-4 text-sky-400" />}
                 </div>
                 <div className="mt-1 text-xs font-semibold">{c.nome_cenario}</div>
-                <div className="mt-1 text-[10px] text-slate-400">
-                  Comb.: {c.combinavel_com || "Base"}
-                </div>
               </button>
             );
           })}
         </div>
 
         {/* Cartão do cenário selecionado/combinado */}
-        <div className="mt-4 grid grid-cols-2 gap-3 rounded-xl border border-sky-500/30 bg-slate-950/70 p-4 md:grid-cols-5">
+        <div className="mt-4 grid grid-cols-2 gap-3 rounded-xl border border-sky-500/30 bg-slate-950/70 p-4 md:grid-cols-4">
           <div>
-            <div className="text-[11px] text-slate-400">Término Previsto</div>
+            <div className="text-[11px] text-slate-400">Novo término</div>
             <div className="text-base font-bold text-white">{fmtDateBR(customSim.terminoPrevistoDate)}</div>
-            <div className="text-xs text-amber-300">+{customSim.atrasoContratualDu} du contrato</div>
+            <div className="text-xs text-amber-300">{customSim.atrasoContratualDu} dias úteis após o contrato</div>
           </div>
           <div>
-            <div className="text-[11px] text-slate-400">ENT do Cenário</div>
+            <div className="text-[11px] text-slate-400">Custo previsto</div>
             <div className="text-base font-bold text-white">{fmtBRL0(customSim.entCenario)}</div>
-            <div className="text-xs text-slate-400">Atraso: {fmtBRL0(customSim.custoAtraso)}</div>
           </div>
           <div>
-            <div className="text-[11px] text-slate-400">VPL (14% a.a.)</div>
-            <div className="text-base font-bold text-emerald-300">{fmtBRL0(customSim.vpl)}</div>
-            <div className="text-xs text-slate-400">Meses atraso: {fmtNum(customSim.mesesAtraso, 2)}</div>
-          </div>
-          <div>
-            <div className="text-[11px] text-slate-400">Resultado (VPL − Atraso)</div>
+            <div className="text-[11px] text-slate-400">Saldo (retorno − custo do atraso)</div>
             <div className="text-base font-bold text-sky-300">{fmtBRL0(customSim.resultadoLiquido)}</div>
-            <div className="text-xs text-slate-400">
-              Payback: {customSim.paybackAnos ? `${fmtNum(customSim.paybackAnos, 2)} anos` : ">7 anos"}
-            </div>
           </div>
           <div className="col-span-2 md:col-span-1">
-            <div className="text-[11px] text-slate-400">Trade-off / O que se perde</div>
+            <div className="text-[11px] text-slate-400">O que se perde</div>
             <div className="text-[11px] text-slate-200">{customSim.oQueSePerde}</div>
           </div>
         </div>
+        <Detalhes titulo="Detalhes financeiros" className="mt-3">
+          <p className="text-xs text-slate-300">
+            VPL (TMA 14% a.a.): <strong className="text-emerald-300">{fmtBRL0(customSim.vpl)}</strong> · Custo do
+            atraso: {fmtBRL0(customSim.custoAtraso)} · Meses de atraso: {fmtNum(customSim.mesesAtraso, 2)} · Payback:{" "}
+            {customSim.paybackAnos ? `${fmtNum(customSim.paybackAnos, 2)} anos` : "> 7 anos"}
+          </p>
+        </Detalhes>
       </div>
 
       {/* Tabela Comparativa Completa */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
         <div className="mb-3 flex items-center gap-2">
           <Layers className="h-4 w-4 text-sky-400" />
-          <h3 className="text-sm font-semibold text-white">
-            Comparativo Oficial: C1–C6 + Combinações Recomendadas (D16)
-          </h3>
+          <h3 className="text-sm font-semibold text-white">Comparação dos cenários</h3>
         </div>
+        <p className="-mt-2 mb-3 text-xs text-slate-400">
+          Clique numa linha para simular. Em verde, o de melhor saldo.
+        </p>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
