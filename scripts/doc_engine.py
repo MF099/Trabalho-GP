@@ -315,6 +315,14 @@ def compute_all_metrics(db, status_date="2026-11-13"):
             if aid not in latest_av or r["semana_fim"] >= latest_av[aid]["semana_fim"]:
                 latest_av[aid] = r
 
+    # Releases já entregues (tabela 10: data_real até a data de status) — só marcos ágeis
+    tipos_ativ = {a["id_atividade"]: a["tipo_atividade"] for a in db["07_atividades"]}
+    marco_entregue = {
+        mc["id_atividade"]: mc["data_real"]
+        for mc in db["10_marcos"]
+        if mc["data_real"] and mc["data_real"] <= status_date and tipos_ativ.get(mc["id_atividade"]) == "MARCO_AGIL"
+    }
+
     def run_network(af, act_mods=None):
         nodes = {}
         for a in db["07_atividades"]:
@@ -409,8 +417,17 @@ def compute_all_metrics(db, status_date="2026-11-13"):
                 fef[u] = last_du(av["data_termino_real"])
                 fdur[u] = max(1, fef[u] - fes[u] + 1)
             elif nd["tipo"] == "MARCO_AGIL":
-                fes[u] = next_du(av["data_inicio_real"]) if av and av["data_inicio_real"] else es_lb.get(u, 40)
-                fef[u] = last_du("2026-07-10") if u == "A40" else (af["r2_du"] if u == "A41" else af["r3_du"])
+                # Interface entre trilhas: a release é marco da rede preditiva. Começa depois das
+                # predecessoras (release anterior) — senão a R3 "começaria" antes da R2 e o passo de
+                # volta tiraria a R2 do caminho crítico. Release entregue usa a data real (tabela 10).
+                s = next_du(av["data_inicio_real"]) if av and av["data_inicio_real"] else es_lb.get(u, 40)
+                for pr, t, lag in fpreds[u]:
+                    s = max(s, fef[pr] + 1 + lag if t == "TI" else fes[pr] + lag)
+                if u in marco_entregue:
+                    f = last_du(marco_entregue[u])
+                else:
+                    f = af["r2_du"] if u == "A41" else (af["r3_du"] if u == "A42" else ef_lb.get(u, s))
+                fes[u], fef[u] = min(s, f), f
                 fdur[u] = max(1, fef[u] - fes[u] + 1)
             elif av and float(av["avanco_acumulado_pct"]) > 0:
                 rem = math.ceil(nd["dur_lb"] * (1.0 - float(av["avanco_acumulado_pct"]) / 100.0))
@@ -436,7 +453,7 @@ def compute_all_metrics(db, status_date="2026-11-13"):
                         f = min(f, fls[v] - 1 - lag if t == "TI" else fls[v] - lag + fdur[u] - 1)
             flf[u] = f
             fls[u] = f - fdur[u] + 1
-        crit_f = [u for u in forder if u not in excl and not (latest_av.get(u) and latest_av[u]["situacao"] == "CONCLUIDA") and fls[u] == fes[u]]
+        crit_f = [u for u in forder if u not in excl and u not in marco_entregue and not (latest_av.get(u) and latest_av[u]["situacao"] == "CONCLUIDA") and fls[u] == fes[u]]
 
         acts_out = []
         for u in forder:
@@ -448,8 +465,8 @@ def compute_all_metrics(db, status_date="2026-11-13"):
                 "ls_lb": ls_lb.get(u, fls[u]), "lf_lb": lf_lb.get(u, flf[u]),
                 "folga_lb": ls_lb.get(u, fls[u]) - es_lb.get(u, fes[u]),
                 "crit_lb": u in crit_lb,
-                "avanco": float(av["avanco_acumulado_pct"]) if av else 0.0,
-                "situacao": "EXCLUIDA" if u in excl else (av["situacao"] if av else "NAO_INICIADA"),
+                "avanco": 100.0 if u in marco_entregue else (float(av["avanco_acumulado_pct"]) if av else 0.0),
+                "situacao": "EXCLUIDA" if u in excl else ("CONCLUIDA" if u in marco_entregue else (av["situacao"] if av else "NAO_INICIADA")),
                 "fes": fes[u], "fef": fef[u], "fls": fls[u], "flf": flf[u],
                 "crit_f": u in crit_f,
                 "f_end_date": du_to_date.get(fef[u], ""),
@@ -724,20 +741,31 @@ def generate_charts(db, m):
     ax.grid(color=GRID_COLOR, linestyle=":", linewidth=0.6)
     charts["d2_pi"] = fig_to_data_uri(fig)
 
-    # 3. D5: Curva S da Trilha Ágil (VP Ágil, VA Ágil, CR Ágil)
+    # 3. D5: Curva S do PROJETO (duas frentes) — VP, VA e CR
+    fig, ax = plt.subplots(figsize=(7.5, 3.0))
+    xs = [c["label"] for c in m["curva_s"]]
+    ax.plot(xs, [c["vp"] / 1000 for c in m["curva_s"]], color=NAVY, marker="o", lw=2.2, label="VP (Planejado)")
+    ax.plot(xs, [c["va"] / 1000 for c in m["curva_s"]], color=TEAL, marker="s", lw=2.4, label="VA (Agregado)")
+    ax.plot(xs, [c["cr"] / 1000 for c in m["curva_s"]], color=CORAL, marker="^", lw=2.2, label="CR (Custo Real)")
+    ax.set_title("Curva S do Projeto (Preditiva + Ágil) — VP, VA e Custo Real (R$ mil)", fontsize=10, fontweight="bold", color=NAVY)
+    ax.grid(axis="y", color=GRID_COLOR, linestyle="--", linewidth=0.6)
+    ax.legend(fontsize=8, frameon=False)
+    charts["d5_curva_s"] = fig_to_data_uri(fig)
+
+    # 3b. D5: Curva S da Frente Ágil (VP Ágil, VA Ágil, CR Ágil)
     fig, ax = plt.subplots(figsize=(7.5, 2.85))
     xs = [c["label"] for c in m["curva_s"]]
     ax.plot(xs, [c["vp_a"] / 1000 for c in m["curva_s"]], color=NAVY, marker="o", lw=2.2, label="VP Ágil (Planejado)")
     ax.plot(xs, [c["va_a"] / 1000 for c in m["curva_s"]], color=TEAL, marker="s", lw=2.4, label="VA Ágil (Valor Agregado)")
     ax.plot(xs, [c["cr_a"] / 1000 for c in m["curva_s"]], color=CORAL, marker="^", lw=2.2, label="CR Ágil (Custo Real)")
-    ax.set_title("Curva S da Trilha Ágil — VP, VA e Custo Real Acumulado (R$ mil)", fontsize=10, fontweight="bold", color=NAVY)
+    ax.set_title("Curva S da Frente Ágil — VP, VA e Custo Real Acumulado (R$ mil)", fontsize=10, fontweight="bold", color=NAVY)
     ax.grid(axis="y", color=GRID_COLOR, linestyle="--", linewidth=0.6)
     ax.legend(fontsize=8, frameon=False)
-    charts["d5_curva_s"] = fig_to_data_uri(fig)
+    charts["d5_curva_s_agil"] = fig_to_data_uri(fig)
 
-    # 4. D6: Histograma do Squad Ágil (P15 e P16)
+    # 4. D6: Histograma das duas frentes — P09 (Operações, preditiva) e P15 (Dev, ágil)
     fig, axes = plt.subplots(1, 2, figsize=(8.0, 2.9))
-    for ax, pid, title in [(axes[0], "P15", "P15 Kleber Nascimento (Dev)"), (axes[1], "P16", "P16 Sílvia Moreira (Dev)")]:
+    for ax, pid, title in [(axes[0], "P09", "P09 Heitor Góes (Operações · preditiva)"), (axes[1], "P15", "P15 Kleber Nascimento (Dev · ágil)")]:
         p = next(x for x in m["people"] if x["id"] == pid)
         yms = sorted(y for y in set(p["hm_ap"].keys()) | set(p["hm_pl"].keys()) if y <= "2026-10")
         x = np.arange(len(yms))
@@ -806,7 +834,22 @@ def generate_charts(db, m):
     axes[1].grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
     charts["d9_risks"] = fig_to_data_uri(fig)
 
-    # 7. D14: Produtividade do Squad Ágil (Pontos entregues e Custo por Ponto)
+    # 7. D14: Produtividade dos fornecedores (frente preditiva) — IP × IE
+    fig, ax = plt.subplots(figsize=(7.5, 2.9))
+    ids = [s["id"] for s in m["sup_prod"]]
+    x = np.arange(len(ids))
+    w = 0.36
+    ax.bar(x - w / 2, [s["ip"] for s in m["sup_prod"]], w, color=CORAL, label="Índice de Produtividade (IP)")
+    ax.bar(x + w / 2, [s["ie"] for s in m["sup_prod"]], w, color=TEAL, label="Índice de Efetivo (IE)")
+    ax.axhline(1.0, color=NAVY, linestyle="--", lw=1.1, label="Meta (1,00)")
+    ax.set_xticks(x)
+    ax.set_xticklabels(ids, fontsize=8.5)
+    ax.set_title("Fornecedores: Produtividade (IP) × Efetivo (IE) por Atividade", fontsize=10, fontweight="bold", color=NAVY)
+    ax.grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
+    ax.legend(fontsize=8, frameon=False)
+    charts["d14_prod"] = fig_to_data_uri(fig)
+
+    # 7a. D14: Produtividade do time ágil (Pontos entregues e Custo por Ponto)
     fig, axes = plt.subplots(1, 2, figsize=(8.2, 2.95))
     devs = [x for x in m["people"] if x["frente"] == "AGIL" and x["pts"] > 0]
     d_labels = [f"{x['id']}\n{x['nome'].split()[0]}" for x in devs]
@@ -831,7 +874,7 @@ def generate_charts(db, m):
     axes[1].set_ylim(0, max(d["rs_pt"] for d in core_devs) * 1.22)
     axes[1].set_title("Custo Direto por Ponto — Devs (R$/pt)", fontsize=9, fontweight="bold", color=NAVY)
     axes[1].grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
-    charts["d14_prod"] = fig_to_data_uri(fig)
+    charts["d14_squad"] = fig_to_data_uri(fig)
 
     # 7b. D4: Roadmap de Sprints e Projeção de Releases (Burndown de Pontos)
     fig, ax = plt.subplots(figsize=(7.8, 2.85))
@@ -855,7 +898,7 @@ def generate_charts(db, m):
     ax.plot(proj_labels[len(sp_labels)-1:], proj_vals[len(sp_labels)-1:], color=TEAL, marker="s", linestyle="--", lw=2.2, label=f"Projeção ({m['vel_media']:.1f} pts/sprint)")
     ax.axvline(len(sp_labels) - 1, color=SAND, linestyle=":", lw=1.4, label="Corte 13/11 (S15)")
     ax.axvline(len(sp_labels) - 1 + m["ag_base"]["sr2"], color=TEAL_LIGHT, linestyle="--", lw=1.2, label="Prev. R2 (S17)")
-    ax.set_title("Burndown de Release e Projeção de Sprints (Trilha Ágil — S01 a S22)", fontsize=9.5, fontweight="bold", color=NAVY)
+    ax.set_title("Burndown de Release e Projeção de Sprints (Frente Ágil — S01 a S22)", fontsize=9.5, fontweight="bold", color=NAVY)
     ax.set_ylabel("Pontos Restantes", fontsize=8, color=MUTED)
     ax.tick_params(axis="x", labelsize=7, rotation=45)
     ax.grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
