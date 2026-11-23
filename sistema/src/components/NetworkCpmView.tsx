@@ -58,40 +58,69 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network, children }) => {
         <p className="mb-2 text-xs text-slate-400">
           A sequência sem folga até o término. Em roxo, as releases da frente ágil que entram na rede como marcos.
         </p>
-        <div className="flex flex-wrap items-center gap-2 py-2">
+        {/* Cartões em grade: cabem na caixa em qualquer largura, nome inteiro em até 2 linhas */}
+        <ol className="grid gap-2 py-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))" }}>
           {network.criticalPathForecast.map((id, idx) => {
             const act = network.activities.find((a) => a.id === id);
             const marco = act?.tipo === "MARCO_AGIL";
             return (
-              <React.Fragment key={id}>
-                <div
-                  className={`rounded-xl border px-3 py-2 text-xs ${
-                    marco ? "border-indigo-400/60 bg-indigo-950/40" : "border-rose-500/40 bg-rose-950/20"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className={`font-mono font-bold ${marco ? "text-indigo-300" : "text-rose-300"}`}>
-                      {id}
-                      {marco && " · release"}
-                    </span>
-                    <span className="rounded bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-300">
-                      {act?.disciplina}
-                    </span>
-                  </div>
-                  <div className="mt-1 max-w-[160px] truncate text-[11px] text-slate-200">
-                    {act?.nome}
-                  </div>
-                  <div className="mt-1 font-mono text-[10px] text-slate-400">
-                    até {fmtDateBR(act?.forecastEndDate ?? "")}
-                  </div>
+              <li
+                key={id}
+                className={`min-w-0 rounded-xl border px-3 py-2 text-xs ${
+                  marco ? "border-indigo-400/60 bg-indigo-950/40" : "border-rose-500/40 bg-rose-950/20"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`font-mono font-bold ${marco ? "text-indigo-300" : "text-rose-300"}`}>
+                    {idx + 1}. {id}
+                  </span>
+                  <span className="rounded bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-300">
+                    {marco ? "release" : act?.disciplina}
+                  </span>
                 </div>
-                {idx < network.criticalPathForecast.length - 1 && (
-                  <span className="text-slate-500">→</span>
-                )}
-              </React.Fragment>
+                <div className="mt-1 line-clamp-2 text-[11px] leading-snug text-slate-200" title={act?.nome}>
+                  {act?.nome}
+                </div>
+                <div className="mt-1 font-mono text-[10px] text-slate-400">até {fmtDateBR(act?.forecastEndDate ?? "")}</div>
+              </li>
             );
           })}
-        </div>
+        </ol>
+
+        {/* Como e onde o caminho se liga à trilha ágil */}
+        {(() => {
+          const byId = (id: string) => network.activities.find((a) => a.id === id);
+          const r1 = byId("A40");
+          const r2 = byId("A41");
+          const r3 = byId("A42");
+          const r2Critica = !!r2?.criticaForecast;
+          return (
+            <div className="mt-2 rounded-xl border border-indigo-400/30 bg-indigo-950/25 p-3 text-xs leading-relaxed text-slate-300">
+              <div className="mb-1 font-semibold text-indigo-200">Onde a trilha ágil entra no caminho</div>
+              {r2Critica ? (
+                <p>
+                  O caminho começa na <strong className="text-white">Release 2 (A41)</strong>, entregue pelas sprints no
+                  Jira e prevista para <strong className="text-white">{fmtDateBR(r2?.forecastEndDate ?? "")}</strong>. Só
+                  depois dela começam os testes de carga e segurança (A32), que levam à entrada em operação (A35) e ao
+                  encerramento (A39). Por isso, cada sprint de atraso na R2 (10 dias úteis) adia o término do projeto na
+                  mesma medida.
+                </p>
+              ) : (
+                <p>
+                  Hoje nenhuma release está no caminho crítico: o término é definido só pela frente preditiva. A Release 2
+                  (A41), prevista para {fmtDateBR(r2?.forecastEndDate ?? "")}, tem {r2?.forecastFolga ?? 0} dias úteis de
+                  folga antes de atrasar os testes finais (A32).
+                </p>
+              )}
+              <p className="mt-1 text-slate-400">
+                Outras ligações: a Release 1 (A40) liberou o piloto (A27)
+                {r1?.situacao === "CONCLUIDA" ? ` — entregue em ${fmtDateBR(r1.forecastEndDate)}` : ""}; a Release 3 (A42),
+                prevista para {fmtDateBR(r3?.forecastEndDate ?? "")}, precisa terminar antes do encerramento e tem{" "}
+                {r3?.forecastFolga ?? 0} dias úteis de folga.
+              </p>
+            </div>
+          );
+        })()}
       </div>
 
       {children}
