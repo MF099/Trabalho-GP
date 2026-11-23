@@ -7,7 +7,7 @@ import type { AuditEntry, ProjectDatabase } from "../types/project";
  */
 export function applyQuinzenaBoletins(
   db: ProjectDatabase,
-  operadores: [string, string, string] = ["Membro 1", "Membro 2", "Membro 3"]
+  operadores: string[] = ["Matheus França", "Lucas Sampaio", "Beatriz Silva", "Julia Rodrigues"]
 ): { nextDb: ProjectDatabase; logs: AuditEntry[] } {
   const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
   const logs: AuditEntry[] = [];

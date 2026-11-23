@@ -417,7 +417,7 @@ export const DataEntryView: React.FC<Props> = ({
           <div>
             <span className="mb-1.5 block text-[11px] font-medium text-slate-400">Seleção rápida</span>
             <div className="flex flex-wrap gap-2">
-              {["Matheus", "Colega 2", "Colega 3"].map((n) => (
+              {["Matheus França", "Lucas Sampaio", "Beatriz Silva", "Julia Rodrigues"].map((n) => (
                 <button
                   key={n}
                   type="button"

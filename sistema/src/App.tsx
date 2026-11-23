@@ -71,7 +71,7 @@ export function App() {
   });
 
   const [statusDate, setStatusDate] = useState<string>("2026-11-13");
-  const [operador, setOperador] = useState<string>("Matheus");
+  const [operador, setOperador] = useState<string>("Matheus França");
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
   const [auditLogs, setAuditLogs] = useState<AuditEntry[]>(() => {
@@ -135,7 +135,12 @@ export function App() {
   };
 
   const handleApplyQuinzena = () => {
-    const { nextDb, logs } = applyQuinzenaBoletins(db, [operador, "Colega 2", "Colega 3"]);
+    const { nextDb, logs } = applyQuinzenaBoletins(db, [
+      "Matheus França",
+      "Lucas Sampaio",
+      "Beatriz Silva",
+      "Julia Rodrigues",
+    ]);
     setDb(nextDb);
     setStatusDate("2026-11-13");
     setAuditLogs((prev) => [...logs, ...prev].slice(0, 100));
