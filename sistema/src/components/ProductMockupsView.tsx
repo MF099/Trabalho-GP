@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
+import React, { useState } from "react";
 import {
-  Box,
   Calendar,
   Camera,
   CheckCircle2,
@@ -9,16 +7,14 @@ import {
   FileCheck2,
   MapPin,
   ShieldCheck,
-  Smartphone,
   Wrench,
 } from "lucide-react";
-import { fmtDateBR, num, type NetworkResult } from "../engine/calculations";
+import { fmtDateBR } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
 
 interface Props {
   db: ProjectDatabase;
   statusDate: string;
-  network: NetworkResult;
 }
 
 interface MockupScreen {
@@ -41,8 +37,7 @@ const DATE_PRESETS = [
   { date: "2026-11-13", label: "13/11 · Status" },
 ];
 
-export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network }) => {
-  const [viewMode, setViewMode] = useState<"MOCKUPS" | "3D">("MOCKUPS");
+export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
   const [scenarioFilter, setScenarioFilter] = useState<"C1" | "C3" | "C4" | "C5">("C1");
   const [controlDate, setControlDate] = useState<string>(statusDate);
   const [activeScreenId, setActiveScreenId] = useState<string>("T01");
@@ -400,108 +395,6 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
     return { txt: "PLANEJADA", cls: "bg-slate-800 text-slate-400" };
   };
 
-  // Three.js Mapa 3D Esquemático do Produto Digital (Tabela 38 — nota de rodapé do Slide 25)
-  const mountRef = useRef<HTMLDivElement | null>(null);
-  const [selected3dEl, setSelected3dEl] = useState<string>("EL02");
-
-  useEffect(() => {
-    if (viewMode !== "3D" || !mountRef.current) return;
-    const container = mountRef.current;
-    container.innerHTML = "";
-
-    const width = container.clientWidth || 640;
-    const height = container.clientHeight || 420;
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#020617");
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(85, 65, 95);
-    camera.lookAt(45, 5, 35);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
-
-    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
-    scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.1);
-    dirLight.position.set(60, 100, 40);
-    scene.add(dirLight);
-
-    const epicCompletion = new Map<string, number>();
-    for (const ep of db["13_epicos"]) {
-      const items = db["14_backlog_itens"].filter((b) => b.id_epico === ep.id_epico);
-      const tot = items.reduce((a, b) => a + num(b.pontos), 0);
-      const done = items
-        .filter((b) => b.status === "CONCLUIDO" && (!b.data_conclusao || b.data_conclusao <= controlDate))
-        .reduce((a, b) => a + num(b.pontos), 0);
-      epicCompletion.set(ep.id_epico, tot > 0 ? done / tot : 0);
-    }
-    const actAvMap = new Map(network.activities.map((a) => [a.id, a.avancoPct / 100]));
-
-    for (const el of db["38_elementos_3d"]) {
-      const x = num(el.x);
-      const y = num(el.y);
-      const z = num(el.z);
-      const w = Math.max(0.5, num(el.largura));
-      const len = Math.max(0.5, num(el.comprimento));
-      const h = Math.max(0.5, num(el.altura));
-
-      let progress = 1;
-      if (el.vinculo_tipo === "EPICO") {
-        progress = epicCompletion.get(el.vinculo_ids) ?? 0.2;
-      } else if (el.vinculo_tipo === "ATIVIDADE") {
-        const ids = el.vinculo_ids.split(";").filter(Boolean);
-        progress = ids.reduce((a, id) => a + (actAvMap.get(id) ?? 0), 0) / Math.max(1, ids.length);
-      }
-      if (el.tipo_elemento === "UNIDADE_DE_IMPLANTACAO") {
-        const ord = num(el.ordem_de_implantacao, 1);
-        const ids = el.vinculo_ids.split(";").filter(Boolean);
-        const avg = ids.reduce((a, id) => a + (actAvMap.get(id) ?? 0), 0) / Math.max(1, ids.length);
-        progress = avg >= ord / 10 ? 1 : 0.15;
-      }
-
-      const displayH = el.tipo_elemento === "AREA" ? h : Math.max(0.8, h * Math.max(0.15, progress));
-      const geom = new THREE.BoxGeometry(w, displayH, len);
-      let color = 0x1e293b;
-      if (el.tipo_elemento === "MODULO_DIGITAL") color = progress >= 0.9 ? 0x10b981 : progress >= 0.4 ? 0x38bdf8 : 0x6366f1;
-      else if (el.tipo_elemento === "UNIDADE_DE_IMPLANTACAO") color = progress >= 0.9 ? 0x34d399 : 0x475569;
-      else if (el.tipo_elemento === "HARDWARE") color = 0xf59e0b;
-      else if (el.tipo_elemento === "EDIFICACAO") color = 0x0ea5e9;
-      else if (el.tipo_elemento === "UTILIDADE") color = 0xa855f7;
-
-      const mat = new THREE.MeshStandardMaterial({
-        color,
-        transparent: el.tipo_elemento !== "AREA" && progress < 0.3,
-        opacity: el.tipo_elemento !== "AREA" && progress < 0.3 ? 0.45 : 0.92,
-      });
-      const mesh = new THREE.Mesh(geom, mat);
-      mesh.position.set(x + w / 2, z + displayH / 2, y + len / 2);
-      scene.add(mesh);
-    }
-
-    let angle = 0.6;
-    let animId = 0;
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      angle += 0.003;
-      camera.position.x = 45 + Math.cos(angle) * 75;
-      camera.position.z = 35 + Math.sin(angle) * 75;
-      camera.lookAt(45, 6, 32);
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      if (renderer.domElement.parentNode === container) {
-        container.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-    };
-  }, [viewMode, controlDate, db, network]);
-
-  const el3dSelected = db["38_elementos_3d"].find((e) => e.id_elemento === selected3dEl) ?? db["38_elementos_3d"][0];
-
   const activeBadge = getScreenStatusAtDate(activeScreen);
   const nextScreen = screens.find((screen) => screen.id === activeScreen.nextScreenId)!;
   const nextStatus = getScreenStatusAtDate(nextScreen).txt;
@@ -533,27 +426,9 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
             Veja as 14 telas e acompanhe o status de cada uma por data e cenário.
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setViewMode("MOCKUPS")}
-            className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold ${
-              viewMode === "MOCKUPS" ? "bg-sky-500 text-white" : "bg-slate-800 text-slate-300"
-            }`}
-          >
-            <Smartphone className="h-4 w-4" /> Telas do app
-          </button>
-          <button
-            onClick={() => setViewMode("3D")}
-            className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold ${
-              viewMode === "3D" ? "bg-indigo-500 text-white" : "bg-slate-800 text-slate-300"
-            }`}
-          >
-            <Box className="h-4 w-4" /> Mapa 3D Esquemático (Tab. 38)
-          </button>
-        </div>
       </div>
 
-      {/* Controle de Data + Cenário (compartilhado) */}
+      {/* Controle de Data + Cenário */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3.5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-200">
@@ -594,142 +469,96 @@ export const Product3DMockupsView: React.FC<Props> = ({ db, statusDate, network 
         </div>
       </div>
 
-      {viewMode === "MOCKUPS" ? (
-        <div key="view-mockups" className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_19rem]">
-          <label className="grid gap-1.5 text-sm font-semibold text-white xl:hidden">
-            Escolher tela
-            <select value={activeScreenId} onChange={(event) => setActiveScreenId(event.target.value)} className="rounded-xl border border-slate-600 bg-slate-900 px-3 py-2.5">
-              {screens.map((screen) => <option key={screen.id} value={screen.id}>{screen.title}</option>)}
-            </select>
-          </label>
-          <section aria-label="Prévia do aplicativo" className="grid min-w-0 place-items-center rounded-3xl border border-slate-700 bg-slate-900 bg-linear-to-b from-sky-950/60 p-4 sm:p-8">
-            <div className="w-full max-w-[360px]">
-              <div className="relative rounded-[2.75rem] border-2 border-slate-500 bg-slate-950 p-2 shadow-2xl shadow-black/60">
-                <span aria-hidden="true" className="absolute -left-1 top-24 h-10 w-1 rounded-l bg-slate-500" />
-                <span aria-hidden="true" className="absolute -right-1 top-28 h-12 w-1 rounded-r bg-slate-500" />
-                <div className="flex min-h-[530px] flex-col overflow-hidden rounded-[2.2rem] border border-slate-800 bg-slate-900">
-                  <div aria-hidden="true" className="relative flex h-12 items-center px-6 text-xs font-semibold text-slate-100">
-                    9:41
-                    <div className="absolute left-1/2 h-5 w-20 -translate-x-1/2 rounded-full bg-black ring-1 ring-slate-800" />
+      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_19rem]">
+        <label className="grid gap-1.5 text-sm font-semibold text-white xl:hidden">
+          Escolher tela
+          <select value={activeScreenId} onChange={(event) => setActiveScreenId(event.target.value)} className="rounded-xl border border-slate-600 bg-slate-900 px-3 py-2.5">
+            {screens.map((screen) => <option key={screen.id} value={screen.id}>{screen.title}</option>)}
+          </select>
+        </label>
+        <section aria-label="Prévia do aplicativo" className="grid min-w-0 place-items-center rounded-3xl border border-slate-700 bg-slate-900 bg-linear-to-b from-sky-950/60 p-4 sm:p-8">
+          <div className="w-full max-w-[360px]">
+            <div className="relative rounded-[2.75rem] border-2 border-slate-500 bg-slate-950 p-2 shadow-2xl shadow-black/60">
+              <span aria-hidden="true" className="absolute -left-1 top-24 h-10 w-1 rounded-l bg-slate-500" />
+              <span aria-hidden="true" className="absolute -right-1 top-28 h-12 w-1 rounded-r bg-slate-500" />
+              <div className="flex min-h-[530px] flex-col overflow-hidden rounded-[2.2rem] border border-slate-800 bg-slate-900">
+                <div aria-hidden="true" className="relative flex h-12 items-center px-6 text-xs font-semibold text-slate-100">
+                  9:41
+                  <div className="absolute left-1/2 h-5 w-20 -translate-x-1/2 rounded-full bg-black ring-1 ring-slate-800" />
+                </div>
+                <div className="flex flex-1 flex-col px-5 pb-5">
+                  <div className="mb-6 flex items-center gap-2 border-b border-slate-700 pb-4 text-sm font-semibold text-white">
+                    <img src="/mare_seguros.jpeg" alt="" className="h-8 w-8 rounded-lg bg-white object-contain p-0.5" />
+                    Maré Seguros
                   </div>
-                  <div className="flex flex-1 flex-col px-5 pb-5">
-                    <div className="mb-6 flex items-center gap-2 border-b border-slate-700 pb-4 text-sm font-semibold text-white">
-                      <img src="/mare_seguros.jpeg" alt="" className="h-8 w-8 rounded-lg bg-white object-contain p-0.5" />
-                      Maré Seguros
-                    </div>
-                    <h3 className="mb-4 text-xl font-bold leading-tight text-white">{activeScreen.title}</h3>
-                    <div className="flex-1">{activeScreen.previewBody}</div>
-                    <p className="mt-6 text-xs text-slate-300">A seguir · {nextScreen.title}</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <button onClick={advance} className="flex-1 rounded-xl bg-sky-300 px-3 py-3 text-sm font-bold text-slate-950 hover:bg-sky-200">
-                        Próxima tela →
+                  <h3 className="mb-4 text-xl font-bold leading-tight text-white">{activeScreen.title}</h3>
+                  <div className="flex-1">{activeScreen.previewBody}</div>
+                  <p className="mt-6 text-xs text-slate-300">A seguir · {nextScreen.title}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button onClick={advance} className="flex-1 rounded-xl bg-sky-300 px-3 py-3 text-sm font-bold text-slate-950 hover:bg-sky-200">
+                      Próxima tela →
+                    </button>
+                    {canSkip && (
+                      <button onClick={() => setActiveScreenId(nextScreen.nextScreenId)} aria-label={`Pular etapa: ${nextScreen.title}`} className="rounded-xl border border-slate-500 px-3 py-3 text-sm font-semibold text-white hover:bg-slate-800">
+                        Pular etapa
                       </button>
-                      {canSkip && (
-                        <button onClick={() => setActiveScreenId(nextScreen.nextScreenId)} aria-label={`Pular etapa: ${nextScreen.title}`} className="rounded-xl border border-slate-500 px-3 py-3 text-sm font-semibold text-white hover:bg-slate-800">
-                          Pular etapa
-                        </button>
-                      )}
-                    </div>
+                    )}
                   </div>
-                  <div aria-hidden="true" className="mx-auto mb-3 h-1 w-24 rounded-full bg-slate-500" />
                 </div>
-              </div>
-              <div className="mt-5 space-y-2 text-center text-xs text-slate-300" aria-live="polite">
-                <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-semibold ${activeBadge.cls}`}>
-                  {activeBadge.txt === "ENTREGUE" && <CheckCircle2 aria-hidden="true" className="h-3.5 w-3.5" />}
-                  {activeBadge.txt === "EM ANDAMENTO" && <Clock aria-hidden="true" className="h-3.5 w-3.5" />}
-                  {activeBadge.txt}
-                </span>
-                <p>{activeScreen.release} · {fmtDateBR(controlDate)} · {activeScreen.epicId} — {epicMap.get(activeScreen.epicId)?.nome_epico}</p>
-                <p className="flex flex-wrap items-center justify-center gap-1">
-                  <FileCheck2 aria-hidden="true" className="h-3.5 w-3.5" /> Backlog · {activeScreen.items.join(", ")}
-                </p>
-                {activeScreen.id === "T13" && <p>IP-014 · Aguardando integração com outro time</p>}
+                <div aria-hidden="true" className="mx-auto mb-3 h-1 w-24 rounded-full bg-slate-500" />
               </div>
             </div>
-          </section>
-
-          <section aria-labelledby="mockup-gallery" className="min-w-0 space-y-3 rounded-3xl border border-slate-800 bg-slate-900/60 p-4">
-            <h3 id="mockup-gallery" className="text-sm font-semibold text-white">Telas do aplicativo</h3>
-            <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold">
-              <span className="rounded-full bg-emerald-300 px-2 py-1 text-emerald-950">Entregues · {statusCounts["ENTREGUE"] ?? 0}</span>
-              <span className="rounded-full border border-amber-400/60 bg-amber-950 px-2 py-1 text-amber-200">Em andamento · {statusCounts["EM ANDAMENTO"] ?? 0}</span>
-              <span className="rounded-full bg-slate-800 px-2 py-1 text-slate-300">Planejadas · {statusCounts["PLANEJADA"] ?? 0}</span>
-            </div>
-            <div className="grid gap-2 sm:max-xl:grid-cols-2 xl:max-h-[590px] xl:overflow-y-auto xl:pr-1">
-              {screens.map((screen) => {
-                const badge = getScreenStatusAtDate(screen);
-                const selected = activeScreen.id === screen.id;
-                return (
-                  <button
-                    key={screen.id}
-                    aria-pressed={selected}
-                    onClick={() => setActiveScreenId(screen.id)}
-                    className={`rounded-xl border p-3 text-left transition ${
-                      selected ? "border-sky-400 bg-sky-950/60" : "border-slate-800 bg-slate-950/50 hover:border-slate-600"
-                    }`}
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] text-slate-300">{screen.id} · {screen.release}</span>
-                      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${badge.cls}`}>
-                        {badge.txt === "ENTREGUE" && <CheckCircle2 aria-hidden="true" className="h-3 w-3" />}
-                        {badge.txt === "EM ANDAMENTO" && <Clock aria-hidden="true" className="h-3 w-3" />}
-                        {badge.txt}
-                      </span>
-                    </div>
-                    <div className="mt-2 text-sm font-semibold text-white">{screen.title}</div>
-                    <div className="mt-1 text-xs text-slate-300">{screen.subtitle}</div>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-        </div>
-      ) : (
-        <div key="view-3d" className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 lg:col-span-2">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-white">
-                Mapa 3D Esquemático dos Módulos Digitais e Implantação (Tabela 38 · {fmtDateBR(controlDate)})
+            <div className="mt-5 space-y-2 text-center text-xs text-slate-300" aria-live="polite">
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-semibold ${activeBadge.cls}`}>
+                {activeBadge.txt === "ENTREGUE" && <CheckCircle2 aria-hidden="true" className="h-3.5 w-3.5" />}
+                {activeBadge.txt === "EM ANDAMENTO" && <Clock aria-hidden="true" className="h-3.5 w-3.5" />}
+                {activeBadge.txt}
               </span>
+              <p>{activeScreen.release} · {fmtDateBR(controlDate)} · {activeScreen.epicId} — {epicMap.get(activeScreen.epicId)?.nome_epico}</p>
+              <p className="flex flex-wrap items-center justify-center gap-1">
+                <FileCheck2 aria-hidden="true" className="h-3.5 w-3.5" /> Backlog · {activeScreen.items.join(", ")}
+              </p>
+              {activeScreen.id === "T13" && <p>IP-014 · Aguardando integração com outro time</p>}
             </div>
-            <div ref={mountRef} className="h-[420px] w-full overflow-hidden rounded-xl border border-slate-800" />
-            <p className="mt-2 text-[11px] text-slate-400">
-              Legenda: Verde = concluído até a data · Azul = em andamento · Roxo = núcleo de nuvem · Âmbar = kits de hardware.
-            </p>
           </div>
+        </section>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-            <h3 className="mb-2 text-sm font-semibold text-white">Elementos da Tabela 38 (26 itens)</h3>
-            {el3dSelected && (
-              <div className="mb-3 rounded-xl border border-sky-500/30 bg-slate-950/70 p-3 text-xs">
-                <div className="font-mono font-bold text-sky-300">{el3dSelected.id_elemento}</div>
-                <div className="font-semibold text-white">{el3dSelected.nome_elemento}</div>
-                <div className="mt-1 text-slate-400">
-                  Tipo: {el3dSelected.tipo_elemento} · Vínculo: {el3dSelected.vinculo_tipo} ({el3dSelected.vinculo_ids || "Base"})
-                </div>
-              </div>
-            )}
-            <div className="max-h-80 space-y-1 overflow-y-auto text-xs">
-              {db["38_elementos_3d"].map((el) => (
+        <section aria-labelledby="mockup-gallery" className="min-w-0 space-y-3 rounded-3xl border border-slate-800 bg-slate-900/60 p-4">
+          <h3 id="mockup-gallery" className="text-sm font-semibold text-white">Telas do aplicativo</h3>
+          <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold">
+            <span className="rounded-full bg-emerald-300 px-2 py-1 text-emerald-950">Entregues · {statusCounts["ENTREGUE"] ?? 0}</span>
+            <span className="rounded-full border border-amber-400/60 bg-amber-950 px-2 py-1 text-amber-200">Em andamento · {statusCounts["EM ANDAMENTO"] ?? 0}</span>
+            <span className="rounded-full bg-slate-800 px-2 py-1 text-slate-300">Planejadas · {statusCounts["PLANEJADA"] ?? 0}</span>
+          </div>
+          <div className="grid gap-2 sm:max-xl:grid-cols-2 xl:max-h-[590px] xl:overflow-y-auto xl:pr-1">
+            {screens.map((screen) => {
+              const badge = getScreenStatusAtDate(screen);
+              const selected = activeScreen.id === screen.id;
+              return (
                 <button
-                  key={el.id_elemento}
-                  onClick={() => setSelected3dEl(el.id_elemento)}
-                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left ${
-                    selected3dEl === el.id_elemento ? "bg-sky-500/20 text-white" : "hover:bg-slate-800/50 text-slate-300"
+                  key={screen.id}
+                  aria-pressed={selected}
+                  onClick={() => setActiveScreenId(screen.id)}
+                  className={`rounded-xl border p-3 text-left transition ${
+                    selected ? "border-sky-400 bg-sky-950/60" : "border-slate-800 bg-slate-950/50 hover:border-slate-600"
                   }`}
                 >
-                  <span className="truncate">
-                    <span className="mr-1.5 font-mono text-sky-400">{el.id_elemento}</span>
-                    {el.nome_elemento}
-                  </span>
-                  <span className="ml-2 font-mono text-[10px] text-slate-500">{el.vinculo_ids}</span>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-mono text-[11px] text-slate-300">{screen.id} · {screen.release}</span>
+                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${badge.cls}`}>
+                      {badge.txt === "ENTREGUE" && <CheckCircle2 aria-hidden="true" className="h-3 w-3" />}
+                      {badge.txt === "EM ANDAMENTO" && <Clock aria-hidden="true" className="h-3 w-3" />}
+                      {badge.txt}
+                    </span>
+                  </div>
+                  <div className="mt-2 text-sm font-semibold text-white">{screen.title}</div>
+                  <div className="mt-1 text-xs text-slate-300">{screen.subtitle}</div>
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        </div>
-      )}
+        </section>
+      </div>
     </div>
   );
 };
