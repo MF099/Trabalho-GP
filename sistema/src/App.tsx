@@ -7,6 +7,7 @@ import {
   Kanban,
   LayoutDashboard,
   Menu,
+  Settings,
   ShieldAlert,
   Smartphone,
   Users,
@@ -25,9 +26,10 @@ import {
 import { computeGovernanceAndProcurement } from "./engine/extraCalculations";
 import { applyQuinzenaBoletins } from "./engine/quinzenaData";
 import { logEntryToSupabase, pullStateFromSupabase } from "./lib/supabase";
-import type { AuditEntry, ProjectDatabase } from "./types/project";
+import type { AuditEntry, CsvRow, ProjectDatabase, TableName } from "./types/project";
 import { DashboardExecutive } from "./components/DashboardExecutive";
 import { DataEntryView } from "./components/DataEntryView";
+import { SettingsView } from "./components/SettingsView";
 import { NetworkCpmView } from "./components/NetworkCpmView";
 import { EapGanttView } from "./components/EapGanttView";
 import { EvmView } from "./components/EvmView";
@@ -146,6 +148,31 @@ export function App() {
     setAuditLogs([]);
   };
 
+  const handleDeleteEntry = (entryId: string) => {
+    const entry = auditLogs.find((l) => l.id === entryId);
+    if (entry && entry.dados && typeof entry.dados._table === "string" && entry.dados._row) {
+      const tbl = entry.dados._table as TableName;
+      const snap = entry.dados._row as CsvRow;
+      const snapJson = JSON.stringify(snap);
+      const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
+      const rows = next[tbl];
+      if (Array.isArray(rows)) {
+        for (let i = rows.length - 1; i >= 0; i--) {
+          if (JSON.stringify(rows[i]) === snapJson) {
+            rows.splice(i, 1);
+            break;
+          }
+        }
+        setDb(next);
+      }
+    }
+    setAuditLogs((prev) => prev.filter((l) => l.id !== entryId));
+  };
+
+  const handleClearLogs = () => {
+    setAuditLogs([]);
+  };
+
   const handleMoveCard = (itemId: string, toStatus: string) => {
     const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
     const item = next["14_backlog_itens"].find((b) => b.id_item === itemId);
@@ -176,7 +203,7 @@ export function App() {
 
   const navItems = [
     { id: "dashboard", label: "Início", icon: LayoutDashboard },
-    { id: "entry", label: "Lançamentos (R3)", icon: FileSpreadsheet },
+    { id: "entry", label: "Lançamentos", icon: FileSpreadsheet },
     { id: "network", label: "Prazo, EAP e Gantt", icon: GitBranch },
     { id: "evm", label: "Custo e valor agregado", icon: Activity },
     { id: "agile", label: "Painel Ágil", icon: Kanban },
@@ -186,8 +213,10 @@ export function App() {
     { id: "mockups", label: "Mockups do Produto", icon: Smartphone },
   ];
 
-  const isQuinzenaLoaded = db["14_backlog_itens"].length >= 134;
-  const activeLabel = navItems.find((n) => n.id === activeTab)?.label ?? "Início";
+  const activeLabel =
+    activeTab === "settings"
+      ? "Configurações"
+      : navItems.find((n) => n.id === activeTab)?.label ?? "Início";
 
   const handleSelectTab = (id: string) => {
     setActiveTab(id);
@@ -261,17 +290,25 @@ export function App() {
           })}
         </nav>
 
-        {/* Sidebar Footer */}
-        {!isQuinzenaLoaded && (
-          <div className="border-t border-slate-800 p-4">
-            <button
-              onClick={handleApplyQuinzena}
-              className="w-full rounded-lg bg-[#139297] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#17a8ae]"
-            >
-              Carregar Boletins 03–13/11
-            </button>
-          </div>
-        )}
+        {/* Sidebar Footer — Configurações */}
+        <div className="border-t border-[#1e2b3a] p-3">
+          <button
+            onClick={() => handleSelectTab("settings")}
+            aria-current={activeTab === "settings" ? "page" : undefined}
+            className={`flex w-full items-center gap-3.5 rounded-xl px-3.5 py-2.5 text-left text-[13px] font-medium transition ${
+              activeTab === "settings"
+                ? "bg-[#12323a] text-[#5eead4] ring-1 ring-inset ring-sky-400/25"
+                : "text-slate-400 hover:bg-[#14202e] hover:text-slate-100"
+            }`}
+          >
+            <Settings
+              className={`h-[18px] w-[18px] shrink-0 ${
+                activeTab === "settings" ? "text-[#2dd4bf]" : "text-slate-500"
+              }`}
+            />
+            <span className="truncate">Configurações</span>
+          </button>
+        </div>
       </aside>
 
       {/* Main Column */}
@@ -340,10 +377,21 @@ export function App() {
             operador={operador}
             auditLogs={auditLogs}
             onChangeOperador={setOperador}
+            onUpdateDb={handleUpdateDb}
+          />
+        )}
+        {activeTab === "settings" && (
+          <SettingsView
+            db={db}
+            statusDate={statusDate}
+            operador={operador}
+            auditLogs={auditLogs}
             onChangeStatusDate={setStatusDate}
             onUpdateDb={handleUpdateDb}
             onApplyQuinzena={handleApplyQuinzena}
             onResetBase={handleResetBase}
+            onDeleteEntry={handleDeleteEntry}
+            onClearLogs={handleClearLogs}
           />
         )}
         {activeTab === "network" && (
