@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Activity,
-  Bot,
   Compass,
   FileSpreadsheet,
   GitBranch,
@@ -36,7 +35,7 @@ import { GovernanceProcurementView } from "./components/GovernanceProcurementVie
 import { PeopleProductivityView } from "./components/PeopleProductivityView";
 import { ScenarioSimulatorView } from "./components/ScenarioSimulatorView";
 import { Product3DMockupsView } from "./components/Product3DMockupsView";
-import { AiAssistantView } from "./components/AiAssistantView";
+import { AiAssistantFloating } from "./components/AiAssistantView";
 
 const STORAGE_KEY = "mare-seguros-war-room-db-v1";
 const LOG_KEY = "mare-seguros-war-room-logs-v1";
@@ -184,7 +183,6 @@ export function App() {
     { id: "governance", label: "Riscos & Contratos", icon: ShieldAlert },
     { id: "scenarios", label: "Cenários (C1–C6)", icon: Compass },
     { id: "mockups", label: "Mockups do Produto", icon: Smartphone },
-    { id: "ai", label: "Assistente IA", icon: Bot },
   ];
 
   const isQuinzenaLoaded = db["14_backlog_itens"].length >= 134;
@@ -314,7 +312,7 @@ export function App() {
         </header>
 
         {/* Main Content */}
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 lg:px-8">
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 pt-6 pb-24 lg:px-8">
         {activeTab === "dashboard" && (
           <DashboardExecutive
             db={db}
@@ -366,18 +364,19 @@ export function App() {
           />
         )}
         {activeTab === "mockups" && <Product3DMockupsView db={db} statusDate={statusDate} network={network} />}
-        {activeTab === "ai" && (
-          <AiAssistantView
-            db={db}
-            statusDate={statusDate}
-            network={network}
-            evm={evm}
-            agile={agile}
-            scenarios={scenarios}
-          />
-        )}
         </main>
       </div>
+
+      {/* Assistente de IA flutuante: disponível em todas as telas */}
+      <AiAssistantFloating
+        db={db}
+        statusDate={statusDate}
+        network={network}
+        evm={evm}
+        agile={agile}
+        scenarios={scenarios}
+        activeTab={activeTab}
+      />
     </div>
   );
 }

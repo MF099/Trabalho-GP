@@ -6,6 +6,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -24,7 +25,7 @@ import {
   type ScenarioSimulation,
 } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
-import { Detalhes } from "./ui";
+import { Detalhes, useLigacaoGrafico } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -92,6 +93,8 @@ export const ScenarioSimulatorView: React.FC<Props> = ({
     VPL: Math.round(s.vpl / 1000),
     Resultado: Math.round(s.resultadoLiquido / 1000),
   }));
+  // Liga o gráfico de barras à tabela comparativa (mesma ordem de cenários)
+  const lig = useLigacaoGrafico(barData, "nome");
 
   return (
     <div className="space-y-6">
@@ -185,15 +188,16 @@ export const ScenarioSimulatorView: React.FC<Props> = ({
                 <th className="py-2">O que se perde ao escolher</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {scenarios.map((s) => {
+            <tbody className="divide-y divide-slate-800/60" onMouseLeave={() => lig.setAtivo(null)}>
+              {scenarios.map((s, i) => {
                 const best = Math.max(...scenarios.map((x) => x.resultadoLiquido));
                 const isBest = Math.abs(s.resultadoLiquido - best) < 1;
                 return (
                   <tr
                     key={s.idKey}
                     onClick={() => setSelectedIds(s.scenarioIds)}
-                    className={`cursor-pointer hover:bg-slate-800/40 ${isBest ? "bg-emerald-950/25" : ""}`}
+                    onMouseEnter={() => lig.setAtivo(i)}
+                    className={`cursor-pointer hover:bg-slate-800/40 ${isBest ? "bg-emerald-950/25" : ""} ${lig.ativo === i ? "linha-ativa" : ""}`}
                   >
                     <td className="py-2 pr-2 font-mono font-bold text-sky-300">
                       {s.idKey} {isBest && <span className="ml-1 rounded bg-emerald-500/20 px-1 text-[10px] text-emerald-300">MELHOR</span>}
@@ -217,9 +221,8 @@ export const ScenarioSimulatorView: React.FC<Props> = ({
       {/* Gráficos Financeiros M7 */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-          <h3 className="mb-3 text-sm font-semibold text-white">
-            Fluxo de Caixa Acumulado (M7: C1 × C3 × C4 × {customSim.idKey}, em R$ mil)
-          </h3>
+          <h3 className="text-sm font-semibold text-white">Fluxo de caixa acumulado (R$ mil)</h3>
+          <p className="mb-3 text-xs text-slate-400">C1, C3 e C4 contra o cenário selecionado ({customSim.idKey}) · folha M7.</p>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={cashFlowChart}>
@@ -238,11 +241,13 @@ export const ScenarioSimulatorView: React.FC<Props> = ({
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-          <h3 className="mb-3 text-sm font-semibold text-white">VPL e Resultado Líquido por Cenário (R$ mil)</h3>
+          <h3 className="text-sm font-semibold text-white">VPL e saldo por cenário (R$ mil)</h3>
+          <p className="mb-3 text-xs text-slate-400">Ligado à tabela de comparação: passe o mouse em um ou no outro.</p>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={barData}>
+              <BarChart data={barData} {...lig.chartProps}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                {lig.ativoX !== undefined && <ReferenceLine x={lig.ativoX} stroke="#5eead4" strokeDasharray="4 4" />}
                 <XAxis dataKey="nome" stroke="#94a3b8" fontSize={11} />
                 <YAxis stroke="#94a3b8" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }} />

@@ -51,6 +51,75 @@
   }
 }
 
+/* ---------- Tabelas: layout único em todas as abas ---------- */
+/* Fora de @layer de propósito: sobrepõe os paddings soltos de cada tela e deixa todas iguais. */
+main table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+main table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #0d1520;
+  color: #8fa1b5;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 10px 12px;
+  border-bottom: 1px solid #2b3c4f;
+}
+main table tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #172230;
+  vertical-align: middle;
+}
+main table tbody tr:last-child td {
+  border-bottom: 0;
+}
+main table tbody tr:hover td {
+  background: rgba(45, 212, 191, 0.06);
+}
+main table tbody tr.linha-ativa td {
+  background: rgba(45, 212, 191, 0.14);
+}
+/* Moldura das tabelas */
+main .overflow-x-auto:has(> table),
+main .overflow-auto:has(> table) {
+  border: 1px solid #1e2b3a;
+  border-radius: 12px;
+  background: #0b121a;
+}
+
+/* Linhas alternadas (em camada base, para não apagar os destaques coloridos de cada linha) */
+@layer base {
+  main table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.018);
+  }
+}
+
+/* ---------- Blocos: separação mais clara dentro de cada aba ---------- */
+main .rounded-2xl.border {
+  border-left-color: #22344a;
+  border-right-color: #22344a;
+  border-bottom-color: #22344a;
+  background-image: linear-gradient(180deg, #111c28 0%, #0d151f 100%);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+/* Título de cada bloco com uma barra de destaque à esquerda */
+main .rounded-2xl > h3:first-child,
+main .rounded-2xl > h2:first-child,
+main .rounded-2xl > div:first-child > h3:first-child,
+main .rounded-2xl > div:first-child > div:first-child > h3:first-child,
+main .rounded-2xl > div:first-child > div:first-child > h2:first-child {
+  border-left: 3px solid #139297;
+  padding-left: 10px;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { fmtBRL0, fmtDateBR, fmtNum, type NetworkResult } from "../engine/calculations";
 import { computeM4Compression } from "../engine/extraCalculations";
 import type { ProjectDatabase } from "../types/project";
-import { Detalhes } from "./ui";
+import { Detalhes, useLigacaoGrafico } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -14,6 +14,7 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
   const [filterMode, setFilterMode] = useState<"ALL" | "CRITICAL" | "M1">("ALL");
   const m1Ids = new Set(["A22", "A23", "A24", "A25", "A26", "A27", "A28", "A29", "A30", "A31", "A34", "A35"]);
   const m4 = computeM4Compression(db, 5);
+  const ligM4 = useLigacaoGrafico(m4.steps, "novoPrazo");
 
   const visibleActs = network.activities.filter((a) => {
     if (filterMode === "CRITICAL") return a.criticaForecast || a.criticaLb;
@@ -188,9 +189,9 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
                 <th className="py-1.5 text-right">Prazo</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {m4.steps.map((s) => (
-                <tr key={s.passo}>
+            <tbody className="divide-y divide-slate-800/60" onMouseLeave={() => ligM4.setAtivo(null)}>
+              {m4.steps.map((s, i) => (
+                <tr key={s.passo} onMouseEnter={() => ligM4.setAtivo(i)} className={ligM4.ativo === i ? "linha-ativa" : ""}>
                   <td className="py-1.5 font-mono">#{s.passo}</td>
                   <td className="py-1.5 font-mono text-sky-300">{s.atividade}</td>
                   <td className="py-1.5 text-right font-mono">{fmtBRL0(s.custoDia)}</td>
@@ -206,12 +207,16 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
           <h3 className="mb-2 text-sm font-semibold text-white">Custo Acumulado de Compressão × Prazo</h3>
           <div className="h-56 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={m4.steps}>
+              <BarChart data={m4.steps} {...ligM4.chartProps}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis dataKey="novoPrazo" stroke="#94a3b8" fontSize={12} />
                 <YAxis stroke="#94a3b8" fontSize={12} />
                 <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }} />
-                <Bar dataKey="custoAcum" name="Custo Acumulado (R$)" fill="#38bdf8" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="custoAcum" name="Custo Acumulado (R$)" radius={[6, 6, 0, 0]}>
+                  {m4.steps.map((s, i) => (
+                    <Cell key={s.passo} fill={ligM4.ativo === i ? "#5eead4" : "#38bdf8"} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
