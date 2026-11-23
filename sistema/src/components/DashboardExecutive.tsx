@@ -1,6 +1,10 @@
 import React from "react";
 import {
   AlertTriangle,
+  ArrowUpRight,
+  FileSpreadsheet,
+  GitBranch,
+  Smartphone,
   CalendarClock,
   CheckCircle2,
   CircleDollarSign,
@@ -132,57 +136,78 @@ export const DashboardExecutive: React.FC<Props> = ({
 
   return (
     <div className="space-y-6">
-      {/* As 3 respostas do Comitê Diretor */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-[#1e2b3a] border-t-2 border-t-amber-400/80 bg-[#101822] p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Quando termina?
-            </span>
-            <CalendarClock className="h-5 w-5 text-amber-400" />
+      <section aria-labelledby="project-summary" className="mare-summary rounded-3xl border border-sky-500/30 p-4 sm:p-6">
+        <h2 id="project-summary" className="mb-5 text-2xl font-semibold tracking-tight text-white">Visão do projeto</h2>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-xl border border-white/12 bg-slate-950/50 p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-slate-200">
+                Quando termina?
+              </span>
+              <CalendarClock className="h-5 w-5 text-amber-400" />
+            </div>
+            <div className="mt-3 text-3xl font-semibold tracking-tight tabular-nums text-white">{fmtDateBR(network.forecastEndDate)}</div>
+            <p className="mt-1 text-sm text-slate-300">
+              <strong className="text-amber-300">{network.atrasoContratualDu} dias úteis</strong> depois do prazo do
+              contrato (22/01/2027).
+            </p>
           </div>
-          <div className="mt-2 text-3xl font-bold text-white">{fmtDateBR(network.forecastEndDate)}</div>
-          <p className="mt-1 text-sm text-slate-300">
-            <strong className="text-amber-300">{network.atrasoContratualDu} dias úteis</strong> depois do prazo do
-            contrato (22/01/2027).
-          </p>
-        </div>
 
-        <div className="rounded-2xl border border-[#1e2b3a] border-t-2 border-t-rose-400/80 bg-[#101822] p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Quanto vai custar?
-            </span>
-            <CircleDollarSign className="h-5 w-5 text-rose-400" />
+          <div className="rounded-xl border border-white/12 bg-slate-950/50 p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-slate-200">
+                Quanto vai custar?
+              </span>
+              <CircleDollarSign className="h-5 w-5 text-rose-400" />
+            </div>
+            <div className="mt-3 text-3xl font-semibold tracking-tight tabular-nums text-white">{fmtMi(evm.entTotal)}</div>
+            <p className="mt-1 text-sm text-slate-300">
+              <strong className="text-rose-300">{fmtNum(desvioPct, 0)}% acima</strong> do orçamento aprovado (
+              {fmtMi(evm.ontTotal)}).
+            </p>
           </div>
-          <div className="mt-2 text-3xl font-bold text-white">{fmtMi(evm.entTotal)}</div>
-          <p className="mt-1 text-sm text-slate-300">
-            <strong className="text-rose-300">{fmtNum(desvioPct, 0)}% acima</strong> do orçamento aprovado (
-            {fmtMi(evm.ontTotal)}).
-          </p>
-        </div>
 
-        <div className="rounded-2xl border border-[#1e2b3a] border-t-2 border-t-[#18a3a8] bg-[#101822] p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              O que decidir agora?
-            </span>
-            <Compass className="h-5 w-5 text-[#2dd4bf]" />
+          <div className="rounded-xl border border-white/12 bg-slate-950/50 p-4 sm:p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-slate-200">
+                O que decidir agora?
+              </span>
+              <Compass className="h-5 w-5 text-[#2dd4bf]" />
+            </div>
+            <div className="mt-3 text-xl font-semibold tracking-tight text-white">
+              {bestCombined ? `${bestCombined.idKey} · ${nomeCenario(bestCombined)}` : "Simular cenários"}
+            </div>
+            <p className="mt-1 text-sm text-slate-300">
+              Cenário com melhor saldo entre retorno financeiro e custo do atraso.
+            </p>
+            <button
+              onClick={() => onNavigate("scenarios")}
+              className="mt-4 rounded-lg bg-sky-300 px-3 py-2 text-xs font-bold text-slate-950 transition hover:bg-sky-400"
+            >
+              Comparar cenários →
+            </button>
           </div>
-          <div className="mt-2 text-2xl font-bold text-white">
-            {bestCombined ? `${bestCombined.idKey} · ${nomeCenario(bestCombined)}` : "Simular cenários"}
-          </div>
-          <p className="mt-1 text-sm text-slate-300">
-            Cenário com melhor saldo entre retorno financeiro e custo do atraso.
-          </p>
-          <button
-            onClick={() => onNavigate("scenarios")}
-            className="mt-3 w-full rounded-lg bg-[#12323a] px-3 py-2 text-xs font-semibold text-[#5eead4] transition hover:bg-[#17414b]"
-          >
-            Comparar cenários →
-          </button>
         </div>
-      </div>
+      </section>
+
+      <section aria-labelledby="quick-access">
+        <h2 id="quick-access" className="mb-3 text-lg font-semibold text-white">Acesso rápido</h2>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          {[
+            { id: "entry", label: "Registrar lançamentos", icon: FileSpreadsheet },
+            { id: "network", label: "Consultar cronograma", icon: GitBranch },
+            { id: "mockups", label: "Explorar protótipo", icon: Smartphone },
+          ].map(({ id, label, icon: Icon }) => (
+            <button key={id} onClick={() => onNavigate(id)} className="group flex min-h-14 items-center gap-3 rounded-xl border border-slate-700 bg-slate-900 p-3 text-left text-sm font-semibold text-slate-100 transition hover:border-sky-400 hover:bg-sky-950">
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-sky-500/15 text-sky-300">
+                <Icon aria-hidden="true" className="size-4" />
+              </span>
+              <span className="flex-1">{label}</span>
+              <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 text-slate-400 group-hover:text-sky-300" />
+            </button>
+          ))}
+        </div>
+      </section>
 
       {/* Indicadores de apoio */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -191,7 +216,7 @@ export const DashboardExecutive: React.FC<Props> = ({
             <TrendingDown className="h-4 w-4 text-sky-400" />
             Ritmo da equipe ágil
           </div>
-          <div className="mt-1 text-xl font-bold text-white">
+          <div className="mt-1 text-xl font-bold tabular-nums text-white">
             {fmtNum(agile.velocidadeMedia, 1)} <span className="text-xs font-normal text-slate-400">pts/sprint</span>
           </div>
           <div className="mt-1 text-xs text-slate-400">Meta: 17,3 pts/sprint</div>
@@ -202,7 +227,7 @@ export const DashboardExecutive: React.FC<Props> = ({
             <ShieldAlert className="h-4 w-4 text-amber-400" />
             Riscos em aberto
           </div>
-          <div className="mt-1 text-xl font-bold text-white">{fmtBRL0(governance.exposicaoTotalVme)}</div>
+          <div className="mt-1 text-xl font-bold tabular-nums text-white">{fmtBRL0(governance.exposicaoTotalVme)}</div>
           <div className={`mt-1 text-xs ${reservaCobre ? "text-emerald-400" : "text-rose-300"}`}>
             {reservaCobre ? "Reserva de contingência cobre" : "Reserva de contingência não cobre"}
           </div>
@@ -213,7 +238,7 @@ export const DashboardExecutive: React.FC<Props> = ({
             <AlertTriangle className="h-4 w-4 text-rose-400" />
             Falhas de governança
           </div>
-          <div className="mt-1 text-xl font-bold text-white">{governance.pedidosDiretos.length + violacoesAlcada}</div>
+          <div className="mt-1 text-xl font-bold tabular-nums text-white">{governance.pedidosDiretos.length + violacoesAlcada}</div>
           <div className="mt-1 text-xs text-slate-400">Pedidos e mudanças fora do fluxo</div>
         </div>
 
@@ -222,7 +247,7 @@ export const DashboardExecutive: React.FC<Props> = ({
             <CheckCircle2 className="h-4 w-4 text-indigo-400" />
             Backlog entregue
           </div>
-          <div className="mt-1 text-xl font-bold text-white">
+          <div className="mt-1 text-xl font-bold tabular-nums text-white">
             {agile.itensTotaisBacklog > 0
               ? `${fmtNum((agile.itensConcluidosTotal / agile.itensTotaisBacklog) * 100, 0)}%`
               : "—"}
