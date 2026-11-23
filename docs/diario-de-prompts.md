@@ -6,8 +6,6 @@
 **Sistema publicado:** `https://sistema-ruddy.vercel.app`  
 **Data de referência dos dados:** `13/11/2026` (base tratada até `30/10/2026` + boletins `B1`–`B9`)
 
-> **Atenção do grupo antes da entrega final (`24/11 23h59`):** substitua `[Integrante 2]` e `[Integrante 3]` abaixo pelos nomes completos dos dois colegas que participaram das revisões e prompts (requisito mínimo do trabalho: **10 entradas de pelo menos 3 pessoas**).
-
 ---
 
 ## Regras de Uso de IA Adotadas pelo Grupo
@@ -25,14 +23,14 @@
 | :-: | :-: | :--- | :--- | :--- |
 | **01** | 22/11/2026 | Matheus França | ETL e Qualidade dos Dados (`scripts/tratar_dados.py`) | Ignorou 3 erros de digitação de `400 h` e 4 semanas sem informe (`A18` em `25/09`) |
 | **02** | 22/11/2026 | Matheus França | Motor EVM e Rede CPM (`sistema/src/engine/`) | Erro de tipagem `CsvRow` (`spread`), nome de campo `alocPct` e ausência de `vite-env.d.ts` |
-| **03** | 22/11/2026 | [Integrante 2] | Simulador de Cenários C1–C6 (`calculations.ts`) | Cenário `C4` fechou em `05/04/2027` (`48 du`) em vez de `30/03/2027` (`44 du`) |
-| **04** | 22/11/2026 | [Integrante 2] | Módulo D17 — Mockups do Produto (`Product3DMockupsView.tsx`) | Priorizou 3D genérico e códigos fictícios em vez de telas do app com IDs `MS-*` reais |
-| **05** | 22/11/2026 | [Integrante 2] | Renderização Three.js (`Product3DMockupsView.tsx`) | Canvas 3D permanecia preso sobre a tela ao voltar para a aba de Mockups |
-| **06** | 22/11/2026 | [Integrante 3] | Auditoria de Mudanças e Alçadas (`GovernanceProcurementView.tsx`) | Tabela de auditoria comprimida em meia coluna com quebra de valores monetários |
+| **03** | 22/11/2026 | Matheus França | Simulador de Cenários C1–C6 (`calculations.ts`) | Cenário `C4` fechou em `05/04/2027` (`48 du`) em vez de `30/03/2027` (`44 du`) |
+| **04** | 22/11/2026 | Matheus França | Módulo D17 — Mockups do Produto (`Product3DMockupsView.tsx`) | Priorizou 3D genérico e códigos fictícios em vez de telas do app com IDs `MS-*` reais |
+| **05** | 22/11/2026 | Matheus França | Renderização Three.js (`Product3DMockupsView.tsx`) | Canvas 3D permanecia preso sobre a tela ao voltar para a aba de Mockups |
+| **06** | 22/11/2026 | Matheus França | Auditoria de Mudanças e Alçadas (`GovernanceProcurementView.tsx`) | Tabela de auditoria comprimida em meia coluna com quebra de valores monetários |
 | **07** | 23/11/2026 | Matheus França | Identidade Visual e Navegação (`App.tsx`, `index.css`) | Paleta grafite/oliva com cores padrão (amarelo/vermelho/verde) fora da marca Maré Seguros |
-| **08** | 23/11/2026 | [Integrante 3] | Lançamentos R3 (`DataEntryView.tsx`) e Deploy | Formulários manuais incompletos (faltavam telas individuais para `B4`, `B7` e `B9`) |
+| **08** | 23/11/2026 | Matheus França | Lançamentos R3 (`DataEntryView.tsx`) e Deploy | Formulários manuais incompletos (faltavam telas individuais para `B4`, `B7` e `B9`) |
 | **09** | 23/11/2026 | Matheus França | Geração dos 17 PDFs (`scripts/gerar_documentos.py`) | Contradição entre texto estratégico (`C2+C6`) e resultado calculado (`C4`) em `D12`/`D16` |
-| **10** | 23/11/2026 | [Integrante 3] | Pessoal e Produtividade (`D13`, `D14`, `PeopleProductivityView.tsx`) | Diagnóstico inicial confundiu baixa produtividade (`IP`) com falta de pessoal (`IE`) em `A11`/`A20` |
+| **10** | 23/11/2026 | Matheus França | Pessoal e Produtividade (`D13`, `D14`, `PeopleProductivityView.tsx`) | Diagnóstico inicial confundiu baixa produtividade (`IP`) com falta de pessoal (`IE`) em `A11`/`A20` |
 
 ---
 
@@ -79,7 +77,7 @@
 ### Entrada 03 — Simulador de Cenários (C1–C6) e Calendário de Sprints em Feriados
 
 - **Data:** `22/11/2026`
-- **Responsável:** [Integrante 2]
+- **Responsável:** Matheus França
 - **Artefatos:** `sistema/src/engine/calculations.ts`, `sistema/src/components/ScenarioSimulatorView.tsx`, `scripts/doc_engine.py`
 
 **O que pedimos (Prompt):**
@@ -98,7 +96,7 @@
 ### Entrada 04 — Adequação do Módulo D17 para Produto Digital (Mockups com Backlog Real)
 
 - **Data:** `22/11/2026`
-- **Responsável:** [Integrante 2]
+- **Responsável:** Matheus França
 - **Artefatos:** `sistema/src/components/Product3DMockupsView.tsx`
 
 **O que pedimos (Prompt):**
@@ -116,7 +114,7 @@
 ### Entrada 05 — Correção de Vazamento de Canvas Three.js na Troca de Abas
 
 - **Data:** `22/11/2026`
-- **Responsável:** [Integrante 2]
+- **Responsável:** Matheus França
 - **Artefatos:** `sistema/src/components/Product3DMockupsView.tsx`
 
 **O que pedimos (Prompt):**
@@ -134,7 +132,7 @@
 ### Entrada 06 — Layout da Auditoria de Mudanças × Matriz de Alçadas
 
 - **Data:** `22/11/2026`
-- **Responsável:** [Integrante 3]
+- **Responsável:** Matheus França
 - **Artefatos:** `sistema/src/components/GovernanceProcurementView.tsx`
 
 **O que pedimos (Prompt):**
@@ -169,7 +167,7 @@
 ### Entrada 08 — Lançamentos Manuais da Quinzena (R3: B1–B9) e Publicação Segura
 
 - **Data:** `23/11/2026`
-- **Responsável:** [Integrante 3]
+- **Responsável:** Matheus França
 - **Artefatos:** `sistema/src/components/DataEntryView.tsx`, `sistema/supabase_schema.sql`, `sistema/vercel.json`, `.gitignore`
 
 **O que pedimos (Prompt):**
@@ -204,7 +202,7 @@
 ### Entrada 10 — Diagnóstico de Pessoal (`D13`) e Produtividade (`IP` vs. `IE` em `D14`)
 
 - **Data:** `23/11/2026`
-- **Responsável:** [Integrante 3]
+- **Responsável:** Matheus França
 - **Artefatos:** `scripts/doc_engine.py`, `docs/D13_Pessoal_e_Custos_de_Pessoal.pdf`, `docs/D14_Produtividade_das_Equipes.pdf`, `sistema/src/components/PeopleProductivityView.tsx`
 
 **O que pedimos (Prompt):**
