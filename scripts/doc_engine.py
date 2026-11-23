@@ -724,20 +724,20 @@ def generate_charts(db, m):
     ax.grid(color=GRID_COLOR, linestyle=":", linewidth=0.6)
     charts["d2_pi"] = fig_to_data_uri(fig)
 
-    # 3. D5: Curva S (VP, VA, CR)
-    fig, ax = plt.subplots(figsize=(7.5, 3.2))
+    # 3. D5: Curva S da Trilha Ágil (VP Ágil, VA Ágil, CR Ágil)
+    fig, ax = plt.subplots(figsize=(7.5, 2.85))
     xs = [c["label"] for c in m["curva_s"]]
-    ax.plot(xs, [c["vp"] / 1000 for c in m["curva_s"]], color=NAVY, marker="o", lw=2.2, label="VP (Planejado)")
-    ax.plot(xs, [c["va"] / 1000 for c in m["curva_s"]], color=TEAL, marker="s", lw=2.4, label="VA (Agregado)")
-    ax.plot(xs, [c["cr"] / 1000 for c in m["curva_s"]], color=CORAL, marker="^", lw=2.2, label="CR (Custo Real)")
-    ax.set_title("Curva S do Projeto — Valor Planejado, Agregado e Custo Real (R$ mil)", fontsize=10, fontweight="bold", color=NAVY)
+    ax.plot(xs, [c["vp_a"] / 1000 for c in m["curva_s"]], color=NAVY, marker="o", lw=2.2, label="VP Ágil (Planejado)")
+    ax.plot(xs, [c["va_a"] / 1000 for c in m["curva_s"]], color=TEAL, marker="s", lw=2.4, label="VA Ágil (Valor Agregado)")
+    ax.plot(xs, [c["cr_a"] / 1000 for c in m["curva_s"]], color=CORAL, marker="^", lw=2.2, label="CR Ágil (Custo Real)")
+    ax.set_title("Curva S da Trilha Ágil — VP, VA e Custo Real Acumulado (R$ mil)", fontsize=10, fontweight="bold", color=NAVY)
     ax.grid(axis="y", color=GRID_COLOR, linestyle="--", linewidth=0.6)
     ax.legend(fontsize=8, frameon=False)
     charts["d5_curva_s"] = fig_to_data_uri(fig)
 
-    # 4. D6: Histograma P09 e P15 (M8)
-    fig, axes = plt.subplots(1, 2, figsize=(8.0, 3.0))
-    for ax, pid, title in [(axes[0], "P09", "P09 Heitor Góes (Operações)"), (axes[1], "P15", "P15 Kleber Nascimento (Dev)")]:
+    # 4. D6: Histograma do Squad Ágil (P15 e P16)
+    fig, axes = plt.subplots(1, 2, figsize=(8.0, 2.9))
+    for ax, pid, title in [(axes[0], "P15", "P15 Kleber Nascimento (Dev)"), (axes[1], "P16", "P16 Sílvia Moreira (Dev)")]:
         p = next(x for x in m["people"] if x["id"] == pid)
         yms = sorted(y for y in set(p["hm_ap"].keys()) | set(p["hm_pl"].keys()) if y <= "2026-10")
         x = np.arange(len(yms))
@@ -806,20 +806,61 @@ def generate_charts(db, m):
     axes[1].grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
     charts["d9_risks"] = fig_to_data_uri(fig)
 
-    # 7. D14: Produtividade IP vs IE
-    fig, ax = plt.subplots(figsize=(7.5, 3.0))
-    ids = [s["id"] for s in m["sup_prod"]]
-    x = np.arange(len(ids))
-    w = 0.36
-    ax.bar(x - w / 2, [s["ip"] for s in m["sup_prod"]], w, color=CORAL, label="Índice de Produtividade (IP)")
-    ax.bar(x + w / 2, [s["ie"] for s in m["sup_prod"]], w, color=TEAL, label="Índice de Efetivo (IE)")
-    ax.axhline(1.0, color=NAVY, linestyle="--", lw=1.1, label="Meta (1,00)")
-    ax.set_xticks(x)
-    ax.set_xticklabels(ids, fontsize=8.5)
-    ax.set_title("Diagnóstico de Produtividade (IP) × Efetivo (IE) por Atividade", fontsize=10, fontweight="bold", color=NAVY)
-    ax.grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
-    ax.legend(fontsize=8, frameon=False)
+    # 7. D14: Produtividade do Squad Ágil (Pontos entregues e Custo por Ponto)
+    fig, axes = plt.subplots(1, 2, figsize=(8.2, 2.95))
+    devs = [x for x in m["people"] if x["frente"] == "AGIL" and x["pts"] > 0]
+    d_labels = [f"{x['id']}\n{x['nome'].split()[0]}" for x in devs]
+    x = np.arange(len(devs))
+    axes[0].bar(x, [d["pts"] for d in devs], color=TEAL, width=0.55)
+    for i, d in enumerate(devs):
+        axes[0].text(i, d["pts"] + 2.5, f"{d['pts']} pts\n({d['pts_h']:.3f}/h)", ha="center", fontsize=7.2, fontweight="bold", color=NAVY)
+    axes[0].set_xticks(x)
+    axes[0].set_xticklabels(d_labels, fontsize=7.5)
+    axes[0].set_ylim(0, max(d["pts"] for d in devs) * 1.25)
+    axes[0].set_title("Pontos Concluídos e Rendimento (pts/h)", fontsize=9, fontweight="bold", color=NAVY)
+    axes[0].grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
+
+    core_devs = [d for d in devs if d["id"] != "P17"]
+    cx = np.arange(len(core_devs))
+    c_cols = [CORAL if d["rs_pt"] > 1500 else NAVY for d in core_devs]
+    axes[1].bar(cx, [d["rs_pt"] for d in core_devs], color=c_cols, width=0.52)
+    for i, d in enumerate(core_devs):
+        axes[1].text(i, d["rs_pt"] + 45, f"R$ {d['rs_pt']:,.0f}".replace(",", "."), ha="center", fontsize=7.5, fontweight="bold", color=NAVY)
+    axes[1].set_xticks(cx)
+    axes[1].set_xticklabels([f"{d['id']}\n{d['nome'].split()[0]}" for d in core_devs], fontsize=7.5)
+    axes[1].set_ylim(0, max(d["rs_pt"] for d in core_devs) * 1.22)
+    axes[1].set_title("Custo Direto por Ponto — Devs (R$/pt)", fontsize=9, fontweight="bold", color=NAVY)
+    axes[1].grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
     charts["d14_prod"] = fig_to_data_uri(fig)
+
+    # 7b. D4: Roadmap de Sprints e Projeção de Releases (Burndown de Pontos)
+    fig, ax = plt.subplots(figsize=(7.8, 2.85))
+    total_pts = sum(int(b["pontos"]) for b in db["14_backlog_itens"] if b["prioridade_moscow"] != "WONT")
+    rem_hist = []
+    cum_done = 0
+    sp_labels = []
+    for s in m["sp_vel"]:
+        cum_done += s["done"]
+        rem_hist.append(max(0, total_pts - cum_done))
+        sp_labels.append(s["id"])
+    # Forecast S16..S22
+    proj_labels = list(sp_labels)
+    proj_vals = [None] * (len(sp_labels) - 1) + [rem_hist[-1]]
+    rem_cur = rem_hist[-1]
+    for k in range(1, m["ag_base"]["sr3"] + 1):
+        proj_labels.append(f"S{15 + k}")
+        rem_cur = max(0, rem_cur - m["vel_media"])
+        proj_vals.append(rem_cur)
+    ax.plot(sp_labels, rem_hist, color=NAVY, marker="o", lw=2.2, label="Backlog Restante Real (S01–S15)")
+    ax.plot(proj_labels[len(sp_labels)-1:], proj_vals[len(sp_labels)-1:], color=TEAL, marker="s", linestyle="--", lw=2.2, label=f"Projeção ({m['vel_media']:.1f} pts/sprint)")
+    ax.axvline(len(sp_labels) - 1, color=SAND, linestyle=":", lw=1.4, label="Corte 13/11 (S15)")
+    ax.axvline(len(sp_labels) - 1 + m["ag_base"]["sr2"], color=TEAL_LIGHT, linestyle="--", lw=1.2, label="Prev. R2 (S17)")
+    ax.set_title("Burndown de Release e Projeção de Sprints (Trilha Ágil — S01 a S22)", fontsize=9.5, fontweight="bold", color=NAVY)
+    ax.set_ylabel("Pontos Restantes", fontsize=8, color=MUTED)
+    ax.tick_params(axis="x", labelsize=7, rotation=45)
+    ax.grid(axis="y", color=GRID_COLOR, linestyle="--", lw=0.6)
+    ax.legend(fontsize=7.3, frameon=False)
+    charts["d4_roadmap"] = fig_to_data_uri(fig)
 
     # 8. D16: Cenários (Resultado Líquido + Fluxo Acumulado M7)
     fig, axes = plt.subplots(1, 2, figsize=(8.4, 3.2))
