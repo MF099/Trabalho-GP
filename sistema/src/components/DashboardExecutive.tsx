@@ -72,6 +72,51 @@ export const DashboardExecutive: React.FC<Props> = ({
   const desvioPct = evm.ontTotal > 0 ? (desvioCusto / evm.ontTotal) * 100 : 0;
   const reservaCobre = governance.reservaContingencia >= governance.exposicaoTotalVme;
 
+  // ---- Duas trilhas: preditiva (EAP/ProjectLibre) e ágil (backlog/Jira) ----
+  const actById = new Map(network.activities.map((a) => [a.id, a]));
+  const atividadesPred = network.activities.filter((a) => a.tipo === "ESTIMADA");
+  const predConcluidas = atividadesPred.filter((a) => a.situacao === "CONCLUIDA").length;
+  const pct = (v: number, t: number) => (t > 0 ? (v / t) * 100 : 0);
+  const pontosTotais = agile.pontosConcluidosTotal + agile.pontosRestantesR3;
+  const trilhas = [
+    {
+      nome: "Frente preditiva",
+      ferramenta: "EAP · ProjectLibre",
+      descricao: "Regulatório, parcerias, equipamentos, conteúdo, piloto e lançamento",
+      entregue: pct(evm.vaPred, evm.ontPred),
+      detalhe: `${predConcluidas} de ${atividadesPred.length} atividades concluídas`,
+      idc: evm.idcPred,
+      idp: evm.idpPred,
+      orcamento: evm.ontPred,
+    },
+    {
+      nome: "Frente ágil",
+      ferramenta: "Backlog · Jira",
+      descricao: "Aplicativo: 8 épicos entregues em 3 releases",
+      entregue: pct(evm.vaAgil, evm.ontAgil),
+      detalhe: `${agile.pontosConcluidosTotal} de ${pontosTotais} pontos concluídos`,
+      idc: evm.idcAgil,
+      idp: evm.idpAgil,
+      orcamento: evm.ontAgil,
+    },
+  ];
+  const interfaces = [
+    { marco: "A40", release: "Release 1 (MVP)", libera: "Piloto com 40 oficinas (A27)" },
+    { marco: "A41", release: "Release 2", libera: "Testes finais → entrada em operação (A32 → A35)" },
+    { marco: "A42", release: "Release 3", libera: "Encerramento do projeto (A39)" },
+  ].map((i) => {
+    const a = actById.get(i.marco);
+    const status = !a
+      ? "—"
+      : a.situacao === "CONCLUIDA"
+      ? "Entregue"
+      : a.criticaForecast
+      ? "No caminho crítico"
+      : `Folga de ${a.forecastFolga} du`;
+    return { ...i, data: a ? fmtDateBR(a.forecastEndDate) : "—", status };
+  });
+  const releaseCritica = interfaces.find((i) => i.status === "No caminho crítico");
+
   const controlesOk = controls.filter((c) => {
     const target = is1311 ? c.esperado1311 : c.esperado3010;
     return Math.abs(c.obtido - target) < 0.05;
@@ -82,7 +127,9 @@ export const DashboardExecutive: React.FC<Props> = ({
       id: "A1",
       titulo: `Projeto termina ${network.atrasoContratualDu} dias úteis depois do contrato`,
       evidencia: `Término previsto em ${fmtDateBR(network.forecastEndDate)} vs contratual 22/01/2027. Caminho crítico: ${network.criticalPathForecast.join(" → ")}.`,
-      causa: `Velocidade ágil média de ${fmtNum(agile.velocidadeMedia, 1)} pts/sprint (meta LB: 17,3) atrasa a Release 2 e empurra a entrada em operação; soma-se o atraso no piloto (A27).`,
+      causa: releaseCritica
+        ? `As duas trilhas se encontram no caminho crítico: a ${releaseCritica.release} (frente ágil, prevista para ${releaseCritica.data}) segura a cadeia preditiva — ${releaseCritica.libera} — até o encerramento. A velocidade média de ${fmtNum(agile.velocidadeMedia, 1)} pts/sprint (meta 17,3) é a origem do atraso.`
+        : `Velocidade ágil média de ${fmtNum(agile.velocidadeMedia, 1)} pts/sprint (meta LB: 17,3) e atrasos na cadeia preditiva até o encerramento.`,
       impacto: `${fmtBRL0(network.atrasoContratualDu * 5400)} de custo de atraso`,
       acao: "Comitê decidir o cenário de recuperação (ver Cenários).",
       dono: "P01 Helena (GP) / PI01 Diretora de Operações",
@@ -187,6 +234,78 @@ export const DashboardExecutive: React.FC<Props> = ({
               Comparar cenários →
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Duas trilhas: o término depende das duas juntas */}
+      <section aria-labelledby="duas-trilhas" className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <h2 id="duas-trilhas" className="text-lg font-bold text-white">Duas trilhas, um projeto</h2>
+        <p className="text-xs text-slate-400">
+          A ágil é a frente maior; a preditiva é menor, mas as releases são marcos da rede dela — o término depende das duas.
+        </p>
+
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+          {trilhas.map((t) => (
+            <div key={t.nome} className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="text-sm font-semibold text-white">{t.nome}</div>
+                  <div className="text-[11px] text-slate-400">{t.descricao}</div>
+                </div>
+                <span className="shrink-0 rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-medium text-slate-300">
+                  {t.ferramenta}
+                </span>
+              </div>
+              <div className="mt-3 flex items-baseline gap-2">
+                <span className="text-2xl font-semibold tabular-nums text-white">{fmtNum(t.entregue, 0)}%</span>
+                <span className="text-xs text-slate-400">do valor entregue · orçamento {fmtMi(t.orcamento)}</span>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+                <div className="h-full rounded-full bg-sky-400" style={{ width: `${Math.min(100, t.entregue)}%` }} />
+              </div>
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-300">
+                <span>{t.detalhe}</span>
+                <span>
+                  IDC <strong className={t.idc < 0.9 ? "text-rose-300" : "text-emerald-300"}>{fmtNum(t.idc, 2)}</strong>
+                </span>
+                <span>
+                  IDP <strong className={t.idp < 0.9 ? "text-amber-300" : "text-emerald-300"}>{fmtNum(t.idp, 2)}</strong>
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="mt-5 text-sm font-semibold text-white">Onde as trilhas se encontram</h3>
+        <p className="text-xs text-slate-400">Cada release do aplicativo libera uma etapa da frente preditiva.</p>
+        <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-3">
+          {interfaces.map((i) => (
+            <div
+              key={i.marco}
+              className={`rounded-xl border p-3 text-xs ${
+                i.status === "No caminho crítico"
+                  ? "border-rose-500/50 bg-rose-950/20"
+                  : i.status === "Entregue"
+                  ? "border-emerald-500/30 bg-emerald-950/15"
+                  : "border-slate-800 bg-slate-950/60"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-semibold text-white">
+                  {i.release} <span className="font-mono text-slate-400">({i.marco})</span>
+                </span>
+                <span className="font-mono text-slate-300">{i.data}</span>
+              </div>
+              <div className="mt-1 text-slate-300">→ {i.libera}</div>
+              <div
+                className={`mt-2 font-semibold ${
+                  i.status === "No caminho crítico" ? "text-rose-300" : i.status === "Entregue" ? "text-emerald-300" : "text-slate-400"
+                }`}
+              >
+                {i.status}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
