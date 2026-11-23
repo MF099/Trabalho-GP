@@ -86,7 +86,7 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
           </div>
 
           <section aria-labelledby="policy-services">
-            <h4 id="policy-services" className="mb-2.5 text-sm font-semibold text-white">Serviços do seguro</h4>
+            <h4 id="policy-services" className="mb-2.5 text-sm font-semibold text-[#0d2f52]">Serviços do seguro</h4>
             <div className="grid grid-cols-2 gap-2.5">
               {[
                 { id: "T02", label: "Avisar sinistro", icon: ClipboardList },
@@ -95,9 +95,9 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
                 <button
                   key={id}
                   onClick={() => setActiveScreenId(id)}
-                  className="flex min-h-24 flex-col items-start gap-2 rounded-xl border border-slate-700 bg-slate-800/70 p-3 text-left text-xs font-semibold text-white transition hover:border-sky-400 hover:bg-sky-950"
+                  className="flex min-h-24 flex-col items-start gap-2 rounded-xl border border-[#cddde2] bg-[#eff6f7] p-3 text-left text-xs font-semibold text-[#0d2f52] transition hover:border-sky-400 hover:bg-[#dbefed]"
                 >
-                  <span className="grid size-8 place-items-center rounded-lg bg-sky-500/20 text-sky-300">
+                  <span className="grid size-8 place-items-center rounded-lg bg-[#dbefed] text-sky-600">
                     <Icon aria-hidden="true" className="size-4" />
                   </span>
                   {label}
@@ -118,14 +118,14 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T03",
       previewBody: (
         <div className="space-y-4">
-          <p className="text-sm leading-relaxed text-slate-300">Use este aviso quando o dano for apenas no vidro do veículo.</p>
-          <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-800/70 p-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-sky-500/20 text-sky-300">
+          <p className="text-sm leading-relaxed text-slate-700">Use este aviso quando o dano for apenas no vidro do veículo.</p>
+          <div className="flex items-center gap-3 rounded-xl border border-[#cddde2] bg-[#eff6f7] p-3">
+            <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-[#dbefed] text-sky-600">
               <CarFront aria-hidden="true" className="size-5" />
             </span>
             <div>
-              <p className="text-xs text-slate-400">Vidro danificado</p>
-              <p className="text-sm font-semibold text-white">Para-brisa dianteiro</p>
+              <p className="text-xs text-slate-600">Vidro danificado</p>
+              <p className="text-sm font-semibold text-[#0d2f52]">Para-brisa dianteiro</p>
             </div>
           </div>
         </div>
@@ -141,10 +141,10 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T04",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="flex h-28 items-center justify-center rounded-xl border-2 border-dashed border-sky-400 bg-slate-900 text-sky-300">
+          <div className="flex h-28 items-center justify-center rounded-xl border-2 border-dashed border-sky-400 bg-[#eff6f7] text-sky-600">
             <Camera className="mr-2 h-5 w-5" /> Régua Virtual · Lado Traseiro
           </div>
-          <div className="flex justify-between text-[11px] text-emerald-300">
+          <div className="flex justify-between text-[11px] text-emerald-600">
             <span>✓ Chassi & Hodômetro</span>
             <span>✓ Modo internet fraca</span>
           </div>
@@ -161,15 +161,15 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T05",
       previewBody: (
         <div className="space-y-1.5 text-xs">
-          <div className="flex justify-between rounded bg-emerald-950/50 p-2 text-emerald-300">
+          <div className="flex justify-between rounded bg-[#dbefed] p-2 text-emerald-600">
             <span>Frente + Placa (EXIF OK)</span>
             <span>Concluído</span>
           </div>
-          <div className="flex justify-between rounded bg-emerald-950/50 p-2 text-emerald-300">
+          <div className="flex justify-between rounded bg-[#dbefed] p-2 text-emerald-600">
             <span>Para-choque traseiro</span>
             <span>Concluído</span>
           </div>
-          <div className="flex justify-between rounded bg-amber-950/50 p-2 text-amber-300">
+          <div className="flex justify-between rounded bg-[#f8efde] p-2 text-[#674820]">
             <span>Hodômetro / Chassi</span>
             <span>Faltante (MS-159)</span>
           </div>
@@ -187,19 +187,19 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       previewBody: (
         <div className="space-y-2 text-xs">
           {scenarioFilter === "C3" ? (
-            <div className="rounded-xl border border-rose-500/40 bg-rose-950/40 p-3 text-rose-200">
+            <div className="rounded-xl border border-rose-500/40 bg-[#f9e9e6] p-3 text-[#873a32]">
               <strong>Removido no Cenário C3:</strong> Corte do épico EP03 (itens R3 excluídos; análise passa para perito).
             </div>
           ) : scenarioFilter === "C5" ? (
-            <div className="rounded-xl border border-amber-500/40 bg-amber-950/40 p-3 text-amber-200">
+            <div className="rounded-xl border border-amber-500/40 bg-[#f8efde] p-3 text-[#674820]">
               <strong>Solução de Mercado (C5):</strong> Motor externo integrado via API (MS-N8 / MS-N9).
             </div>
           ) : (
             <div className="space-y-2">
-              <div className="rounded-lg bg-slate-800 p-2">
+              <div className="rounded-lg bg-[#eff6f7] p-2">
                 Para-choque traseiro: <strong className="text-rose-300">Troca · R$ 2.150</strong>
               </div>
-              <div className="rounded-lg bg-slate-800 p-2">
+              <div className="rounded-lg bg-[#eff6f7] p-2">
                 Lanterna esquerda: <strong className="text-amber-300">Reparo leve · R$ 620</strong>
               </div>
             </div>
@@ -218,10 +218,10 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T07",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="rounded-lg bg-slate-800 p-2">
+          <div className="rounded-lg bg-[#eff6f7] p-2">
             Justificativa: <strong>Deformação &gt; 4 cm em polímero (MS-157)</strong>
           </div>
-          <div className="rounded-lg bg-sky-600/30 p-2 text-center text-sky-200">
+          <div className="rounded-lg bg-[#dbefed] p-2 text-center text-sky-600">
             Contestar / Revisão Manual (MS-184 · R3)
           </div>
         </div>
@@ -237,13 +237,13 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T08",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="rounded-lg border border-sky-500/40 bg-slate-800 p-2">
-            <div className="font-semibold text-white">Bahia AutoCenter (2,1 km)</div>
-            <div className="text-[11px] text-emerald-300">★ 4,8 · Kit Vistoria · Entrada amanhã</div>
+          <div className="rounded-lg border border-sky-500/40 bg-[#eff6f7] p-2">
+            <div className="font-semibold text-[#0d2f52]">Bahia AutoCenter (2,1 km)</div>
+            <div className="text-[11px] text-emerald-600">★ 4,8 · Kit Vistoria · Entrada amanhã</div>
           </div>
-          <div className="rounded-lg bg-slate-800 p-2">
-            <div className="font-semibold text-slate-200">Pituba Funilaria (4,8 km)</div>
-            <div className="text-[11px] text-slate-400">★ 4,6 · Previsão entrega: 4 dias</div>
+          <div className="rounded-lg bg-[#eff6f7] p-2">
+            <div className="font-semibold text-slate-700">Pituba Funilaria (4,8 km)</div>
+            <div className="text-[11px] text-slate-600">★ 4,6 · Previsão entrega: 4 dias</div>
           </div>
         </div>
       ),
@@ -258,15 +258,15 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T09",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="flex justify-between rounded bg-slate-800 p-2">
+          <div className="flex justify-between rounded bg-[#eff6f7] p-2">
             <span>Orçamento oficina</span>
             <strong>R$ 3.420,00</strong>
           </div>
-          <div className="flex justify-between rounded bg-slate-800 p-2">
+          <div className="flex justify-between rounded bg-[#eff6f7] p-2">
             <span>Franquia apólice</span>
             <strong>R$ 1.200,00</strong>
           </div>
-          <div className="rounded bg-emerald-600/30 p-2 text-center font-semibold text-emerald-200">
+          <div className="rounded bg-[#dbefed] p-2 text-center font-semibold text-emerald-600">
             Nota para pagamento (MS-158)
           </div>
         </div>
@@ -282,13 +282,13 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T10",
       previewBody: (
         <div className="space-y-1.5 text-xs">
-          <div className="flex items-center gap-2 text-emerald-300">
+          <div className="flex items-center gap-2 text-emerald-600">
             <CheckCircle2 className="h-3.5 w-3.5" /> Veículo recebido na oficina
           </div>
-          <div className="flex items-center gap-2 text-sky-300">
+          <div className="flex items-center gap-2 text-sky-600">
             <Wrench className="h-3.5 w-3.5" /> Funilaria em execução (MS-133)
           </div>
-          <div className="flex items-center gap-2 text-slate-400">
+          <div className="flex items-center gap-2 text-slate-600">
             <Clock className="h-3.5 w-3.5" /> Previsão oficina (MS-181 · R3)
           </div>
         </div>
@@ -304,10 +304,10 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T11",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="rounded-lg bg-slate-800 p-2">
+          <div className="rounded-lg bg-[#eff6f7] p-2">
             Indenização calculada: <strong className="text-emerald-300">Pix em 24h (MS-134)</strong>
           </div>
-          <div className="rounded-lg bg-slate-800 p-2">
+          <div className="rounded-lg bg-[#eff6f7] p-2">
             Termo de quitação digital assinado (MS-137)
           </div>
         </div>
@@ -323,10 +323,10 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T12",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="rounded-lg bg-slate-800 p-2">
+          <div className="rounded-lg bg-[#eff6f7] p-2">
             Sinistros da carteira: <strong>14 abertos</strong> (MS-169)
           </div>
-          <div className="rounded-lg bg-amber-950/40 p-2 text-amber-200">
+          <div className="rounded-lg bg-[#f8efde] p-2 text-[#674820]">
             2 alertas de sinistro parado (MS-167)
           </div>
         </div>
@@ -342,10 +342,10 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T13",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="flex items-center gap-2 rounded-lg bg-emerald-950/50 p-2 text-emerald-300">
+          <div className="flex items-center gap-2 rounded-lg bg-[#dbefed] p-2 text-emerald-600">
             <ShieldCheck className="h-4 w-4" /> Score de autenticidade: 97/100
           </div>
-          <div className="rounded-lg bg-slate-800 p-2">
+          <div className="rounded-lg bg-[#eff6f7] p-2">
             Sem fotos reutilizadas (MS-163) ou edição digital (MS-180)
           </div>
         </div>
@@ -362,10 +362,10 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T14",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="rounded-lg bg-slate-800 p-2">
+          <div className="rounded-lg bg-[#eff6f7] p-2">
             Peça: <strong>Para-brisa dianteiro (MS-161)</strong>
           </div>
-          <div className="rounded-lg bg-amber-950/40 p-2 text-amber-200">
+          <div className="rounded-lg bg-[#f8efde] p-2 text-[#674820]">
             Use este aviso quando o dano for apenas no vidro do veículo.
           </div>
         </div>
@@ -381,9 +381,9 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       nextScreenId: "T01",
       previewBody: (
         <div className="space-y-2 text-xs">
-          <div className="rounded-lg bg-slate-800 p-2 text-center">
-            <div className="text-lg font-bold text-emerald-300">NPS 55</div>
-            <div className="text-[11px] text-slate-400">Avaliação ao final (MS-131) · Tablet (MS-224)</div>
+          <div className="rounded-lg bg-[#eff6f7] p-2 text-center">
+            <div className="text-lg font-bold text-emerald-600">NPS 55</div>
+            <div className="text-[11px] text-slate-600">Avaliação ao final (MS-131) · Tablet (MS-224)</div>
           </div>
         </div>
       ),
@@ -503,9 +503,9 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
             <div className="relative rounded-[2.75rem] border-2 border-slate-500 bg-slate-950 p-2 shadow-2xl shadow-black/60">
               <span aria-hidden="true" className="absolute -left-1 top-24 h-10 w-1 rounded-l bg-slate-500" />
               <span aria-hidden="true" className="absolute -right-1 top-28 h-12 w-1 rounded-r bg-slate-500" />
-              <div className="flex min-h-[535px] flex-col overflow-hidden rounded-[2.2rem] border border-slate-800 bg-slate-900">
-                <div className="bg-linear-to-br from-[#0d2f52] to-[#12323a]">
-                  <div aria-hidden="true" className="relative flex h-11 items-center justify-between px-5 text-[10px] font-semibold text-slate-100">
+              <div className="flex min-h-[535px] flex-col overflow-hidden rounded-[2.2rem] border border-slate-700 bg-white">
+                <div className="border-b border-[#dce8ec] bg-white">
+                  <div aria-hidden="true" className="relative flex h-11 items-center justify-between px-5 text-[10px] font-semibold text-[#0d2f52]">
                     <span>9:41</span>
                     <div className="absolute left-1/2 h-4 w-16 -translate-x-1/2 rounded-full bg-black" />
                     <div className="flex items-center gap-1">
@@ -515,9 +515,9 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
                     </div>
                   </div>
                   <div className="px-4 pb-4 sm:px-5">
-                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-[#0d2f52]">
                       {activeScreen.id !== "T01" ? (
-                        <button onClick={() => setActiveScreenId("T01")} aria-label="Voltar para Minhas apólices" className="grid size-8 place-items-center rounded-lg bg-slate-950/30 text-sky-300 hover:bg-slate-950/60">
+                        <button onClick={() => setActiveScreenId("T01")} aria-label="Voltar para Minhas apólices" className="grid size-8 place-items-center rounded-lg bg-[#eff6f7] text-sky-600 hover:bg-[#dbefed]">
                           <ArrowLeft aria-hidden="true" className="size-4" />
                         </button>
                       ) : (
@@ -525,15 +525,15 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
                       )}
                       Maré Seguros
                     </div>
-                    <h3 className="mt-3 text-xl font-semibold leading-tight tracking-tight text-white">{activeScreen.title}</h3>
+                    <h3 className="mt-3 text-xl font-semibold leading-tight tracking-tight text-[#0d2f52]">{activeScreen.title}</h3>
                   </div>
                 </div>
 
-                <div className="flex-1 px-4 py-4 text-slate-100 sm:px-5">
+                <div className="flex-1 px-4 py-4 text-[#0d2f52] sm:px-5">
                   {activeScreen.previewBody}
                 </div>
 
-                <nav aria-label="Menu do protótipo" className="grid grid-cols-3 gap-1 border-t border-slate-700/75 bg-slate-950/45 px-2 py-2">
+                <nav aria-label="Menu do protótipo" className="grid grid-cols-3 gap-1 border-t border-[#dce8ec] bg-white px-2 py-2">
                   {[
                     { id: "T01", label: "Apólices", icon: House },
                     { id: "T02", label: "Novo aviso", icon: ClipboardList },
@@ -544,7 +544,7 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
                       onClick={() => setActiveScreenId(id)}
                       aria-current={activeScreenId === id ? "page" : undefined}
                       className={`flex min-h-11 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[10px] font-semibold transition ${
-                        activeScreenId === id ? "bg-sky-500/15 text-sky-300" : "text-slate-300 hover:bg-slate-800"
+                        activeScreenId === id ? "bg-[#dbefed] text-sky-600" : "text-slate-700 hover:bg-[#eff6f7]"
                       }`}
                     >
                       <Icon aria-hidden="true" className="size-4" />
