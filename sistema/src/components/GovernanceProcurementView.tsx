@@ -3,6 +3,7 @@ import { AlertOctagon, Award, CheckCircle, ShieldAlert, Users } from "lucide-rea
 import { fmtBRL0, fmtDateBR, fmtNum } from "../engine/calculations";
 import { computeGovernanceAndProcurement } from "../engine/extraCalculations";
 import type { ProjectDatabase } from "../types/project";
+import { Detalhes } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -25,9 +26,9 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
     <div className="space-y-5">
       <div className="flex flex-wrap gap-2">
         {[
-          { id: "RISKS", label: "Riscos, Mudanças & Scope Creep (R7·R8)" },
-          { id: "CONTRACTS", label: "Contratos, Multas & Licitação (R9)" },
-          { id: "STAKEHOLDERS", label: "Partes Interessadas, OKRs & Funil (R10)" },
+          { id: "RISKS", label: "Riscos e mudanças" },
+          { id: "CONTRACTS", label: "Contratos e fornecedores" },
+          { id: "STAKEHOLDERS", label: "Partes interessadas" },
         ].map((t) => (
           <button
             key={t.id}
@@ -48,39 +49,41 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
             <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
               <div className="flex items-center gap-2 text-xs text-slate-400">
                 <ShieldAlert className="h-4 w-4 text-amber-400" />
-                Exposição VME (Ameaças Abertas)
+                Custo esperado dos riscos abertos
               </div>
               <div className="mt-1 text-2xl font-bold text-white">{fmtBRL0(gov.exposicaoTotalVme)}</div>
-              <div className="mt-1 text-xs text-slate-400">{gov.ameacasAbertas.length} ameaças abertas no registro</div>
+              <div className="mt-1 text-xs text-slate-400">{gov.ameacasAbertas.length} ameaças ainda abertas</div>
             </div>
             <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
               <div className="flex items-center gap-2 text-xs text-slate-400">
                 <CheckCircle className="h-4 w-4 text-emerald-400" />
-                Reserva de Contingência Disponível
+                Reserva de contingência
               </div>
               <div className="mt-1 text-2xl font-bold text-emerald-300">{fmtBRL0(gov.reservaContingencia)}</div>
-              <div className="mt-1 text-xs text-emerald-400">
-                {gov.reservaContingencia >= gov.exposicaoTotalVme
-                  ? `Cobre as ameaças abertas (saldo +${fmtBRL0(gov.reservaContingencia - gov.exposicaoTotalVme)})`
-                  : "Insuficiente para o VME aberto"}
+              <div className={`mt-1 text-xs ${gov.reservaContingencia >= gov.exposicaoTotalVme ? "text-emerald-400" : "text-rose-300"}`}>
+                {gov.reservaContingencia >= gov.exposicaoTotalVme ? "Cobre os riscos abertos" : "Não cobre os riscos abertos"}
               </div>
             </div>
             <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
               <div className="flex items-center gap-2 text-xs text-slate-400">
                 <AlertOctagon className="h-4 w-4 text-rose-400" />
-                Violações de Alçada & Pedidos Diretos
+                Mudanças fora do fluxo
               </div>
               <div className="mt-1 text-2xl font-bold text-rose-300">
-                {gov.mudancasAuditadas.filter((m) => !m.conformeAlcada).length} alçada · {gov.pedidosDiretos.length} diretos
+                {gov.mudancasAuditadas.filter((m) => !m.conformeAlcada).length + gov.pedidosDiretos.length}
               </div>
-              <div className="mt-1 text-xs text-slate-400">4 SMs aprovadas acima da alçada do gerente</div>
+              <div className="mt-1 text-xs text-slate-400">
+                {gov.mudancasAuditadas.filter((m) => !m.conformeAlcada).length} sem alçada ·{" "}
+                {gov.pedidosDiretos.length} pedidos diretos
+              </div>
             </div>
           </div>
 
           {/* Matriz 5x5 + Lista Riscos */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-              <h3 className="mb-3 text-sm font-semibold text-white">Matriz Probabilidade × Impacto (5 × 5 · M6)</h3>
+              <h3 className="text-sm font-semibold text-white">Matriz de riscos</h3>
+              <p className="mb-3 text-xs text-slate-400">Quanto mais acima e à direita, mais grave.</p>
               <div className="grid grid-cols-6 gap-1 text-center text-[11px]">
                 <div />
                 {[1, 2, 3, 4, 5].map((i) => (
@@ -114,7 +117,8 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-              <h3 className="mb-3 text-sm font-semibold text-white">Registro de Riscos & VME</h3>
+              <h3 className="text-sm font-semibold text-white">Lista de riscos</h3>
+              <p className="mb-3 text-xs text-slate-400">VME = probabilidade × impacto.</p>
               <div className="max-h-72 overflow-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-slate-900 text-slate-400">
@@ -153,7 +157,11 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
           {/* Auditoria de Mudanças e Scope Creep */}
           <div className="space-y-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-              <h3 className="mb-3 text-sm font-semibold text-white">Auditoria de Solicitações de Mudança × Matriz de Alçadas</h3>
+              <h3 className="text-sm font-semibold text-white">Mudanças × alçada de aprovação</h3>
+              <p className="text-xs text-slate-400">
+                Verifica se cada mudança foi aprovada por quem tinha autoridade para isso.
+              </p>
+              <Detalhes titulo="Abrir auditoria das mudanças" className="mt-3">
               <div className="max-h-80 overflow-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-slate-900 text-slate-400">
@@ -206,12 +214,15 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
                   </tbody>
                 </table>
               </div>
+              </Detalhes>
             </div>
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-              <h3 className="mb-3 text-sm font-semibold text-white">
-                Escopo Sem Controle de Mudanças (PEDIDO_DIRETO = {gov.pedidosDiretos.length} itens)
+              <h3 className="text-sm font-semibold text-white">
+                Pedidos diretos ({gov.pedidosDiretos.length} itens)
               </h3>
+              <p className="text-xs text-slate-400">Itens que entraram no backlog sem solicitação de mudança.</p>
+              <Detalhes titulo="Abrir lista de pedidos diretos" className="mt-3">
               <div className="max-h-64 overflow-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-slate-900 text-slate-400">
@@ -236,6 +247,7 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
                   </tbody>
                 </table>
               </div>
+              </Detalhes>
             </div>
           </div>
         </div>
@@ -244,7 +256,8 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
       {subTab === "CONTRACTS" && (
         <div className="space-y-6">
           <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-            <h3 className="mb-3 text-sm font-semibold text-white">Contratos, Medições, Retrabalho e Multas (Convenção 14)</h3>
+            <h3 className="text-sm font-semibold text-white">Contratos</h3>
+            <p className="mb-3 text-xs text-slate-400">Valor, atraso, multa prevista e retrabalho de cada fornecedor.</p>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
@@ -283,11 +296,9 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
             <div className="mb-3 flex items-center gap-2">
               <Award className="h-5 w-5 text-sky-400" />
               <div>
-                <h3 className="text-sm font-semibold text-white">
-                  Seleção de Fornecedor em Aberto — Monitoramento 24h (Tabela 32 · Convenção 15)
-                </h3>
+                <h3 className="text-sm font-semibold text-white">Escolha do fornecedor de monitoramento 24h</h3>
                 <p className="text-xs text-slate-400">
-                  Pesos: Preço 35% · Técnica 30% · Prazo 15% · Experiência 10% · Garantia 10%.
+                  Nota ponderada por preço, técnica, prazo, experiência e garantia.
                 </p>
               </div>
             </div>
@@ -340,7 +351,10 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
           <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
             <div className="mb-3 flex items-center gap-2">
               <Users className="h-5 w-5 text-sky-400" />
-              <h3 className="text-sm font-semibold text-white">Partes Interessadas (Poder × Interesse + Engajamento Atual)</h3>
+              <div>
+                <h3 className="text-sm font-semibold text-white">Partes interessadas</h3>
+                <p className="text-xs text-slate-400">Poder, interesse e engajamento atual. Em vermelho, quem resiste ao projeto.</p>
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
@@ -387,7 +401,9 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
 
           {/* Funil semanal do piloto */}
           <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
-            <h3 className="mb-2 text-sm font-semibold text-white">Funil Semanal do Piloto (Tabela 37)</h3>
+            <h3 className="text-sm font-semibold text-white">Adesão no piloto</h3>
+            <p className="text-xs text-slate-400">Funil semanal de usuários do piloto, de alcance até retenção e NPS.</p>
+            <Detalhes titulo="Abrir funil semanal" className="mt-3">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
@@ -418,6 +434,7 @@ export const GovernanceProcurementView: React.FC<Props> = ({ db, statusDate }) =
                 </tbody>
               </table>
             </div>
+            </Detalhes>
           </div>
         </div>
       )}

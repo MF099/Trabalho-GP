@@ -21,7 +21,6 @@ import {
   computeNetwork,
   fmtBRL0,
   fmtDateBR,
-  fmtNum,
   simulateScenarios,
 } from "./engine/calculations";
 import { computeGovernanceAndProcurement } from "./engine/extraCalculations";
@@ -42,7 +41,21 @@ import { AiAssistantView } from "./components/AiAssistantView";
 const STORAGE_KEY = "mare-seguros-war-room-db-v1";
 const LOG_KEY = "mare-seguros-war-room-logs-v1";
 
+/** Base da data de status oficial: histórico até 30/10 + boletins B1–B9 da quinzena (até 13/11). */
+function buildBase1311(): ProjectDatabase {
+  return applyQuinzenaBoletins(seedJson as unknown as ProjectDatabase).nextDb;
+}
+
 export function App() {
+  // Lido uma única vez, ANTES do efeito que grava no localStorage — senão o pull do Supabase nunca roda.
+  const [hadSavedState] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY) !== null;
+    } catch {
+      return false;
+    }
+  });
+
   const [db, setDb] = useState<ProjectDatabase>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -50,8 +63,9 @@ export function App() {
     } catch {
       // ignore storage read error
     }
-    // Inicializa com base até 30/10 + permite aplicar quinzena B1-B9 pelas telas ou 1 clique
-    return seedJson as unknown as ProjectDatabase;
+    // Primeira visita (ex.: professor abrindo o link): abre direto com os dados até 13/11.
+    // A volta para 30/10 e o relançamento pelas telas continuam em "Lançamentos".
+    return buildBase1311();
   });
 
   const [statusDate, setStatusDate] = useState<string>("2026-11-13");
@@ -85,13 +99,16 @@ export function App() {
   }, [auditLogs]);
 
   useEffect(() => {
-    // Tenta pull silencioso se ainda estiver no seed 30/10 e houver snapshot no Supabase
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      pullStateFromSupabase().then((res) => {
-        if (res.ok && res.db) setDb(res.db);
-      });
-    }
-  }, []);
+    // Primeira visita: usa o snapshot da nuvem se ele já tiver a quinzena completa (≥ 134 itens no backlog),
+    // para um snapshot antigo de 30/10 não sobrescrever os dados de 13/11.
+    if (hadSavedState) return;
+    pullStateFromSupabase().then((res) => {
+      if (res.ok && res.db && (res.db["14_backlog_itens"]?.length ?? 0) >= 134) {
+        setDb(res.db);
+        if (res.statusDate) setStatusDate(res.statusDate);
+      }
+    });
+  }, [hadSavedState]);
 
   const calH = useMemo(() => buildCalendarHelpers(db["11_calendario"]), [db]);
   const agile = useMemo(() => computeAgileMetrics(db, statusDate, calH), [db, statusDate, calH]);
@@ -288,12 +305,10 @@ export function App() {
 
           <div className="flex items-center gap-2 text-xs">
             <div className="hidden rounded-lg border border-[#1e2b3a] bg-[#101822] px-3 py-1.5 text-slate-400 md:block">
-              Término:{" "}
+              Término previsto:{" "}
               <strong className="font-mono text-amber-300">{fmtDateBR(network.forecastEndDate)}</strong>
               <span className="mx-2 text-slate-700">|</span>
-              ENT: <strong className="font-mono text-slate-100">{fmtBRL0(evm.entTotal)}</strong>
-              <span className="mx-2 text-slate-700">|</span>
-              IDC: <strong className="font-mono text-rose-300">{fmtNum(evm.idcTotal, 2)}</strong>
+              Custo previsto: <strong className="font-mono text-slate-100">{fmtBRL0(evm.entTotal)}</strong>
             </div>
           </div>
         </header>
