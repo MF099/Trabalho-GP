@@ -1172,7 +1172,7 @@ def build_all_documents():
     docs.append(("D16_Cenarios_e_Decisao.pdf", "D16", "Cenários e Recomendação de Decisão", "Simulação dos 6 cenários (C1–C6) e combinações com impacto em backlog, prazo, VPL e trade-offs", d16))
 
     # ------------------------------------------------------------------
-    # D17 — Mockups do Produto Digital e Arquitetura 3D
+    # D17 — Mockups do Produto Digital
     # ------------------------------------------------------------------
     mockup_catalog = [
         ("T01", "Início & Carteira de Apólices", "EP01", "R1", "MS-101, MS-102, MS-116", "ENTREGUE", "Ganha escolha de praça no C4 (MS-N1)"),
@@ -1194,11 +1194,7 @@ def build_all_documents():
         f"<tr><td class='mono'>{t[0]}</td><td><strong>{t[1]}</strong></td><td class='center mono'>{t[2]}</td><td class='center mono'>{t[3]}</td><td class='mono'>{t[4]}</td><td class='center'><span class='badge {'b-teal' if t[5]=='ENTREGUE' else ('b-sand' if t[5]=='EM ANDAMENTO' else 'b-navy')}'>{t[5]}</span></td><td>{t[6]}</td></tr>"
         for t in mockup_catalog
     )
-    el3d_agil = [e for e in db["38_elementos_3d"] if e["vinculo_tipo"] in ("EPICO", "NENHUM")]
-    el3d_rows = "".join(
-        f"<tr><td class='mono'>{e['id_elemento']}</td><td><strong>{e['nome_elemento']}</strong></td><td class='mono'>{e['tipo_elemento']}</td><td class='center mono'>({e['x']},{e['y']},{e['z']})</td><td class='center mono'>{e['largura']}×{e['comprimento']}×{e['altura']}</td><td class='mono'>{e['vinculo_ids'] or 'Plataforma Base'}</td></tr>"
-        for e in el3d_agil
-    )
+    # Mapa 3D (tabela 38) dispensado pelo professor para o Grupo 3 (23/11/2026) — D17 cobre só os mockups.
     d17 = f"""
     <div class="callout">
       <strong>Protótipo Interativo Publicado (frente ágil):</strong> As <strong>14 telas navegáveis</strong> do aplicativo Maré Seguros (com controle de data de 01/05 a 13/11 e filtro de cenários C1/C3/C4/C5) estão disponíveis ao vivo em <strong>https://sistema-ruddy.vercel.app</strong> na aba <em>Mockups do Produto</em>, cada uma ligada aos itens do backlog e à release que a entrega.
@@ -1208,16 +1204,8 @@ def build_all_documents():
       <thead><tr><th>Tela</th><th>Nome da Tela</th><th class="center">Épico</th><th class="center">Rel.</th><th>Itens Backlog</th><th class="center">Status 13/11</th><th>Impacto nos Cenários</th></tr></thead>
       <tbody>{mk_rows}</tbody>
     </table>
-    <h2>2. Módulos Funcionais do Mapa 3D do Projeto (Tabela 38 — Épicos EP01–EP08)</h2>
-    <table>
-      <thead><tr><th>ID</th><th>Módulo do Produto Digital</th><th>Tipo</th><th class="center">Posição (x,y,z)</th><th class="center">Dimensões (m)</th><th>Épico Vinculado</th></tr></thead>
-      <tbody>{el3d_rows}</tbody>
-    </table>
-    <div class="callout">
-      <strong>Cobertura Territorial (Tabela 38):</strong> Além dos 8 módulos de software acima, a tabela 38 posiciona os serviços de nuvem/IA/suporte e as <strong>10 praças de implantação na Bahia</strong> (Salvador, Feira de Santana, Vitória da Conquista, Itabuna, Juazeiro, Barreiras, Camaçari, Lauro de Freitas, Ilhéus e Jequié).
-    </div>
     """
-    docs.append(("D17_Mockups_do_Produto_e_Mapa_3D.pdf", "D17", "Mockups Navegáveis e Mapa 3D do Projeto", "Catálogo das 14 telas do aplicativo Maré Seguros, vínculos de backlog (MS-*) e módulos 3D", d17))
+    docs.append(("D17_Mockups_do_Produto.pdf", "D17", "Mockups Navegáveis do Produto", "Catálogo das 14 telas do aplicativo Maré Seguros, com vínculos de backlog (MS-*), releases e status na data", d17))
 
     # Remove antigos PDFs D01..D17 para evitar duplicatas de nomes antigos (ex.: ProjectLibre)
     for fname in os.listdir(DOCS_DIR):
