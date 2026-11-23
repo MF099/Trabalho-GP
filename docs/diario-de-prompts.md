@@ -17,9 +17,9 @@
 
 ---
 
-## Quadro Resumo das 10 Entradas
+## Quadro Resumo das 15 Entradas
 
-| # | Data / Hora | Integrante | Frente / Artefato | Principal Erro Detectado na IA |
+| # | Data / Hora | Integrante | Frente / Artefato | Erro ou ponto de revisão |
 | :-: | :-: | :--- | :--- | :--- |
 | **01** | 22/11 · 14:38 | Matheus França | ETL e Qualidade dos Dados (`scripts/tratar_dados.py`) | Removeu duplicatas, mas deixou passar 3 erros de `400 h` e 4 informes semanais ausentes |
 | **02** | 22/11 · 15:04 | Matheus França | Motor EVM e Build TypeScript (`sistema/src/engine/`) | Quebrou o build (`CsvRow` spread, `alocPct`, falta de `vite-env.d.ts`) |
@@ -31,6 +31,12 @@
 | **08** | 22/11 · 20:56 | Matheus França | Logo e Paleta Maré Seguros (`App.tsx`, `index.css`) | Logo pequena e cores padrão (amarelo/vermelho/verde vivos) destoando da marca |
 | **09** | 22/11 · 22:49 | Matheus França | Lançamentos Manuais R3 (`DataEntryView.tsx`) | Faltavam formulários manuais individuais para `B4`, `B7` e `B9` |
 | **10** | 23/11 · 06:39 | Matheus França | Geração dos 17 PDFs (`scripts/gerar_documentos.py`) | Contradição entre texto estratégico (`C2+C6`) e resultado calculado (`C4`) em `D12`/`D16` |
+
+| **11** | 23/11 | n4shville-jujuh | Nomes e navegação dos mockups | Galeria e fluxo passavam a impressão de uma jornada única |
+| **12** | 23/11 | n4shville-jujuh | Tela inicial e navegação da Sala de Guerra | Resumo disperso e data de status dentro do menu no celular |
+| **13** | 23/11 | n4shville-jujuh | Remoção do mapa 3D | Aba de mapa fora do escopo escolhido pelo grupo |
+| **14** | 23/11 | n4shville-jujuh | Redesenho da interface dentro do celular | Atalhos estáticos e controles de demonstração dentro do celular |
+| **15** | 23/11 | n4shville-jujuh | Fundo branco na tela do celular | Tela escura com pouca separação visual da moldura |
 
 ---
 
@@ -206,3 +212,108 @@
 
 **Como conferi e corrigimos:**
 - Alinhamos 100% da narrativa estratégica de `D12` e `D16` para a recomendação **`C4` (com bloqueio de `F04 VisionAI`, retomada das alçadas e fim dos pedidos diretos de `PI02`)**, incluímos a combinação **`C2+C4`** tanto nos PDFs quanto no simulador web e regeramos os 17 documentos na paleta oficial da Maré Seguros.
+
+---
+
+### Entrada 11 — Nomes e navegação dos mockups
+
+- **Data:** 23/11/2026
+- **Integrante (GitHub):** `n4shville-jujuh`
+- **Artefatos:** `Product3DMockupsView.tsx`
+- **Commit:** [`ef39dbf`](https://github.com/MF099/Trabalho-GP/commit/ef39dbf)
+
+**O que pedi (prompt real)**
+
+> Os nomes das telas é que estão muito complexos. Vamos melhorá-los. Vamo mudar o layout da aba de Mockups, a tela de celular que mostra realmente o app precisa estar mais centralizada / realista. Os status "entregue" e "em andamento" estão visualmente muito parecidos, conserta por favor. Se preciso, põe um skip ao lado do avançar fluxo, pra que uma etapa possa ser pulada quando not applicable
+
+**O que precisou de revisão**
+
+A explicação inicial tratou as telas como se fossem todas parte da jornada do segurado. A inspeção dos mockups mostrou visões de públicos diferentes e uma navegação que seguia a ordem da galeria.
+
+**Como corrigimos e conferimos**
+
+Simplificamos os nomes das 14 telas, centralizamos a prévia e distinguimos Entregue e Em andamento por cor e ícone. A opção Pular etapa foi aplicada às próximas telas opcionais ou fora do cenário escolhido. O TypeScript e o build passaram.
+
+---
+
+### Entrada 12 — Tela inicial e navegação da Sala de Guerra
+
+- **Data:** 23/11/2026
+- **Integrante (GitHub):** `n4shville-jujuh`
+- **Artefatos:** `App.tsx`, `DashboardExecutive.tsx`, `index.css`
+- **Commit:** [`5391cef`](https://github.com/MF099/Trabalho-GP/commit/5391cef)
+
+**O que pedi (prompt real)**
+
+> ótimo trabalho. vamos focar no front end do app agora, acho que você consegue manter a paleta de cores e deixar a interface do app mais bonitinha. (pode tentar usar o app do Bradesco como referência)
+
+**O que precisou de revisão**
+
+A interface anterior dispersava prazo, custo e decisão, e a data de status ficava dentro do menu no celular.
+
+**Como corrigimos e conferimos**
+
+Agrupamos as três respostas no painel inicial e incluímos atalhos para lançamentos, cronograma e protótipo. Movemos a data para o cabeçalho. O build passou e os atalhos, o seletor e o menu móvel foram testados no navegador local.
+
+---
+
+### Entrada 13 — Remoção do mapa 3D
+
+- **Data:** 23/11/2026
+- **Integrante (GitHub):** `n4shville-jujuh`
+- **Artefatos:** `App.tsx`, `ProductMockupsView.tsx`, `package.json`
+- **Commit:** [`e187a37`](https://github.com/MF099/Trabalho-GP/commit/e187a37)
+
+**O que pedi (prompt real)**
+
+> Apaga também a parte de "Mapa 3D Esquemático", não precisamos disso.
+
+**O que precisou de revisão**
+
+A implementação anterior ainda mantinha o mapa como aba secundária do protótipo, e o grupo decidiu retirar esse conteúdo.
+
+**Como corrigimos e conferimos**
+
+Removemos o mapa e a dependência do Three.js. O build passou e o navegador local confirmou as 14 telas e o funcionamento de Próxima tela.
+
+---
+
+### Entrada 14 — Redesenho da interface dentro do celular
+
+- **Data:** 23/11/2026
+- **Integrante (GitHub):** `n4shville-jujuh`
+- **Artefatos:** `ProductMockupsView.tsx`
+- **Commit:** [`35e7ff3`](https://github.com/MF099/Trabalho-GP/commit/35e7ff3)
+
+**O que pedi (prompt real)**
+
+> Muda a tela de mockup do app (pode tentar usar o app do Bradesco como referência), mantém a paleta de cores mas dê uma cara melhor ao mockup.
+
+**O que precisou de revisão**
+
+O protótipo exibia opções de serviço estáticas e misturava o botão de demonstração com a interface do segurado.
+
+**Como corrigimos e conferimos**
+
+A apólice ativa ganhou destaque, os atalhos de sinistro e vidros se tornaram navegáveis e o celular ganhou uma barra inferior. Próxima tela e Pular etapa foram movidos para fora da moldura. Testamos os atalhos e a opção de pular no navegador local.
+
+---
+
+### Entrada 15 — Fundo branco na tela do celular
+
+- **Data:** 23/11/2026
+- **Integrante (GitHub):** `n4shville-jujuh`
+- **Artefatos:** `ProductMockupsView.tsx`
+- **Commit:** [`a4ee1a8`](https://github.com/MF099/Trabalho-GP/commit/a4ee1a8)
+
+**O que pedi (prompt real)**
+
+> Faz o fundo do mockup ficar mais claro, como branco da logo do app. Queremos uma cor que destaque o mockup no celular
+
+**O que precisou de revisão**
+
+O redesenho ainda usava uma superfície escura dentro do celular, o que reduzia a separação visual entre a tela e a moldura.
+
+**Como corrigimos e conferimos**
+
+Aplicamos branco no interior, títulos em azul-marinho e superfícies suaves nos cartões e na navegação. Conferimos o fundo branco e o título azul-marinho no navegador local. O build passou.
