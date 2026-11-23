@@ -34,7 +34,7 @@ import { AgileBoardView } from "./components/AgileBoardView";
 import { GovernanceProcurementView } from "./components/GovernanceProcurementView";
 import { PeopleProductivityView } from "./components/PeopleProductivityView";
 import { ScenarioSimulatorView } from "./components/ScenarioSimulatorView";
-import { Product3DMockupsView } from "./components/Product3DMockupsView";
+import { ProductMockupsView } from "./components/ProductMockupsView";
 import { AiAssistantFloating } from "./components/AiAssistantView";
 
 const STORAGE_KEY = "mare-seguros-war-room-db-v1";
@@ -370,7 +370,7 @@ export function App() {
             scenarios={scenarios}
           />
         )}
-        {activeTab === "mockups" && <Product3DMockupsView db={db} statusDate={statusDate} network={network} />}
+        {activeTab === "mockups" && <ProductMockupsView db={db} statusDate={statusDate} />}
         </main>
       </div>
 
