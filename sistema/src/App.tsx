@@ -102,7 +102,7 @@ export function App() {
   const scenarios = useMemo(() => {
     const combos = [
       ["C1"], ["C2"], ["C3"], ["C4"], ["C5"], ["C6"],
-      ["C2", "C6"], ["C2", "C3"], ["C2", "C5"], ["C2", "C3", "C6"], ["C2", "C5", "C6"],
+      ["C2", "C4"], ["C2", "C6"], ["C2", "C3"], ["C2", "C5"], ["C2", "C3", "C6"], ["C2", "C5", "C6"],
     ];
     return combos.map((ids) => simulateScenarios(db, statusDate, calH, agile, evm, network, ids));
   }, [db, statusDate, calH, agile, evm, network]);

@@ -62,7 +62,7 @@ export const DashboardExecutive: React.FC<Props> = ({
       evidencia: `Término previsto em ${fmtDateBR(network.forecastEndDate)} vs contratual 22/01/2027 (${network.atrasoContratualDu} du). Caminho crítico: ${network.criticalPathForecast.join(" → ")}.`,
       causa: "Velocidade ágil média caiu para 16,0 pts/sprint (meta LB: 17,3), atrasando A41 (Release 2) e empurrando A35/A36/A39; somado ao atraso em A27 (piloto).",
       impacto: `${network.atrasoContratualDu} du = ${fmtBRL0(network.atrasoContratualDu * 5400)} de custo de atraso`,
-      acao: "Adotar Cenário C2 (compressão + reforço ágil) combinado com C6 (operação em 2 ondas).",
+      acao: "Deliberar no Comitê entre C4 (maior VPL/resultado líquido) ou C6 (antecipação em duas ondas sem estender prazo).",
       dono: "P01 Helena (GP) / PI01 Diretora de Operações",
     },
     {
