@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { fmtBRL, fmtBRL0, fmtNum } from "../engine/calculations";
 import { computePeopleAndProductivity } from "../engine/extraCalculations";
 import type { ProjectDatabase } from "../types/project";
 import type { CalendarHelpers } from "../engine/calculations";
-import { Detalhes } from "./ui";
+import { Detalhes, TabelaDoGrafico, useLigacaoGrafico } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -17,6 +17,8 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
   const res = computePeopleAndProductivity(db, statusDate, forecastEndDate, calH);
   const [selectedPerson, setSelectedPerson] = useState<string>("P09");
   const personObj = res.people.find((p) => p.id === selectedPerson) ?? res.people[0];
+  const mesesPessoa = personObj?.meses ?? [];
+  const lig = useLigacaoGrafico(mesesPessoa, "mes");
 
   return (
     <div className="space-y-6">
@@ -60,10 +62,12 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
             ))}
           </select>
         </div>
-        <div className="h-64 w-full">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+        <div className="h-64 w-full lg:col-span-3">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={personObj?.meses ?? []}>
+            <BarChart data={mesesPessoa} {...lig.chartProps}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+              {lig.ativoX !== undefined && <ReferenceLine x={lig.ativoX} stroke="#5eead4" strokeDasharray="4 4" />}
               <XAxis dataKey="mes" stroke="#94a3b8" fontSize={11} />
               <YAxis stroke="#94a3b8" fontSize={11} />
               <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }} />
@@ -72,6 +76,26 @@ export const PeopleProductivityView: React.FC<Props> = ({ db, statusDate, foreca
               <Bar dataKey="apontado" name="Horas Apontadas" fill="#38bdf8" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+        <div className="lg:col-span-2">
+          <TabelaDoGrafico
+            dados={mesesPessoa}
+            ativo={lig.ativo}
+            onAtivo={lig.setAtivo}
+            alturaMax="max-h-64"
+            colunas={[
+              { titulo: "Mês", valor: (r) => r.mes },
+              { titulo: "Planejado", valor: (r) => fmtNum(r.planejado, 0), direita: true, cor: "text-slate-400" },
+              { titulo: "Trabalhado", valor: (r) => fmtNum(r.apontado, 0), direita: true, cor: "text-sky-300" },
+              {
+                titulo: "Desvio",
+                valor: (r) => `${r.desvioPct > 0 ? "+" : ""}${fmtNum(r.desvioPct, 0)}%`,
+                direita: true,
+                cor: "text-amber-300",
+              },
+            ]}
+          />
+        </div>
         </div>
       </div>
 

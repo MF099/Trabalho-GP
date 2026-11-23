@@ -4,6 +4,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -11,7 +12,7 @@ import {
 } from "recharts";
 import { buildCalendarHelpers, computeEVM, fmtBRL, fmtBRL0, fmtDateBR, fmtNum, type AgileMetrics, type NetworkResult } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
-import { Detalhes } from "./ui";
+import { Detalhes, TabelaDoGrafico, useLigacaoGrafico } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -108,6 +109,8 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
     });
   }
 
+  const curva = useLigacaoGrafico(evm.curvaS, "label");
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
@@ -158,11 +161,13 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
         <h3 className="text-sm font-semibold text-white">Curva S do projeto (R$ mil)</h3>
         <p className="mb-3 text-xs text-slate-400">
-          Custo real acima do valor entregue indica gasto maior que o previsto.
+          Custo real acima do valor entregue indica gasto maior que o previsto. Passe o mouse no gráfico ou na tabela.
         </p>
-        <div className="h-72 w-full">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+        <div className="h-72 w-full lg:col-span-3">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={evm.curvaS}>
+            <LineChart data={evm.curvaS} {...curva.chartProps}>
+              {curva.ativoX !== undefined && <ReferenceLine x={curva.ativoX} stroke="#5eead4" strokeDasharray="4 4" />}
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
               <XAxis dataKey="label" stroke="#94a3b8" fontSize={12} />
               <YAxis stroke="#94a3b8" fontSize={12} />
@@ -176,6 +181,21 @@ export const EvmView: React.FC<Props> = ({ db, statusDate }) => {
               <Line type="monotone" dataKey="cr" name="CR (Custo Real)" stroke="#fb7185" strokeWidth={2.5} dot={{ r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
+        </div>
+        <div className="lg:col-span-2">
+          <TabelaDoGrafico
+            dados={evm.curvaS}
+            ativo={curva.ativo}
+            onAtivo={curva.setAtivo}
+            alturaMax="max-h-72"
+            colunas={[
+              { titulo: "Data", valor: (r) => r.label },
+              { titulo: "VP", valor: (r) => fmtNum(r.vp, 0), direita: true, cor: "text-sky-300" },
+              { titulo: "VA", valor: (r) => fmtNum(r.va, 0), direita: true, cor: "text-emerald-300" },
+              { titulo: "CR", valor: (r) => fmtNum(r.cr, 0), direita: true, cor: "text-rose-300" },
+            ]}
+          />
+        </div>
         </div>
       </div>
 

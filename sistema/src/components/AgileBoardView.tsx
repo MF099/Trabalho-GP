@@ -6,6 +6,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,7 +14,7 @@ import {
 } from "recharts";
 import { addDaysIso, fmtDateBR, fmtNum, num, type AgileMetrics } from "../engine/calculations";
 import type { ProjectDatabase } from "../types/project";
-import { Detalhes } from "./ui";
+import { Detalhes, TabelaDoGrafico, useLigacaoGrafico } from "./ui";
 
 interface Props {
   db: ProjectDatabase;
@@ -76,6 +77,9 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
 
   const openImps = db["22_impedimentos"].filter((i) => !i.data_fechamento);
   const pulso = db["35_pulso_equipe"];
+
+  const ligBurn = useLigacaoGrafico(burndownData, "dia");
+  const ligVel = useLigacaoGrafico(agile.velocidadesSprints, "id");
 
   return (
     <div className="space-y-6">
@@ -144,8 +148,9 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
           </div>
           <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={burndownData}>
+              <LineChart data={burndownData} {...ligBurn.chartProps}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                {ligBurn.ativoX !== undefined && <ReferenceLine x={ligBurn.ativoX} stroke="#5eead4" strokeDasharray="4 4" />}
                 <XAxis dataKey="dia" stroke="#94a3b8" fontSize={11} />
                 <YAxis stroke="#94a3b8" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }} />
@@ -155,6 +160,20 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
               </LineChart>
             </ResponsiveContainer>
           </div>
+          <div className="mt-3">
+            <TabelaDoGrafico
+              dados={burndownData}
+              ativo={ligBurn.ativo}
+              onAtivo={ligBurn.setAtivo}
+              alturaMax="max-h-44"
+              colunas={[
+                { titulo: "Dia", valor: (r) => r.dia },
+                { titulo: "Ideal", valor: (r) => fmtNum(r.ideal, 1), direita: true, cor: "text-slate-400" },
+                { titulo: "Restante", valor: (r) => r.restante, direita: true, cor: "text-sky-300" },
+                { titulo: "Diferença", valor: (r) => fmtNum(r.restante - r.ideal, 1), direita: true, cor: "text-amber-300" },
+              ]}
+            />
+          </div>
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
@@ -162,8 +181,9 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
           <p className="mb-3 text-xs text-slate-400">Pontos colocados na sprint × pontos concluídos</p>
           <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={agile.velocidadesSprints}>
+              <BarChart data={agile.velocidadesSprints} {...ligVel.chartProps}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                {ligVel.ativoX !== undefined && <ReferenceLine x={ligVel.ativoX} stroke="#5eead4" strokeDasharray="4 4" />}
                 <XAxis dataKey="id" stroke="#94a3b8" fontSize={11} />
                 <YAxis stroke="#94a3b8" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }} />
@@ -172,6 +192,26 @@ export const AgileBoardView: React.FC<Props> = ({ db, statusDate, agile, onMoveC
                 <Bar dataKey="pontosConcluidos" name="Concluídos" fill="#818cf8" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+          <div className="mt-3">
+            <TabelaDoGrafico
+              dados={agile.velocidadesSprints}
+              ativo={ligVel.ativo}
+              onAtivo={ligVel.setAtivo}
+              alturaMax="max-h-44"
+              colunas={[
+                { titulo: "Sprint", valor: (r) => r.id },
+                { titulo: "Período", valor: (r) => `${fmtDateBR(r.dataInicio).slice(0, 5)}–${fmtDateBR(r.dataFim).slice(0, 5)}`, cor: "text-slate-400" },
+                { titulo: "Na sprint", valor: (r) => r.pontosPlanejados, direita: true },
+                { titulo: "Concluídos", valor: (r) => r.pontosConcluidos, direita: true, cor: "text-indigo-300" },
+                {
+                  titulo: "% entregue",
+                  valor: (r) => (r.pontosPlanejados > 0 ? `${fmtNum((r.pontosConcluidos / r.pontosPlanejados) * 100, 0)}%` : "—"),
+                  direita: true,
+                  cor: "text-emerald-300",
+                },
+              ]}
+            />
           </div>
         </div>
       </div>
