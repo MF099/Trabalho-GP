@@ -27,7 +27,9 @@ export const DataEntryView: React.FC<Props> = ({
   onApplyQuinzena,
   onResetBase,
 }) => {
-  const [formTab, setFormTab] = useState<"SURPRESA" | "AVANCO" | "HORAS" | "CUSTOS" | "AGIL" | "RISCO_MUD">("SURPRESA");
+  const [formTab, setFormTab] = useState<
+    "SURPRESA" | "AVANCO" | "HORAS" | "CUSTOS" | "INSPECOES" | "AGIL" | "IMPLANTACOES" | "RISCO_MUD" | "REUNIOES"
+  >("SURPRESA");
   const [syncMsg, setSyncMsg] = useState<string>("");
 
   // Boletim Surpresa (Ao Vivo) states
@@ -79,6 +81,36 @@ export const DataEntryView: React.FC<Props> = ({
   const [ocAct, setOcAct] = useState("A27");
   const [ocCusto, setOcCusto] = useState("2900");
   const [ocPrazo, setOcPrazo] = useState("4");
+
+  // B4 Inspeções form
+  const [inData, setInData] = useState("2026-11-04");
+  const [inAct, setInAct] = useState("A29");
+  const [inTipo, setInTipo] = useState("LISTA_DE_VERIFICACAO");
+  const [inVerif, setInVerif] = useState("50");
+  const [inNc, setInNc] = useState("1");
+  const [inRes, setInRes] = useState("APROVADO");
+  const [inForn, setInForn] = useState("F09");
+  const [inRetrH, setInRetrH] = useState("4.1");
+  const [inRetrRs, setInRetrRs] = useState("450.59");
+
+  // B7 Impedimento / Implantação form
+  const [impData, setImpData] = useState("2026-11-11");
+  const [impAmb, setImpAmb] = useState("PRODUCAO");
+  const [impVer, setImpVer] = useState("1.61");
+  const [impItens, setImpItens] = useState("3");
+  const [impTempo, setImpTempo] = useState("50.2");
+  const [impFalhou, setImpFalhou] = useState("0");
+
+  // B9 Reunião / Pulso form
+  const [reData, setReData] = useState("2026-11-12");
+  const [reTipo, setReTipo] = useState("COMITE_DIRETOR");
+  const [reDur, setReDur] = useState("120");
+  const [reConv, setReConv] = useState("6");
+  const [rePres, setRePres] = useState("4");
+  const [rePatr, setRePatr] = useState("1");
+  const [reDec, setReDec] = useState("3");
+  const [pulsoVal, setPulsoVal] = useState("3.94");
+  const [pulsoResp, setPulsoResp] = useState("6");
 
   const [csvTable, setCsvTable] = useState<TableName>("18_apontamento_horas");
 
@@ -231,6 +263,59 @@ export const DataEntryView: React.FC<Props> = ({
     setSyncMsg(`Ocorrência ${ocId} registrada.`);
   };
 
+  const handleAddInspecao = (e: React.FormEvent) => {
+    e.preventDefault();
+    const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
+    const inId = `IN-${String(next["25_inspecoes_aceite"].length + 1).padStart(3, "0")}`;
+    next["25_inspecoes_aceite"].push({
+      id_inspecao: inId, data: inData, id_atividade: inAct, tipo_inspecao: inTipo,
+      itens_verificados: inVerif, itens_nao_conformes: inNc, resultado: inRes,
+      id_fornecedor: inForn, horas_retrabalho: inRetrH, custo_retrabalho_rs: inRetrRs,
+    });
+    onUpdateDb(next, makeLog("INSPECAO", `${inId} (${inAct}): ${inRes} · ${inNc}/${inVerif} NC`, { inId }));
+    setSyncMsg(`Inspeção ${inId} registrada.`);
+  };
+
+  const handleAddImplantacao = (e: React.FormEvent) => {
+    e.preventDefault();
+    const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
+    const impId = `IMP-${String(next["23_implantacoes"].length + 1).padStart(3, "0")}`;
+    next["23_implantacoes"].push({
+      id_implantacao: impId, data: impData, id_sprint: "S15", ambiente: impAmb,
+      versao: impVer, itens_implantados: impItens, tempo_ate_producao_h: impTempo,
+      falhou: impFalhou, tempo_restauracao_h: impFalhou === "1" ? "2.0" : "",
+    });
+    onUpdateDb(next, makeLog("IMPLANTACAO", `${impId} v${impVer} (${impAmb}): ${impItens} itens`, { impId }));
+    setSyncMsg(`Implantação ${impId} registrada.`);
+  };
+
+  const handleAddReuniao = (e: React.FormEvent) => {
+    e.preventDefault();
+    const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
+    const reId = `RE-${String(next["33_reunioes"].length + 1).padStart(3, "0")}`;
+    next["33_reunioes"].push({
+      id_reuniao: reId, data: reData, tipo_reuniao: reTipo, duracao_min: reDur,
+      convidados: reConv, presentes: rePres, patrocinador_presente: rePatr,
+      decisoes_tomadas: reDec, pendencias_abertas: "0", ata_publicada: "1",
+    });
+    onUpdateDb(next, makeLog("REUNIAO", `${reId} (${reTipo} em ${reData}): ${rePres}/${reConv} presentes`, { reId }));
+    setSyncMsg(`Reunião ${reId} registrada.`);
+  };
+
+  const handleAddPulso = (e: React.FormEvent) => {
+    e.preventDefault();
+    const next: ProjectDatabase = JSON.parse(JSON.stringify(db));
+    const existing = next["35_pulso_equipe"].find((p) => p.id_sprint === "S15");
+    if (existing) {
+      existing.satisfacao_media = pulsoVal;
+      existing.respostas = pulsoResp;
+    } else {
+      next["35_pulso_equipe"].push({ id_sprint: "S15", satisfacao_media: pulsoVal, respostas: pulsoResp });
+    }
+    onUpdateDb(next, makeLog("PULSO", `Pulso S15: ${pulsoVal}/5 (${pulsoResp} respostas)`, { pulsoVal }));
+    setSyncMsg("Pulso da sprint S15 registrado.");
+  };
+
   const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -355,8 +440,11 @@ export const DataEntryView: React.FC<Props> = ({
             { id: "AVANCO", label: "B1 · Avanço Semanal" },
             { id: "HORAS", label: "B2 · Folha de Horas" },
             { id: "CUSTOS", label: "B3 · Custos Pagos" },
+            { id: "INSPECOES", label: "B4 · Inspeções" },
             { id: "AGIL", label: "B5/B6 · Backlog & Sprint" },
-            { id: "RISCO_MUD", label: "B8 · Ocorrências & Riscos" },
+            { id: "IMPLANTACOES", label: "B7 · Implantações DORA" },
+            { id: "RISCO_MUD", label: "B8 · Ocorrências" },
+            { id: "REUNIOES", label: "B9 · Reuniões & Pulso" },
           ].map((t) => (
             <button
               key={t.id}
@@ -514,6 +602,85 @@ export const DataEntryView: React.FC<Props> = ({
               <PlusCircle className="h-4 w-4" /> Registrar Ocorrência
             </button>
           </form>
+        )}
+
+        {formTab === "INSPECOES" && (
+          <form onSubmit={handleAddInspecao} className="grid grid-cols-2 gap-3 md:grid-cols-5">
+            <input type="date" value={inData} onChange={(e) => setInData(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <select value={inAct} onChange={(e) => setInAct(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+              {db["07_atividades"].map((a) => <option key={a.id_atividade} value={a.id_atividade}>{a.id_atividade} — {a.nome_atividade}</option>)}
+            </select>
+            <select value={inTipo} onChange={(e) => setInTipo(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+              <option value="LISTA_DE_VERIFICACAO">LISTA_DE_VERIFICACAO</option>
+              <option value="AUDITORIA_DOCUMENTAL">AUDITORIA_DOCUMENTAL</option>
+              <option value="TESTE_DE_ACEITACAO_DO_USUARIO">TESTE_ACEITACAO</option>
+            </select>
+            <input type="number" value={inVerif} onChange={(e) => setInVerif(e.target.value)} placeholder="Verificados" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <input type="number" value={inNc} onChange={(e) => setInNc(e.target.value)} placeholder="Não conformes" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <select value={inRes} onChange={(e) => setInRes(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+              <option value="APROVADO">APROVADO</option>
+              <option value="APROVADO_COM_RESSALVA">APROVADO_COM_RESSALVA</option>
+              <option value="REPROVADO">REPROVADO</option>
+            </select>
+            <input value={inForn} onChange={(e) => setInForn(e.target.value)} placeholder="Fornecedor (F09 ou vazio)" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <input type="number" step="0.1" value={inRetrH} onChange={(e) => setInRetrH(e.target.value)} placeholder="Retrabalho (h)" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <input type="number" step="0.01" value={inRetrRs} onChange={(e) => setInRetrRs(e.target.value)} placeholder="Custo retrabalho R$" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <button type="submit" className="inline-flex items-center justify-center gap-1 rounded-lg bg-sky-500 px-3 py-2 text-xs font-bold text-white">
+              <PlusCircle className="h-4 w-4" /> Registrar Inspeção
+            </button>
+          </form>
+        )}
+
+        {formTab === "IMPLANTACOES" && (
+          <form onSubmit={handleAddImplantacao} className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <input type="date" value={impData} onChange={(e) => setImpData(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <select value={impAmb} onChange={(e) => setImpAmb(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+              <option value="PRODUCAO">PRODUCAO</option>
+              <option value="HOMOLOGACAO">HOMOLOGACAO</option>
+            </select>
+            <input value={impVer} onChange={(e) => setImpVer(e.target.value)} placeholder="Versão (ex: 1.61)" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <input type="number" value={impItens} onChange={(e) => setImpItens(e.target.value)} placeholder="Itens implantados" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <input type="number" step="0.1" value={impTempo} onChange={(e) => setImpTempo(e.target.value)} placeholder="Tempo publicação (h)" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+            <select value={impFalhou} onChange={(e) => setImpFalhou(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+              <option value="0">Sem falha</option>
+              <option value="1">Falhou</option>
+            </select>
+            <button type="submit" className="inline-flex items-center justify-center gap-1 rounded-lg bg-sky-500 px-3 py-2 text-xs font-bold text-white">
+              <PlusCircle className="h-4 w-4" /> Registrar Implantação
+            </button>
+          </form>
+        )}
+
+        {formTab === "REUNIOES" && (
+          <div className="space-y-4">
+            <form onSubmit={handleAddReuniao} className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              <input type="date" value={reData} onChange={(e) => setReData(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <select value={reTipo} onChange={(e) => setReTipo(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+                {["STATUS_SEMANAL", "COMITE_DIRETOR", "PLANEJAMENTO_DA_SPRINT", "REVISAO_DA_SPRINT", "RETROSPECTIVA"].map((r) => (
+                  <option key={r} value={r}>{r}</option>
+                ))}
+              </select>
+              <input type="number" value={reDur} onChange={(e) => setReDur(e.target.value)} placeholder="Duração (min)" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <input type="number" value={reConv} onChange={(e) => setReConv(e.target.value)} placeholder="Convidados" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <input type="number" value={rePres} onChange={(e) => setRePres(e.target.value)} placeholder="Presentes" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <select value={rePatr} onChange={(e) => setRePatr(e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white">
+                <option value="0">Patrocinador ausente</option>
+                <option value="1">Patrocinador presente</option>
+              </select>
+              <input type="number" value={reDec} onChange={(e) => setReDec(e.target.value)} placeholder="Decisões" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <button type="submit" className="inline-flex items-center justify-center gap-1 rounded-lg bg-sky-500 px-3 py-2 text-xs font-bold text-white">
+                <PlusCircle className="h-4 w-4" /> Registrar Reunião
+              </button>
+            </form>
+
+            <form onSubmit={handleAddPulso} className="grid grid-cols-3 gap-3 border-t border-slate-800 pt-3">
+              <input type="number" step="0.01" value={pulsoVal} onChange={(e) => setPulsoVal(e.target.value)} placeholder="Pulso S15 (1 a 5)" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <input type="number" value={pulsoResp} onChange={(e) => setPulsoResp(e.target.value)} placeholder="Respostas" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white" />
+              <button type="submit" className="inline-flex items-center justify-center gap-1 rounded-lg bg-sky-500 px-3 py-2 text-xs font-bold text-white">
+                <PlusCircle className="h-4 w-4" /> Registrar Pulso S15
+              </button>
+            </form>
+          </div>
         )}
       </div>
 
