@@ -176,11 +176,11 @@ export function App() {
   const navItems = [
     { id: "dashboard", label: "Início", icon: LayoutDashboard },
     { id: "entry", label: "Lançamentos (R3)", icon: FileSpreadsheet },
-    { id: "network", label: "Prazo & Rede CPM", icon: GitBranch },
-    { id: "evm", label: "Custo & Valor Agregado", icon: Activity },
+    { id: "network", label: "Prazo e rede CPM", icon: GitBranch },
+    { id: "evm", label: "Custo e valor agregado", icon: Activity },
     { id: "agile", label: "Painel Ágil", icon: Kanban },
-    { id: "people", label: "Pessoas & Produtiv.", icon: Users },
-    { id: "governance", label: "Riscos & Contratos", icon: ShieldAlert },
+    { id: "people", label: "Pessoas e produtividade", icon: Users },
+    { id: "governance", label: "Riscos e contratos", icon: ShieldAlert },
     { id: "scenarios", label: "Cenários (C1–C6)", icon: Compass },
     { id: "mockups", label: "Mockups do Produto", icon: Smartphone },
   ];
@@ -191,10 +191,11 @@ export function App() {
   const handleSelectTab = (id: string) => {
     setActiveTab(id);
     setMobileNavOpen(false);
+    window.scrollTo(0, 0);
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0a1017] text-slate-100">
+    <div className="mare-shell flex min-h-screen text-slate-100">
       {/* Overlay mobile */}
       {mobileNavOpen && (
         <div
@@ -205,18 +206,19 @@ export function App() {
 
       {/* Sidebar Vertical (identidade visual Maré Seguros) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-[#1e2b3a] bg-[#0e1620] transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
-          mobileNavOpen ? "translate-x-0" : "-translate-x-full"
+        id="project-navigation"
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-[#1e2b3a] bg-[#0e1620] shadow-xl shadow-black/10 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
+          mobileNavOpen ? "translate-x-0" : "invisible -translate-x-full lg:visible"
         }`}
       >
         {/* Brand com Logo Maré Seguros em destaque */}
         <div className="border-b border-[#1e2b3a] p-3.5">
           <div className="flex items-start justify-between gap-2">
-            <div className="h-24 w-full overflow-hidden rounded-xl bg-white shadow-sm">
+            <div className="h-16 w-full overflow-hidden rounded-xl bg-white shadow-sm">
               <img
                 src="/mare_seguros.jpeg"
                 alt="Maré Seguros"
-                className="h-full w-full scale-[1.45] object-contain"
+                className="h-full w-full scale-[1.15] object-contain"
               />
             </div>
             <button
@@ -236,7 +238,7 @@ export function App() {
         </div>
 
         {/* Navigation List */}
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+        <nav aria-label="Seções do projeto" className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = activeTab === item.id;
@@ -244,9 +246,10 @@ export function App() {
               <button
                 key={item.id}
                 onClick={() => handleSelectTab(item.id)}
+                aria-current={active ? "page" : undefined}
                 className={`flex w-full items-center gap-3.5 rounded-xl px-3.5 py-2.5 text-left text-[13px] font-medium transition ${
                   active
-                    ? "bg-[#12323a] text-[#5eead4]"
+                    ? "bg-[#12323a] text-[#5eead4] ring-1 ring-inset ring-sky-400/25"
                     : "text-slate-400 hover:bg-[#14202e] hover:text-slate-100"
                 }`}
               >
@@ -258,56 +261,60 @@ export function App() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="space-y-2.5 border-t border-[#1e2b3a] p-4 text-xs">
-          {!isQuinzenaLoaded && (
+        {!isQuinzenaLoaded && (
+          <div className="border-t border-slate-800 p-4">
             <button
               onClick={handleApplyQuinzena}
               className="w-full rounded-lg bg-[#139297] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#17a8ae]"
             >
               Carregar Boletins 03–13/11
             </button>
-          )}
-          <div className="flex items-center justify-between rounded-lg border border-[#1e2b3a] bg-[#0a1017] px-3 py-2">
-            <span className="text-slate-400">Status</span>
-            <select
-              value={statusDate}
-              onChange={(e) => setStatusDate(e.target.value)}
-              className="bg-transparent font-mono font-semibold text-[#2dd4bf] focus:outline-none"
-            >
-              <option value="2026-10-30">30/10/2026</option>
-              <option value="2026-11-13">13/11/2026</option>
-            </select>
           </div>
-        </div>
+        )}
       </aside>
 
       {/* Main Column */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Topbar minimalista */}
-        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-[#1e2b3a] bg-[#0a1017]/90 px-4 py-3 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-[#1e2b3a] bg-[#0a1017]/90 px-4 py-3.5 backdrop-blur lg:px-8">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileNavOpen(true)}
-              className="rounded-lg border border-[#1e2b3a] bg-[#101822] p-1.5 text-slate-300 lg:hidden"
+              className="rounded-lg border border-[#1e2b3a] bg-[#101822] p-2.5 text-slate-300 lg:hidden"
               aria-label="Abrir menu"
+              aria-expanded={mobileNavOpen}
+              aria-controls="project-navigation"
             >
               <Menu className="h-4 w-4" />
             </button>
             <div>
-              <h1 className="text-sm font-semibold text-white sm:text-base">{activeLabel}</h1>
+              <h1 className="text-base font-semibold tracking-tight text-white sm:text-lg">{activeLabel}</h1>
               <p className="hidden text-[11px] text-slate-400 sm:block">
-                Aplicativo de aviso de sinistro com vistoria por foto · Duas Trilhas (ProjectLibre + Jira)
+                Maré Seguros · Acompanhamento do projeto
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
-            <div className="hidden rounded-lg border border-[#1e2b3a] bg-[#101822] px-3 py-1.5 text-slate-400 md:block">
-              Término previsto:{" "}
-              <strong className="font-mono text-amber-300">{fmtDateBR(network.forecastEndDate)}</strong>
-              <span className="mx-2 text-slate-700">|</span>
-              Custo previsto: <strong className="font-mono text-slate-100">{fmtBRL0(evm.entTotal)}</strong>
-            </div>
+          <div className="flex shrink-0 items-center gap-3 text-xs">
+            {activeTab !== "dashboard" && (
+              <div className="hidden rounded-lg border border-[#1e2b3a] bg-[#101822] px-3 py-1.5 text-slate-400 xl:block">
+                  Término previsto:{" "}
+                  <strong className="font-mono text-amber-300">{fmtDateBR(network.forecastEndDate)}</strong>
+                  <span className="mx-2 text-slate-700">|</span>
+                  Custo previsto: <strong className="font-mono text-slate-100">{fmtBRL0(evm.entTotal)}</strong>
+              </div>
+            )}
+            <label className="flex flex-col gap-0.5 rounded-xl border border-slate-700 bg-slate-900 px-2.5 py-1.5 sm:px-3">
+              <span className="text-[11px] font-medium text-slate-400">Data de status</span>
+              <select
+                value={statusDate}
+                onChange={(event) => setStatusDate(event.target.value)}
+                className="bg-slate-900 font-semibold tabular-nums text-sky-300"
+              >
+                <option value="2026-10-30">30/10/2026</option>
+                <option value="2026-11-13">13/11/2026</option>
+              </select>
+            </label>
           </div>
         </header>
 
@@ -322,7 +329,7 @@ export function App() {
             agile={agile}
             scenarios={scenarios}
             governance={governance}
-            onNavigate={setActiveTab}
+            onNavigate={handleSelectTab}
           />
         )}
         {activeTab === "entry" && (
