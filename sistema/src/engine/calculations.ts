@@ -395,6 +395,13 @@ export function computeNetwork(
     }
   }
 
+  // Marcos ágeis já entregues (tabela 10: data_real até a data de status) → id_atividade → data real
+  const marcoEntregue = new Map<string, string>();
+  for (const m of db["10_marcos"] ?? []) {
+    if (m.data_real && m.data_real <= statusDate) marcoEntregue.set(m.id_atividade, m.data_real);
+  }
+  const marcoAgilConcluido = (u: string) => nodes.get(u)?.tipo === "MARCO_AGIL" && marcoEntregue.has(u);
+
   // Nodes & edges base
   const nodes = new Map<string, {
     id: string; nome: string; eap: string; disc: string; tipo: string;
@@ -560,15 +567,28 @@ export function computeNetwork(
       continue;
     }
     if (node.tipo === "MARCO_AGIL") {
-      const s = av?.data_inicio_real ? calH.nextDuOnOrAfter(av.data_inicio_real) : esLb.get(u) ?? 40;
+      // Interface entre as trilhas: a release é um marco da rede preditiva.
+      // Início: depois das predecessoras (a release anterior), nunca antes do previsto na LB.
+      // Sem isso a R3 "começaria" antes da R2 terminar, ganharia uma duração artificial
+      // e o passo de volta tiraria a R2 do caminho crítico.
+      let s = av?.data_inicio_real ? calH.nextDuOnOrAfter(av.data_inicio_real) : esLb.get(u) ?? 40;
+      for (const e of fPreds.get(u) ?? []) {
+        const cand = e.tipo === "TI" ? (fEf.get(e.pred) ?? 0) + 1 + e.lag : (fEs.get(e.pred) ?? 1) + e.lag;
+        if (cand > s) s = cand;
+      }
+      // Término: data real do marco (tabela 10) se já entregue; senão a previsão da release (Conv. 11).
       let f = efLb.get(u) ?? s;
-      if (u === "A40") {
-        f = agile.pontosRestantesR1 === 0 ? calH.lastDuOnOrBefore("2026-07-10") : agile.duPrevistoR1;
+      const entregue = marcoEntregue.get(u);
+      if (entregue) {
+        f = calH.lastDuOnOrBefore(entregue);
+      } else if (u === "A40") {
+        f = agile.duPrevistoR1;
       } else if (u === "A41") {
         f = agile.duPrevistoR2;
       } else if (u === "A42") {
         f = agile.duPrevistoR3;
       }
+      if (s > f) s = f;
       fEs.set(u, s);
       fEf.set(u, f);
       fDur.set(u, Math.max(1, f - s + 1));
@@ -621,6 +641,7 @@ export function computeNetwork(
   const criticalPathForecast = fOrder.filter((u) => {
     const av = latestAv.get(u);
     if (av && av.situacao === "CONCLUIDA") return false;
+    if (marcoAgilConcluido(u)) return false;
     return !excluded.has(u) && fLs.get(u) === fEs.get(u);
   });
 
@@ -654,8 +675,8 @@ export function computeNetwork(
       lf: lfLb.get(u) ?? fLfVal,
       folga: (lsLb.get(u) ?? fLsVal) - (esLb.get(u) ?? fEsVal),
       criticaLb: criticalPathLb.includes(u),
-      avancoPct: av ? num(av.avanco_acumulado_pct) : 0,
-      situacao: excluded.has(u) ? "EXCLUIDA" : av ? av.situacao : "NAO_INICIADA",
+      avancoPct: marcoAgilConcluido(u) ? 100 : av ? num(av.avanco_acumulado_pct) : 0,
+      situacao: excluded.has(u) ? "EXCLUIDA" : marcoAgilConcluido(u) ? "CONCLUIDA" : av ? av.situacao : "NAO_INICIADA",
       dataInicioReal: av?.data_inicio_real ?? "",
       dataTerminoReal: av?.data_termino_real ?? "",
       forecastEs: fEsVal,

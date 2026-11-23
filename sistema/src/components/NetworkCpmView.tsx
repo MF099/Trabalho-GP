@@ -8,9 +8,11 @@ import { Detalhes, useLigacaoGrafico } from "./ui";
 interface Props {
   db: ProjectDatabase;
   network: NetworkResult;
+  /** Blocos extras (EAP e Gantt) mostrados antes dos detalhes técnicos. */
+  children?: React.ReactNode;
 }
 
-export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
+export const NetworkCpmView: React.FC<Props> = ({ db, network, children }) => {
   const [filterMode, setFilterMode] = useState<"ALL" | "CRITICAL" | "M1">("ALL");
   const m1Ids = new Set(["A22", "A23", "A24", "A25", "A26", "A27", "A28", "A29", "A30", "A31", "A34", "A35"]);
   const m4 = computeM4Compression(db, 5);
@@ -53,15 +55,25 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
       {/* Caminho crítico */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
         <h3 className="text-sm font-semibold text-white">Caminho crítico previsto</h3>
-        <p className="mb-2 text-xs text-slate-400">A sequência de atividades sem folga até o término.</p>
+        <p className="mb-2 text-xs text-slate-400">
+          A sequência sem folga até o término. Em roxo, as releases da frente ágil que entram na rede como marcos.
+        </p>
         <div className="flex flex-wrap items-center gap-2 py-2">
           {network.criticalPathForecast.map((id, idx) => {
             const act = network.activities.find((a) => a.id === id);
+            const marco = act?.tipo === "MARCO_AGIL";
             return (
               <React.Fragment key={id}>
-                <div className="rounded-xl border border-rose-500/40 bg-rose-950/20 px-3 py-2 text-xs">
+                <div
+                  className={`rounded-xl border px-3 py-2 text-xs ${
+                    marco ? "border-indigo-400/60 bg-indigo-950/40" : "border-rose-500/40 bg-rose-950/20"
+                  }`}
+                >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono font-bold text-rose-300">{id}</span>
+                    <span className={`font-mono font-bold ${marco ? "text-indigo-300" : "text-rose-300"}`}>
+                      {id}
+                      {marco && " · release"}
+                    </span>
                     <span className="rounded bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-300">
                       {act?.disciplina}
                     </span>
@@ -81,6 +93,8 @@ export const NetworkCpmView: React.FC<Props> = ({ db, network }) => {
           })}
         </div>
       </div>
+
+      {children}
 
       {/* Detalhes técnicos: tabela CPM, PERT e compressão (conferência com caderno M1, M2 e M4) */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">

@@ -29,6 +29,7 @@ import type { AuditEntry, ProjectDatabase } from "./types/project";
 import { DashboardExecutive } from "./components/DashboardExecutive";
 import { DataEntryView } from "./components/DataEntryView";
 import { NetworkCpmView } from "./components/NetworkCpmView";
+import { EapGanttView } from "./components/EapGanttView";
 import { EvmView } from "./components/EvmView";
 import { AgileBoardView } from "./components/AgileBoardView";
 import { GovernanceProcurementView } from "./components/GovernanceProcurementView";
@@ -176,7 +177,7 @@ export function App() {
   const navItems = [
     { id: "dashboard", label: "Início", icon: LayoutDashboard },
     { id: "entry", label: "Lançamentos (R3)", icon: FileSpreadsheet },
-    { id: "network", label: "Prazo e rede CPM", icon: GitBranch },
+    { id: "network", label: "Prazo, EAP e Gantt", icon: GitBranch },
     { id: "evm", label: "Custo e valor agregado", icon: Activity },
     { id: "agile", label: "Painel Ágil", icon: Kanban },
     { id: "people", label: "Pessoas e produtividade", icon: Users },
@@ -345,7 +346,11 @@ export function App() {
             onResetBase={handleResetBase}
           />
         )}
-        {activeTab === "network" && <NetworkCpmView db={db} network={network} />}
+        {activeTab === "network" && (
+          <NetworkCpmView db={db} network={network}>
+            <EapGanttView db={db} network={network} statusDate={statusDate} />
+          </NetworkCpmView>
+        )}
         {activeTab === "evm" && <EvmView db={db} statusDate={statusDate} network={network} agile={agile} />}
         {activeTab === "agile" && (
           <AgileBoardView db={db} statusDate={statusDate} agile={agile} onMoveCard={handleMoveCard} />
