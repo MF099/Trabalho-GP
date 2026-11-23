@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 import {
+  ArrowLeft,
+  ArrowRight,
+  BatteryFull,
+  CarFront,
+  ClipboardList,
+  House,
+  Signal,
+  Wifi,
   Calendar,
   Camera,
   CheckCircle2,
@@ -63,27 +71,40 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       subtitle: "Identificação do segurado, áudio, B.O. e rascunho",
       nextScreenId: "T02",
       previewBody: (
-        <div className="space-y-3 text-xs">
-          <div className="rounded-xl bg-sky-600 p-3 text-white">
-            <div className="text-[10px] opacity-80">Apólice Ativa · Auto Total</div>
-            <div className="text-sm font-bold">Honda HR-V · Placa RDJ-4E21</div>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-lg bg-rose-500/20 p-2.5 text-center font-semibold text-rose-200">
-              Avisar Sinistro
-            </div>
-            <div className="rounded-lg bg-slate-800 p-2.5 text-center text-slate-200">
-              Sinistro de Vidros
-            </div>
-          </div>
-          <div className="rounded-lg border border-slate-700 bg-slate-900 p-2.5 text-slate-300">
-            Praça: <strong>Salvador/BA</strong>
+        <div className="space-y-5">
+          <div className="relative overflow-hidden rounded-2xl border border-sky-300/20 bg-linear-to-br from-[#0d2f52] to-[#12323a] p-4 shadow-lg shadow-black/20">
+            <CarFront aria-hidden="true" className="absolute -right-2 bottom-1 size-28 text-sky-300/10" strokeWidth={1} />
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-300/15 px-2.5 py-1 text-[11px] font-semibold text-sky-300">
+              <CheckCircle2 aria-hidden="true" className="size-3.5" /> Apólice ativa
+            </span>
+            <p className="mt-4 text-xs text-slate-300">Seguro Auto Total</p>
+            <p className="mt-1 text-xl font-semibold tracking-tight text-white">Honda HR-V</p>
+            <p className="mt-1 text-xs text-slate-300">RDJ-4E21 · Salvador/BA</p>
             {scenarioFilter === "C4" && (
-              <span className="ml-1.5 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] text-emerald-300">
-                + Escolha de Praça (MS-N1)
-              </span>
+              <p className="mt-3 text-xs font-semibold text-sky-300">Escolha de praça disponível (MS-N1)</p>
             )}
           </div>
+
+          <section aria-labelledby="policy-services">
+            <h4 id="policy-services" className="mb-2.5 text-sm font-semibold text-white">Serviços do seguro</h4>
+            <div className="grid grid-cols-2 gap-2.5">
+              {[
+                { id: "T02", label: "Avisar sinistro", icon: ClipboardList },
+                { id: "T13", label: "Avisar dano em vidro", icon: CarFront },
+              ].map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveScreenId(id)}
+                  className="flex min-h-24 flex-col items-start gap-2 rounded-xl border border-slate-700 bg-slate-800/70 p-3 text-left text-xs font-semibold text-white transition hover:border-sky-400 hover:bg-sky-950"
+                >
+                  <span className="grid size-8 place-items-center rounded-lg bg-sky-500/20 text-sky-300">
+                    <Icon aria-hidden="true" className="size-4" />
+                  </span>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </section>
         </div>
       ),
     },
@@ -96,15 +117,16 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
       subtitle: "Data, local GPS, terceiro, protocolo imediato e guincho",
       nextScreenId: "T03",
       previewBody: (
-        <div className="space-y-2 text-xs">
-          <div className="rounded-lg bg-slate-800 p-2">
-            Protocolo na hora: <strong className="text-emerald-300">#MS-2026-9941</strong>
-          </div>
-          <div className="flex items-center gap-2 rounded-lg bg-slate-800 p-2">
-            <MapPin className="h-4 w-4 text-sky-400" /> Av. Paralela, Salvador - BA (GPS)
-          </div>
-          <div className="rounded-lg bg-slate-800 p-2">
-            Terceiro: <strong>Sim · 1 veículo</strong> · Guincho: <strong>12 min</strong>
+        <div className="space-y-4">
+          <p className="text-sm leading-relaxed text-slate-300">Use este aviso quando o dano for apenas no vidro do veículo.</p>
+          <div className="flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-800/70 p-3">
+            <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-sky-500/20 text-sky-300">
+              <CarFront aria-hidden="true" className="size-5" />
+            </span>
+            <div>
+              <p className="text-xs text-slate-400">Vidro danificado</p>
+              <p className="text-sm font-semibold text-white">Para-brisa dianteiro</p>
+            </div>
           </div>
         </div>
       ),
@@ -477,35 +499,74 @@ export const ProductMockupsView: React.FC<Props> = ({ db, statusDate }) => {
           </select>
         </label>
         <section aria-label="Prévia do aplicativo" className="grid min-w-0 place-items-center rounded-3xl border border-slate-700 bg-slate-900 bg-linear-to-b from-sky-950/60 p-4 sm:p-8">
-          <div className="w-full max-w-[360px]">
+          <div className="w-full max-w-[380px]">
             <div className="relative rounded-[2.75rem] border-2 border-slate-500 bg-slate-950 p-2 shadow-2xl shadow-black/60">
               <span aria-hidden="true" className="absolute -left-1 top-24 h-10 w-1 rounded-l bg-slate-500" />
               <span aria-hidden="true" className="absolute -right-1 top-28 h-12 w-1 rounded-r bg-slate-500" />
-              <div className="flex min-h-[530px] flex-col overflow-hidden rounded-[2.2rem] border border-slate-800 bg-slate-900">
-                <div aria-hidden="true" className="relative flex h-12 items-center px-6 text-xs font-semibold text-slate-100">
-                  9:41
-                  <div className="absolute left-1/2 h-5 w-20 -translate-x-1/2 rounded-full bg-black ring-1 ring-slate-800" />
-                </div>
-                <div className="flex flex-1 flex-col px-5 pb-5">
-                  <div className="mb-6 flex items-center gap-2 border-b border-slate-700 pb-4 text-sm font-semibold text-white">
-                    <img src="/mare_seguros.jpeg" alt="" className="h-8 w-8 rounded-lg bg-white object-contain p-0.5" />
-                    Maré Seguros
+              <div className="flex min-h-[535px] flex-col overflow-hidden rounded-[2.2rem] border border-slate-800 bg-slate-900">
+                <div className="bg-linear-to-br from-[#0d2f52] to-[#12323a]">
+                  <div aria-hidden="true" className="relative flex h-11 items-center justify-between px-5 text-[10px] font-semibold text-slate-100">
+                    <span>9:41</span>
+                    <div className="absolute left-1/2 h-4 w-16 -translate-x-1/2 rounded-full bg-black" />
+                    <div className="flex items-center gap-1">
+                      <Signal className="size-3" />
+                      <Wifi className="size-3" />
+                      <BatteryFull className="size-4" />
+                    </div>
                   </div>
-                  <h3 className="mb-4 text-xl font-bold leading-tight text-white">{activeScreen.title}</h3>
-                  <div className="flex-1">{activeScreen.previewBody}</div>
-                  <p className="mt-6 text-xs text-slate-300">A seguir · {nextScreen.title}</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <button onClick={advance} className="flex-1 rounded-xl bg-sky-300 px-3 py-3 text-sm font-bold text-slate-950 hover:bg-sky-200">
-                      Próxima tela →
+                  <div className="px-4 pb-4 sm:px-5">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
+                      {activeScreen.id !== "T01" ? (
+                        <button onClick={() => setActiveScreenId("T01")} aria-label="Voltar para Minhas apólices" className="grid size-8 place-items-center rounded-lg bg-slate-950/30 text-sky-300 hover:bg-slate-950/60">
+                          <ArrowLeft aria-hidden="true" className="size-4" />
+                        </button>
+                      ) : (
+                        <img src="/mare_seguros.jpeg" alt="" className="size-8 rounded-lg bg-white object-contain" />
+                      )}
+                      Maré Seguros
+                    </div>
+                    <h3 className="mt-3 text-xl font-semibold leading-tight tracking-tight text-white">{activeScreen.title}</h3>
+                  </div>
+                </div>
+
+                <div className="flex-1 px-4 py-4 text-slate-100 sm:px-5">
+                  {activeScreen.previewBody}
+                </div>
+
+                <nav aria-label="Menu do protótipo" className="grid grid-cols-3 gap-1 border-t border-slate-700/75 bg-slate-950/45 px-2 py-2">
+                  {[
+                    { id: "T01", label: "Apólices", icon: House },
+                    { id: "T02", label: "Novo aviso", icon: ClipboardList },
+                    { id: "T09", label: "Acompanhar", icon: Wrench },
+                  ].map(({ id, label, icon: Icon }) => (
+                    <button
+                      key={id}
+                      onClick={() => setActiveScreenId(id)}
+                      aria-current={activeScreenId === id ? "page" : undefined}
+                      className={`flex min-h-11 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[10px] font-semibold transition ${
+                        activeScreenId === id ? "bg-sky-500/15 text-sky-300" : "text-slate-300 hover:bg-slate-800"
+                      }`}
+                    >
+                      <Icon aria-hidden="true" className="size-4" />
+                      {label}
                     </button>
-                    {canSkip && (
-                      <button onClick={() => setActiveScreenId(nextScreen.nextScreenId)} aria-label={`Pular etapa: ${nextScreen.title}`} className="rounded-xl border border-slate-500 px-3 py-3 text-sm font-semibold text-white hover:bg-slate-800">
-                        Pular etapa
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div aria-hidden="true" className="mx-auto mb-3 h-1 w-24 rounded-full bg-slate-500" />
+                  ))}
+                </nav>
+                <div aria-hidden="true" className="mx-auto my-2 h-1 w-20 rounded-full bg-slate-500" />
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-xl border border-slate-700 bg-slate-950/50 p-3">
+              <p className="mb-2 text-xs text-slate-300">A seguir · {nextScreen.title}</p>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={advance} className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-sky-300 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-sky-200">
+                  Próxima tela <ArrowRight aria-hidden="true" className="size-4" />
+                </button>
+                {canSkip && (
+                  <button onClick={() => setActiveScreenId(nextScreen.nextScreenId)} aria-label={`Pular etapa: ${nextScreen.title}`} className="min-h-10 rounded-lg border border-slate-600 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-800">
+                    Pular etapa
+                  </button>
+                )}
               </div>
             </div>
             <div className="mt-5 space-y-2 text-center text-xs text-slate-300" aria-live="polite">
